@@ -3,22 +3,19 @@ package dsid.peerToPeer.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Par {
+public class No {
 
     private String enderecoIP;
     private int porta;
-    private String nome;
-    private List<ParChaveValor> tabelaParChaveValor;
+    private List<No> vizinhos = new ArrayList<>();
+    private List<ParChaveValor> tabelaParChaveValor = new ArrayList<>();
 
-    public Par() {
-        this.tabelaParChaveValor = new ArrayList<>();
+    public No() {
     }
 
-    public Par(String enderecoIP, int porta, String nome) {
+    public No(String enderecoIP, int porta) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
-        this.nome = nome;
-        this.tabelaParChaveValor = new ArrayList<>();
     }
 
     public String getEnderecoIP() {
@@ -37,14 +34,6 @@ public class Par {
         this.porta = porta;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public List<ParChaveValor> getTabelaParChaveValor() {
         return tabelaParChaveValor;
     }
@@ -57,13 +46,21 @@ public class Par {
         tabelaParChaveValor.remove(parChaveValor);
     }
 
-    @Override
+	public List<No> getVizinhos() {
+		return vizinhos;
+	}
+
+	public void setVizinhos(List<No> vizinhos) {
+		this.vizinhos = vizinhos;
+	}
+	
+	@Override
     public String toString() {
         return "Par{" +
                 "enderecoIP='" + enderecoIP + '\'' +
                 ", porta=" + porta +
-                ", nome='" + nome + '\'' +
                 ", tabelaParChaveValor=" + tabelaParChaveValor +
                 '}';
     }
+
 }
