@@ -9,9 +9,13 @@ import lombok.Data;
 public class Mensagem {
 
 	private String origem;
+
 	private int sequencia; 
+
     private int ttl;
+
 	private TipoMensagemEnum tipo;
+
     private List<String> argumentos;
 
 }

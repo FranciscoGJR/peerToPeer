@@ -1,7 +1,7 @@
 package dsid.peerToPeer;
 
-import dsid.peerToPeer.model.Dados;
-import dsid.peerToPeer.rede.Rede;
+import dsid.peerToPeer.model.*;
+import dsid.peerToPeer.rede.*;
 import lombok.*;
 
 @Data

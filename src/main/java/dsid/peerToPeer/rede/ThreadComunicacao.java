@@ -16,11 +16,11 @@ public class ThreadComunicacao implements Runnable{
 	
 	private Socket socket;
 
-	
     public ThreadComunicacao(Socket socket) {
         this.socket = socket;
     }
     
+
     @Override
     public void run() {
         try {
