@@ -1,7 +1,11 @@
 package dsid.peerToPeer;
 
+import dsid.peerToPeer.controller.InterfaceUsuario;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!"); 
+    	InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
+    	
+    	interfaceUsuario.iniciar();
     }
 }
