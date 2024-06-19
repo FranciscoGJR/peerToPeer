@@ -35,4 +35,11 @@ public class Constantes {
 	public static final int EXIBIR_ESTATISTICAS = 5;
 	public static final int ALTERAR_TTL_PADRAO = 6;
 	public static final int SAIR = 9;
+	
+	
+	// VALORES INTEIROS (int)
+	
+	public static final int ZERO = 0;
+	public static final int UM = 1;
+	public static final int Dois = 2;	
 }
