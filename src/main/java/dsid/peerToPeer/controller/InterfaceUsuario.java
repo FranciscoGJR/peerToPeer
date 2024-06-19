@@ -21,13 +21,9 @@ import static dsid.peerToPeer.utils.Constantes.SAIR;
 
 import java.util.Scanner;
 
-import dsid.peerToPeer.No;
-
 public class InterfaceUsuario {
 
 	private Scanner scanner = new Scanner(System.in);
-	
-	private No no = new No();
 	
     public void iniciar() {
         int opcao;
@@ -75,12 +71,4 @@ public class InterfaceUsuario {
         System.out.print(MENSAGEM_DIGITE_OPCAO);
     }
 	
-	
-	private void entrada() {
-		decodificarMensagem();
-	}
-	
-	private void decodificarMensagem() {
-		
-	}
 }

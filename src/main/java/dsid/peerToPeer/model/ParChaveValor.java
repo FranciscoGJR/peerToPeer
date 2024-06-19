@@ -1,5 +1,8 @@
 package dsid.peerToPeer.model;
 
+import lombok.Data;
+
+@Data
 public class ParChaveValor {
 
     private String chave;
@@ -13,27 +16,4 @@ public class ParChaveValor {
         this.valor = valor;
     }
 
-    public String getChave() {
-        return chave;
-    }
-
-    public void setChave(String chave) {
-        this.chave = chave;
-    }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
-
-    @Override
-    public String toString() {
-        return "ParChaveValor{" +
-                "chave='" + chave + '\'' +
-                ", valor='" + valor + '\'' +
-                '}';
-    }
 }

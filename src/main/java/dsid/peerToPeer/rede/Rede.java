@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dsid.peerToPeer.No;
+import lombok.Data;
 
+@Data
 public class Rede {
     
     private ServerSocket serverSocket;
@@ -65,43 +67,4 @@ public class Rede {
         }).start();
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
-    }
-
-    public String getEnderecoIP() {
-        return enderecoIP;
-    }
-
-    public void setEnderecoIP(String enderecoIP) {
-        this.enderecoIP = enderecoIP;
-    }
-
-    public int getPorta() {
-        return porta;
-    }
-
-    public void setPorta(int porta) {
-        this.porta = porta;
-    }
-
-    public List<No> getVizinhos() {
-        return vizinhos;
-    }
-
-    public void setVizinhos(List<No> vizinhos) {
-        this.vizinhos = vizinhos;
-    }
-    
-	public List<Mensagem> getCaixaDeMensagens() {
-		return caixaDeMensagens;
-	}
-
-	public void setCaixaDeMensagens(List<Mensagem> caixaDeMensagens) {
-		this.caixaDeMensagens = caixaDeMensagens;
-	}
 }

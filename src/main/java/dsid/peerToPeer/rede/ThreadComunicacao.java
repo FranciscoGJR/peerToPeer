@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import dsid.peerToPeer.No;
+import lombok.Data;
 
+@Data
 public class ThreadComunicacao implements Runnable{
 	
 	private Socket socket;
