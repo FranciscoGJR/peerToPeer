@@ -6,8 +6,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.*;
+import dsid.peerToPeer.No;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 
 @Data
 public class Rede {
@@ -31,7 +32,7 @@ public class Rede {
 
     
     public void listarVizinhos() {
-        System.out.printf("Há %d vizinhos na tabela\n", this.vizinhos.size());
+    	System.out.printf("Ha %d vizinhos na tabela\n", this.vizinhos.size());
         
         int iterador = 0;
         for (No vizinho : this.vizinhos) {

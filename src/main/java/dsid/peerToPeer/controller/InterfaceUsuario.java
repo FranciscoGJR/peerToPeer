@@ -1,14 +1,25 @@
 package dsid.peerToPeer.controller;
 
-import static dsid.peerToPeer.utils.Constantes.*;
+import static dsid.peerToPeer.utils.Constantes.ALTERAR_TTL_PADRAO;
+import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_DEPTH_SEARCH;
+import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_FLOODING;
+import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_RANDOM_WALK;
+import static dsid.peerToPeer.utils.Constantes.ENVIAR_HELLO;
+import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
+import static dsid.peerToPeer.utils.Constantes.LISTAR_VIZINHOS;
+import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
+import static dsid.peerToPeer.utils.Constantes.SAIR;
 
 import java.util.Scanner;
+
+import dsid.peerToPeer.No;
 
 public class InterfaceUsuario {
 
 	private Scanner scanner = new Scanner(System.in);
 	
-    public void iniciar() {
+    public void iniciar(No no) {
+    	
         int opcao;
 
         do {
@@ -17,6 +28,7 @@ public class InterfaceUsuario {
             scanner.nextLine();
             switch (opcao) {
                 case LISTAR_VIZINHOS:
+                	no.getRede().listarVizinhos();
                     break;
                 case ENVIAR_HELLO:
                     break;

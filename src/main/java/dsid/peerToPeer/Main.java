@@ -16,6 +16,6 @@ public class Main {
     	No no = new No(endereco, porta);
     	
     	InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
-    	interfaceUsuario.iniciar();
+    	interfaceUsuario.iniciar(no);
     }
 }
