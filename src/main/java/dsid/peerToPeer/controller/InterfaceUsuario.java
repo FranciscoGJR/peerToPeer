@@ -15,8 +15,14 @@ import java.util.Scanner;
 import dsid.peerToPeer.No;
 
 public class InterfaceUsuario {
+	
+	private No no;
 
 	private Scanner scanner = new Scanner(System.in);
+	
+	public InterfaceUsuario(No no) {
+		this.no = no;
+	}
 	
     public void iniciar(No no) {
     	
@@ -28,7 +34,7 @@ public class InterfaceUsuario {
             scanner.nextLine();
             switch (opcao) {
                 case LISTAR_VIZINHOS:
-                	no.getRede().listarVizinhos();
+                	this.listarVizinhos();
                     break;
                 case ENVIAR_HELLO:
                     break;
@@ -52,7 +58,12 @@ public class InterfaceUsuario {
     }
     
     
-    private void exibirMenu() {
+    private void listarVizinhos() {
+    	no.getRede().listarVizinhos();
+	}
+
+
+	private void exibirMenu() {
         System.out.print(MENU_COMPLETO);
     }
 	

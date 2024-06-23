@@ -8,7 +8,7 @@ import java.util.List;
 
 import dsid.peerToPeer.No;
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
+
 
 @Data
 public class Rede {
@@ -27,9 +27,9 @@ public class Rede {
     public Rede(String enderecoIP, int porta) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
-        this.vizinhos = new ArrayList<>();
+        this.vizinhos = new ArrayList<No>();
     }
-
+    
     
     public void listarVizinhos() {
     	System.out.printf("Ha %d vizinhos na tabela\n", this.vizinhos.size());

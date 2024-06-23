@@ -1,8 +1,9 @@
 package dsid.peerToPeer;
 
-import dsid.peerToPeer.controller.*;
+import static dsid.peerToPeer.utils.Constantes.UM;
+import static dsid.peerToPeer.utils.Constantes.ZERO;
 
-import static dsid.peerToPeer.utils.Constantes.*;
+import dsid.peerToPeer.controller.InterfaceUsuario;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +16,7 @@ public class Main {
     	
     	No no = new No(endereco, porta);
     	
-    	InterfaceUsuario interfaceUsuario = new InterfaceUsuario();
+    	InterfaceUsuario interfaceUsuario = new InterfaceUsuario(no);
     	interfaceUsuario.iniciar(no);
     }
 }
