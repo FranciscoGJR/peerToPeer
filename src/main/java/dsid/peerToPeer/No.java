@@ -1,8 +1,10 @@
 package dsid.peerToPeer;
 
-import dsid.peerToPeer.model.*;
-import dsid.peerToPeer.rede.*;
-import lombok.*;
+import java.util.List;
+
+import dsid.peerToPeer.model.Dados;
+import dsid.peerToPeer.rede.Rede;
+import lombok.Data;
 
 @Data
 public class No {
@@ -14,6 +16,11 @@ public class No {
 	public No(String endereco, Integer porta) {
 		this.dados = new Dados();
 		this.rede = new Rede(endereco, porta);
+	}
+	
+	public No(String endereco, Integer porta, List<No> vizinhos) {
+		this.dados = new Dados();
+		this.rede = new Rede(endereco, porta, vizinhos);
 	}
 
 }

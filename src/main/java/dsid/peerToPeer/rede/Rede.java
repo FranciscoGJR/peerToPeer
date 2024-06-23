@@ -17,26 +17,35 @@ public class Rede {
 
     private String enderecoIP;
 
-    private int porta;
+    private Integer porta;
 
     private List<No> vizinhos;
 
     private List<Mensagem> caixaDeMensagens;
 
 
-    public Rede(String enderecoIP, int porta) {
+    public Rede(String enderecoIP, Integer porta, List<No> vizinhos) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
-        this.vizinhos = new ArrayList<No>();
+        this.vizinhos = vizinhos;
     }
     
+    
+    public Rede(String enderecoIP, Integer porta) {
+        this.enderecoIP = enderecoIP;
+        this.porta = porta;
+        this.vizinhos = null;
+        this.caixaDeMensagens = null;
+	}
+
+
     
     public void listarVizinhos() {
     	System.out.printf("Ha %d vizinhos na tabela\n", this.vizinhos.size());
         
         int iterador = 0;
         for (No vizinho : this.vizinhos) {
-            System.out.printf("\t[%d] %s %s\n", iterador, this.getEnderecoIP(), this.getPorta());
+            System.out.printf("\t[%d] %s %s\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta());
             iterador++;
         }
     }

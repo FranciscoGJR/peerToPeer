@@ -3,20 +3,63 @@ package dsid.peerToPeer;
 import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.Constantes.ZERO;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import dsid.peerToPeer.controller.InterfaceUsuario;
 
 public class Main {
+	
     public static void main(String[] args) {
     	
-    	String argumento = args[0];
+    	String argumento0 = args[0];
+    	String argumento1 = args[1];
     	
-    	String[] partes = argumento.split(":");
-    	String endereco = partes[ZERO];
-    	int porta = Integer.parseInt(partes[UM]);
+    	String endereco = getEndereco(argumento0);
+    	Integer porta = getPorta(argumento0);
+    	String arquivoVizinhos = argumento1;
     	
-    	No no = new No(endereco, porta);
+    	List<No> vizinhos = decoderListaVizinhos(arquivoVizinhos);
+    	
+    	No no = new No(endereco, porta, vizinhos);
     	
     	InterfaceUsuario interfaceUsuario = new InterfaceUsuario(no);
     	interfaceUsuario.iniciar(no);
     }
+    
+
+    private static String getEndereco(String argumentoEnderecoPorta) {
+    	String[] partes = argumentoEnderecoPorta.split(":");
+    	return partes[ZERO];
+    }
+    
+    
+    private static Integer getPorta(String argumentoEnderecoPorta) {
+    	String[] partes = argumentoEnderecoPorta.split(":");
+    	return Integer.parseInt(partes[UM]);
+    }
+    
+    
+    private static List<No> decoderListaVizinhos(String arquivoVizinhos) {
+        
+    	List<No> listaVizinhos = new ArrayList<>();
+    	
+    	String nomeArquivo = "vizinhos";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(nomeArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] partes = linha.split(":");
+                No no = new No(partes[0], Integer.parseInt(partes[1]));
+                listaVizinhos.add(no);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	return listaVizinhos;
+    }
+    
 }
