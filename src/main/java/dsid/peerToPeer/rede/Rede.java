@@ -24,7 +24,7 @@ public class Rede {
 
     private List<No> vizinhos;
 
-    private List<Mensagem> caixaDeMensagens;
+    private CaixaMensagens caixaDeMensagens;
     
     private volatile boolean running = true;
 
@@ -33,16 +33,18 @@ public class Rede {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.vizinhos = vizinhos;
+        this.caixaDeMensagens = new CaixaMensagens();
         this.iniciarConexao(porta);
         this.threadEscuta();
     }
     
     
+    // Construtor para classe Rede de um vizinho
     public Rede(String enderecoIP, Integer porta) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
-        this.vizinhos = null;
         this.caixaDeMensagens = null;
+        this.vizinhos = null;
 	}
 
     
@@ -76,6 +78,7 @@ public class Rede {
             PrintWriter writer = new PrintWriter(output, true);
 
             writer.println(mensagem.getTexto());
+            this.caixaDeMensagens.novaEnviada(mensagem);
         } catch (IOException e) {
             e.printStackTrace();
         }

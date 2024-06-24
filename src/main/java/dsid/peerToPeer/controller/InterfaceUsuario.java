@@ -1,17 +1,6 @@
 package dsid.peerToPeer.controller;
 
-import static dsid.peerToPeer.utils.Constantes.ALTERAR_TTL_PADRAO;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_DEPTH_SEARCH;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_FLOODING;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_RANDOM_WALK;
-import static dsid.peerToPeer.utils.Constantes.ENVIAR_HELLO;
-import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
-import static dsid.peerToPeer.utils.Constantes.HELLO;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_VIZINHOS;
-import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
-import static dsid.peerToPeer.utils.Constantes.SAIR;
-import static dsid.peerToPeer.utils.Constantes.UM;
+import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.util.Scanner;
 

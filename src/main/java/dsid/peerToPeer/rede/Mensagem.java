@@ -10,6 +10,8 @@ import static dsid.peerToPeer.utils.Constantes.*;
 
 @Data
 public class Mensagem {
+	
+	private Integer numeroDeSequencia;
 
 	private String texto;
 	
@@ -23,7 +25,7 @@ public class Mensagem {
 
     private List<String> argumentos;
     
-    // Mensagem HELLO
+    // Mensagem HELOO
     public Mensagem(No origem, No destino, int ttl, TipoMensagemEnum tipoMensagem) {
     	this.texto = HELLO;
     	this.origem = origem;
