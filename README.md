@@ -1,88 +1,61 @@
-Busca peer-to-peer sobre valores chave-valor
+# Clonar repositório git
 
-# Arquitetura
-
-## Sistema (componente)
-
-Atributos
-
-- Tabela com chave valor
-- Lista com mensagens enviadas (model.mensagem)
-- Lista de vizinhos conhecidos
-
-Métodos
-
-- Listar vizinhos
-- Adicionar novo vizinho
-- Vizinho conhecido
-
-- Hello: enviar a mensagem Hello para aglum vizinho específico
-- Enviar mensagem
-- Receber mensagem
-- Repassar mensagem
-- Enviar resposta
-
-## Mensagem (model)
-
-- Origem
-- Número de sequencia 
-- Tempo de vida
-- Operação
-- Argumentos (opcionais)
-
-
-
-# Funcionalidades
-
-- Realizar busca de um valor chave e ter resposta
-
-
-
-# Métodos de busca
-
-1. Flooding
-2. Random walk
-3. Busca em profundidade
-
-## Cenários
-
-- Tentando adicionar vizinho `<endereço>:<porta>`
-- Encaminhando mensagem `<mensagem>` para `<endereço:porta destino>`
-- Envio feito com sucesso: `<mensagem>`
-
-
-# Interfaces
-
-Identificador do nó
-
+ssh
 ```
-<endereço>:<porta>
+git@github.com:FranciscoGJR/peerToPeer.git
 ```
 
-Inicializacao
+https
+```
+https://github.com/FranciscoGJR/peerToPeer.git
+```
+
+# Ferramentas necessárias
+
+`maven 3.5.2` ou superior
+
+`java 1.8.0` ou superior
+
+# Como executar
+
+Para baixar as dependências do maven, executar comando `mvn clean install`.
+
+Em seguida, para complilar o projeto, executar comando `mvn package`
+
+Para executar o projeto, rode o comando a baixo na raiz do diretório
 
 ```
-./ep_distsys <endereco>:<porta> [vizinhos.txt [lista_chave_valor.txt]]
+java -jar target/peerToPeer-0.0.1-SNAPSHOT.jar <endereco> vizinhos
 ```
 
-**Interface de usuário**: terminal
+O arquivo `vizinhos` apresenta a lista de vizinhos que o nó possui.
 
-**Comunicaçao**:
-````
-<ORIGIN> <SEQNO> <TTL> <OPERACAO>[ ARGUMENTOS]\n
-````
+# Decisões de projeto
 
+O paradigma POO foi escolhido como base fundamental para o desenvolvimento do sistema peer-to-peer devido às suas características intrínsecas que se alinham perfeitamente com os requisitos do projeto.
 
+De forma 
 
-# Chave-valor dos nós
+## Organização dos pacetes
 
-**Chave**: String chave
-**Valor**: Long valor
+Foi utilizado uma implementação de arquitetura em camadas com classes Controller e Model, seguindo os princípios de separação de responsabilidades e organização do código.
 
-````
-Katharine_Hepburn 4
-Frances_McDormand 3
-````
-
-Um espaço em branco separa a chave do valor
-
+```
+└── peerToPeer
+    ├── Main.java
+    ├── No.java
+    ├── controller
+    │   └── InterfaceUsuario.java
+    ├── model
+    │   ├── Dados.java
+    │   └── ParChaveValor.java
+    ├── rede
+    │   ├── CaixaMensagens.java
+    │   ├── Mensagem.java
+    │   ├── Rede.java
+    │   └── ThreadComunicacao.java
+    └── utils
+        ├── Constantes.java
+        ├── ThreadComunicacaoUtil.java
+        └── TipoMensagemEnum.java
+```
