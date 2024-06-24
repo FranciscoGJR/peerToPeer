@@ -1,28 +1,28 @@
 # Clonar repositório git
 
-ssh
+ssh.
 ```
 git@github.com:FranciscoGJR/peerToPeer.git
 ```
 
-https
+https.
 ```
 https://github.com/FranciscoGJR/peerToPeer.git
 ```
 
 # Ferramentas necessárias
 
-`maven 3.5.2` ou superior
+`maven 3.5.2` ou superior.
 
-`java 1.8.0` ou superior
+`java 1.8.0` ou superior.
 
 # Como executar
 
 Para baixar as dependências do maven, executar comando `mvn clean install`.
 
-Em seguida, para complilar o projeto, executar comando `mvn package`
+Em seguida, para complilar o projeto, executar comando `mvn package`.
 
-Para executar o projeto, rode o comando a baixo na raiz do diretório
+Para executar o projeto, rode o comando a baixo na raiz do diretório.
 
 ```
 java -jar target/peerToPeer-0.0.1-SNAPSHOT.jar <endereco> vizinhos
