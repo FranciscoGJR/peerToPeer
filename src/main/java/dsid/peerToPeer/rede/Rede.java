@@ -1,9 +1,12 @@
 package dsid.peerToPeer.rede;
 
+import static dsid.peerToPeer.utils.Constantes.*;
+
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 import dsid.peerToPeer.No;
@@ -22,12 +25,16 @@ public class Rede {
     private List<No> vizinhos;
 
     private List<Mensagem> caixaDeMensagens;
+    
+    private volatile boolean running = true;
 
 
     public Rede(String enderecoIP, Integer porta, List<No> vizinhos) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.vizinhos = vizinhos;
+        this.iniciarConexao(porta);
+        this.threadEscuta();
     }
     
     
@@ -38,10 +45,20 @@ public class Rede {
         this.caixaDeMensagens = null;
 	}
 
-
+    
+    public void iniciarConexao(Integer porta) {
+        try {
+            serverSocket = new ServerSocket(porta);
+            System.out.println(SERVIDOR_INICIADO + porta);
+        } catch (IOException e) {
+            System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     
     public void listarVizinhos() {
-    	System.out.printf("Ha %d vizinhos na tabela\n", this.vizinhos.size());
+    	System.out.println(QUANTIDADE_VIZINHOS + this.vizinhos.size());
         
         int iterador = 0;
         for (No vizinho : this.vizinhos) {
@@ -49,32 +66,62 @@ public class Rede {
             iterador++;
         }
     }
+    
+    
+	public void enviarMensagem(Mensagem mensagem) {
+        try (Socket socket = new Socket(mensagem.getDestino().getRede().getEnderecoIP(), 
+        								mensagem.getDestino().getRede().getPorta())) {
+        	
+            OutputStream output = socket.getOutputStream();
+            PrintWriter writer = new PrintWriter(output, true);
 
-
-    public void iniciarConexao() {
-        try {
-            serverSocket = new ServerSocket(porta);
-            System.out.println("Servidor iniciado na porta " + porta);
+            writer.println(mensagem.getTexto());
         } catch (IOException e) {
-            System.err.println("Erro ao iniciar o servidor: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
 
-    public void threadEscuta() {
+    private void threadEscuta() {
         new Thread(() -> {
-            while (true) {
+            while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    System.out.println("Nova conexão recebida de: " + novoSocket.getInetAddress().getHostAddress());
                     new ThreadComunicacao(novoSocket).run();
+                    adicinarVizinho(novoSocket);
                 } catch (IOException e) {
-                    System.err.println("Erro ao aceitar conexão: " + e.getMessage());
-                    e.printStackTrace();
+                    if (!running) {
+                        System.out.println(SOCKET_ENCERRADO);
+                    } else {
+                        System.err.println(ERRO_ACEITAR_CONECAO + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
+    }
+
+    
+    private void adicinarVizinho(Socket socket) {
+        String endereco = socket.getInetAddress().getHostAddress();
+        int porta = socket.getPort();
+        No novoNo = new No(endereco, porta);
+        if (this.vizinhos.contains(novoNo)) {
+        	System.out.println(VIZINHO_JA_ADICIONADA + porta + ":" + endereco);
+        	return;
+        }
+        vizinhos.add(novoNo);
+        System.out.println(VIZINHO_ADICIONADO + porta + ":" + endereco);
+	}
+
+
+	public void pararEscuta() {
+        running = false;
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

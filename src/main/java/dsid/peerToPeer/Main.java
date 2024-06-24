@@ -1,7 +1,6 @@
 package dsid.peerToPeer;
 
-import static dsid.peerToPeer.utils.Constantes.UM;
-import static dsid.peerToPeer.utils.Constantes.ZERO;
+import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -47,13 +46,13 @@ public class Main {
         
     	List<No> listaVizinhos = new ArrayList<>();
     	
-    	String nomeArquivo = "vizinhos";
+    	String nomeArquivo = VIZINHOS;
 
         try (BufferedReader br = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
-                No no = new No(partes[0], Integer.parseInt(partes[1]));
+                No no = new No(partes[ZERO], Integer.parseInt(partes[UM]));
                 listaVizinhos.add(no);
             }
         } catch (IOException e) {
