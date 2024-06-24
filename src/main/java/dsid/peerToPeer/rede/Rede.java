@@ -110,11 +110,11 @@ public class Rede {
         int porta = socket.getPort();
         No novoNo = new No(endereco, porta);
         if (this.vizinhos.contains(novoNo)) {
-        	System.out.println(VIZINHO_JA_ADICIONADA + porta + ":" + endereco);
+        	System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);
         	return;
         }
         vizinhos.add(novoNo);
-        System.out.println(VIZINHO_ADICIONADO + porta + ":" + endereco);
+        System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
 	}
 
 
