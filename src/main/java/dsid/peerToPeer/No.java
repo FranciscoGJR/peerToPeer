@@ -1,5 +1,6 @@
 package dsid.peerToPeer;
 
+import java.util.HashMap;
 import java.util.List;
 
 import dsid.peerToPeer.model.Dados;
@@ -13,14 +14,14 @@ public class No {
 
 	private Rede rede;
 	
-	public No(String endereco, Integer porta) {
-		this.dados = new Dados();
-		this.rede = new Rede(endereco, porta);
-	}
-	
-	public No(String endereco, Integer porta, List<No> vizinhos) {
-		this.dados = new Dados();
+	public No(String endereco, Integer porta, List<No> vizinhos, HashMap<String, Integer> listaChaveValor) {
+		this.dados = new Dados(listaChaveValor);
 		this.rede = new Rede(endereco, porta, vizinhos);
+	}
+
+	public No(String endereco, int porta) {
+		this.rede = new Rede(endereco, porta);
+		this.dados = new Dados();
 	}
 
 }

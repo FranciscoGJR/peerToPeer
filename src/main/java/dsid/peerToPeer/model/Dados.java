@@ -1,13 +1,20 @@
 package dsid.peerToPeer.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import lombok.Data;
 
 @Data
 public class Dados {
 	
-	private List<ParChaveValor> tabelaParChaveValor = new ArrayList<ParChaveValor>();
+	private HashMap<String, Integer> listaChaveValor;
+	
+	public Dados(HashMap<String, Integer> listaChaveValor) {
+		this.listaChaveValor = listaChaveValor;
+	}
+
+	public Dados() {
+		this.listaChaveValor = new HashMap<>();
+	}
 	
 }

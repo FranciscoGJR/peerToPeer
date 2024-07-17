@@ -91,7 +91,7 @@ public class Rede {
                 try {
                     Socket novoSocket = serverSocket.accept();
                     new ThreadComunicacao(novoSocket).run();
-                    adicinarVizinho(novoSocket);
+//                    adicinarVizinho(novoSocket);
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);
@@ -107,7 +107,7 @@ public class Rede {
     
     private void adicinarVizinho(Socket socket) {
         String endereco = socket.getInetAddress().getHostAddress();
-        int porta = socket.getPort();
+        int porta = socket.getLocalPort();
         No novoNo = new No(endereco, porta);
         if (this.vizinhos.contains(novoNo)) {
         	System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);

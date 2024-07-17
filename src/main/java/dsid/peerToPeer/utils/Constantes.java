@@ -60,5 +60,7 @@ public class Constantes {
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
 	
 	// OUTROS
+	public static final String NULL = "null";
 	public static final String VIZINHOS = "vizinhos";
+	public static final String ESPACO_EM_BRANCO = " ";
 }
