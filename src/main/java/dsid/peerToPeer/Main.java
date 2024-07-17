@@ -19,9 +19,6 @@ public class Main {
     	String argumento1 = args[1];
     	String argumento2 = args[2];
     	
-    	System.out.println(argumento0);
-    	System.out.println(argumento1);
-    	
     	String endereco = getEndereco(argumento0);
     	Integer porta = getPorta(argumento0);
     	String arquivoVizinhos = argumento1;

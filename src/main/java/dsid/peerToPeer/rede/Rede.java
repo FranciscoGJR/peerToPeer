@@ -76,11 +76,12 @@ public class Rede {
 		System.out.println(mensagem.encaminhandoMensagem());
         try (Socket socket = new Socket(mensagem.getDestino().getRede().getEnderecoIP(), 
         								mensagem.getDestino().getRede().getPorta())) {
-        	
+       
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 
             writer.println(mensagem.getTexto());
+    		System.out.println(mensagem.encaminhadoComSucesso());
         } catch (IOException e) {
             e.printStackTrace();
         }

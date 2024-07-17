@@ -37,9 +37,16 @@ public class Mensagem {
     
     public String encaminhandoMensagem() {
     	String enderecoPortaDestino = destino.getRede().getEnderecoIP() + ":" + destino.getRede().getPorta();
-    	String mensagem = enderecoPortaDestino + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
+    	return "Encaminhando mensagem '" + toString() + "' para " + enderecoPortaDestino;
+    }
+    
+    public String encaminhadoComSucesso() {
+    	return "\tEnvio feito com sucesso: '" + this.toString() + "'";
+    }
+    
+    public String toString() {
     	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
-    	return "Encaminhando mensagem '" + mensagem + "' para " + enderecoPortaOrigem;
+    	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
     }
 
 }

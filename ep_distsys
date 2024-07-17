@@ -1,0 +1,5 @@
+endereco_porta=$1
+vizinhos=${2:-"null"}
+lista_chave_valor=${3:-"null"}
+
+java -jar target/peerToPeer-0.0.1-SNAPSHOT.jar $endereco_porta $vizinhos $lista_chave_valor
