@@ -54,10 +54,8 @@ public class Main {
     	if (arquivoVizinhos.equalsIgnoreCase(NULL)) {
     		return listaVizinhos;
     	}
-    	
-    	String nomeArquivo = VIZINHOS;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(nomeArquivo))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(arquivoVizinhos))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
