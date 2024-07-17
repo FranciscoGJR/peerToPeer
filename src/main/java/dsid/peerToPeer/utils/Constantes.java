@@ -2,7 +2,7 @@ package dsid.peerToPeer.utils;
 
 public class Constantes {
 	
-	// MENU
+	// INTERFACE
 	public static final String MENSAGEM_CABECALHO_MENU = "Escolha o comando";
 	public static final String OPCAO_LISTAR_VIZINHOS = "\t[0] Listar Vizinhos";
 	public static final String OPCAO_ENVIAR_HELLO = "\t[1] Enviar HELLO";
@@ -33,6 +33,10 @@ public class Constantes {
 	public static final int ALTERAR_TTL_PADRAO = 6;
 	public static final int SAIR = 9;
 	public static final String OPCAO_INVALIDA = "Opção inválida!";
+	
+	public static final String DIGITAR_CHAVE_DE_BUSCA = "Digite a chave a ser buscada: ";
+	public static final String CHAVE = "chave: ";
+	public static final String VALOR = "valor: ";	
 	
 	
 	// TEMPO

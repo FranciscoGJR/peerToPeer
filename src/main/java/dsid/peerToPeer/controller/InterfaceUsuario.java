@@ -4,6 +4,8 @@ import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.util.Scanner;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import dsid.peerToPeer.No;
 import dsid.peerToPeer.rede.Mensagem;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
@@ -33,6 +35,7 @@ public class InterfaceUsuario {
                 	this.enviarHello();
                     break;
                 case BUSCAR_CHAVE_FLOODING:
+                	this.flooding();
                     break;
                 case BUSCAR_CHAVE_RANDOM_WALK:
                     break;
@@ -52,6 +55,18 @@ public class InterfaceUsuario {
     }
     
     
+	private void flooding() {
+		System.out.println(DIGITAR_CHAVE_DE_BUSCA);
+		String chaveDeBusca = scanner.nextLine();
+		Integer valor = no.buscarLocalmente(chaveDeBusca);
+		if (valor != null) {
+			System.out.println("\t" + CHAVE + chaveDeBusca);
+			System.out.println("\t" + VALOR + valor);
+			return;
+		}
+	}
+	
+
 	private void enviarHello() {
     	listarVizinhos();
     	int escolha = scanner.nextInt();
