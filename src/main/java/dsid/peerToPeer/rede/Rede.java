@@ -71,6 +71,9 @@ public class Rede {
     
     
 	public void enviarMensagem(Mensagem mensagem) {
+		mensagem.setNumeroDeSequencia(this.getCaixaDeMensagens().quantidadeRecebidas());
+        this.caixaDeMensagens.novaEnviada(mensagem);
+		System.out.println(mensagem.encaminhandoMensagem());
         try (Socket socket = new Socket(mensagem.getDestino().getRede().getEnderecoIP(), 
         								mensagem.getDestino().getRede().getPorta())) {
         	
@@ -78,7 +81,6 @@ public class Rede {
             PrintWriter writer = new PrintWriter(output, true);
 
             writer.println(mensagem.getTexto());
-            this.caixaDeMensagens.novaEnviada(mensagem);
         } catch (IOException e) {
             e.printStackTrace();
         }

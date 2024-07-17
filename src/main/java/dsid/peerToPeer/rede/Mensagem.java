@@ -1,12 +1,12 @@
 package dsid.peerToPeer.rede;
 
+import static dsid.peerToPeer.utils.Constantes.HELLO;
+
 import java.util.List;
 
 import dsid.peerToPeer.No;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 import lombok.Data;
-
-import static dsid.peerToPeer.utils.Constantes.*;
 
 @Data
 public class Mensagem {
@@ -32,6 +32,14 @@ public class Mensagem {
     	this.destino = destino;
     	this.ttl = ttl;
     	this.tipo = tipoMensagem;
+    	this.numeroDeSequencia = 1;
+    }
+    
+    public String encaminhandoMensagem() {
+    	String enderecoPortaDestino = destino.getRede().getEnderecoIP() + ":" + destino.getRede().getPorta();
+    	String mensagem = enderecoPortaDestino + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
+    	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
+    	return "Encaminhando mensagem '" + mensagem + "' para " + enderecoPortaOrigem;
     }
 
 }

@@ -28,12 +28,12 @@ public class CaixaMensagens {
 	}
 	
 	
-	private int quantidadeRecebidas() {
+	public int quantidadeRecebidas() {
 		return recebidas.size();
 	}
 	
 	
-	private int quantidadeEnviadas() {
+	public int quantidadeEnviadas() {
 		return enviadas.size();
 	}
 }
