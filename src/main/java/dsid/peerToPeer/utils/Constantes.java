@@ -45,7 +45,8 @@ public class Constantes {
 	// VALORES INTEIROS (int)
 	public static final int ZERO = 0;
 	public static final int UM = 1;
-	public static final int Dois = 2;	
+	public static final int DOIS = 2;	
+	public static final int MIL = 1000;
 	
 	// REDE
 	public static final String SOCKET_ENCERRADO = "Socket encerrado.";
@@ -58,6 +59,7 @@ public class Constantes {
 	
 	// THREAD_COMUNICACAO
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
+	public static final String MENSAGEM_RECEBIDA = "Mensagem recebida: ";
 	
 	// OUTROS
 	public static final String NULL = "null";

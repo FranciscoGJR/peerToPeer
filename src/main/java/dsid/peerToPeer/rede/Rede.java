@@ -1,6 +1,7 @@
 package dsid.peerToPeer.rede;
 
 import static dsid.peerToPeer.utils.Constantes.*;
+import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -80,8 +81,10 @@ public class Rede {
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 
-            writer.println(mensagem.getTexto());
+            writer.println(mensagem.toString());
+            
     		System.out.println(mensagem.encaminhadoComSucesso());
+    		esperaEmSegundos(DOIS);
         } catch (IOException e) {
             e.printStackTrace();
         }

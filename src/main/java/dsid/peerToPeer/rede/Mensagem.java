@@ -1,6 +1,6 @@
 package dsid.peerToPeer.rede;
 
-import static dsid.peerToPeer.utils.Constantes.HELLO;
+import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ public class Mensagem {
 
     private List<String> argumentos;
     
+    
     // Mensagem HELOO
     public Mensagem(No origem, No destino, int ttl, TipoMensagemEnum tipoMensagem) {
     	this.texto = HELLO;
@@ -35,14 +36,17 @@ public class Mensagem {
     	this.numeroDeSequencia = 1;
     }
     
+    
     public String encaminhandoMensagem() {
     	String enderecoPortaDestino = destino.getRede().getEnderecoIP() + ":" + destino.getRede().getPorta();
     	return "Encaminhando mensagem '" + toString() + "' para " + enderecoPortaDestino;
     }
     
+    
     public String encaminhadoComSucesso() {
     	return "\tEnvio feito com sucesso: '" + this.toString() + "'";
     }
+    
     
     public String toString() {
     	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
