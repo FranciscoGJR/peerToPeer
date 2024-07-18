@@ -1,4 +1,4 @@
-package dsid.peerToPeer.rede;
+package dsid.peerToPeer.model.rede;
 
 import static dsid.peerToPeer.utils.Constantes.*;
 
@@ -12,20 +12,13 @@ import lombok.Data;
 public class Mensagem {
 	
 	private Integer numeroDeSequencia;
-
 	private String texto;
-	
 	private No origem;
-	
 	private No destino;
-
     private int ttl;
-
 	private TipoMensagemEnum tipo;
-
     private List<String> argumentos;
-    
-    
+
     // Mensagem HELOO
     public Mensagem(No origem, No destino, int ttl, TipoMensagemEnum tipoMensagem) {
     	this.texto = HELLO;
@@ -35,22 +28,10 @@ public class Mensagem {
     	this.tipo = tipoMensagem;
     	this.numeroDeSequencia = 1;
     }
-    
-    
-    public String encaminhandoMensagem() {
-    	String enderecoPortaDestino = destino.getRede().getEnderecoIP() + ":" + destino.getRede().getPorta();
-    	return "Encaminhando mensagem '" + toString() + "' para " + enderecoPortaDestino;
-    }
-    
-    
-    public String encaminhadoComSucesso() {
-    	return "\tEnvio feito com sucesso: '" + this.toString() + "'";
-    }
-    
-    
+
+    @Override
     public String toString() {
-    	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
+    	String enderecoPortaOrigem = origem.getRedeService().getEnderecoIP() + ":" + origem.getRedeService().getPorta();
     	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
     }
-
 }

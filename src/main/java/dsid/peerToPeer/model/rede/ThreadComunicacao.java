@@ -1,4 +1,4 @@
-package dsid.peerToPeer.rede;
+package dsid.peerToPeer.model.rede;
 
 import static dsid.peerToPeer.utils.Constantes.*;
 

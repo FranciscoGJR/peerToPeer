@@ -5,23 +5,25 @@ import java.util.List;
 import java.util.Map;
 
 import dsid.peerToPeer.model.Dados;
-import dsid.peerToPeer.rede.Rede;
+import dsid.peerToPeer.model.rede.Rede;
+import dsid.peerToPeer.service.RedeService;
 import lombok.Data;
 
 @Data
 public class No {
 	
 	private Dados dados;
+	private RedeService redeService;  // Alteração para RedeService
 
-	private Rede rede;
-	
 	public No(String endereco, Integer porta, List<No> vizinhos, HashMap<String, Integer> listaChaveValor) {
 		this.dados = new Dados(listaChaveValor);
-		this.rede = new Rede(endereco, porta, vizinhos);
+		Rede rede = new Rede(endereco, porta, vizinhos);
+		this.redeService = new RedeService(rede);
 	}
 
 	public No(String endereco, int porta) {
-		this.rede = new Rede(endereco, porta);
+		Rede rede = new Rede(endereco, porta);
+		this.redeService = new RedeService(rede); 
 		this.dados = new Dados();
 	}
 
