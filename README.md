@@ -25,10 +25,10 @@ Em seguida, para complilar o projeto, executar comando `mvn package`.
 Para executar o projeto, rode o comando a baixo na raiz do diretório.
 
 ```
-java -jar target/peerToPeer-0.0.1-SNAPSHOT.jar <endereco> vizinhos
+./ep_distsys <endereco_ip>:<porta> <arquivo_com_vizinhos> <lista_chave_valores>
 ```
 
-O arquivo `vizinhos` apresenta a lista de vizinhos que o nó possui.
+Os parâmetros `arquivo_com_vizinhos` e `lista_chave_valores` são opicionais.
 
 # Decisões de projeto
 
