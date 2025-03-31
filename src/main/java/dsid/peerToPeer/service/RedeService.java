@@ -24,34 +24,35 @@ import dsid.peerToPeer.model.rede.ThreadComunicacao;
 
 public class RedeService {
 
-    private Rede rede;
     private CaixaMensagensService caixaMensagensService;
     private MensagemService mensagemService;
 
     public RedeService(Rede rede) {
-        this.rede = rede;
         this.caixaMensagensService = new CaixaMensagensService(rede.getCaixaDeMensagens());
         this.mensagemService = new MensagemService();
-        iniciarConexao(rede.getPorta());
-        threadEscuta();
+        threadEscuta(rede);
+    }
+    
+    public RedeService() {
+        this.mensagemService = new MensagemService();
     }
 
-    public void iniciarConexao(Integer porta) {
+    public void iniciarConexao(No no) {
         try {
-            rede.setServerSocket(new ServerSocket(porta));
-            System.out.println(SERVIDOR_INICIADO + porta);
+            no.getRede().setServerSocket(new ServerSocket(no.getRede().getPorta()));
+            System.out.println(SERVIDOR_INICIADO + no.getRede().getPorta());
         } catch (IOException e) {
             System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void listarVizinhos() {
+    public void listarVizinhos(Rede rede) {
         System.out.println(QUANTIDADE_VIZINHOS + rede.getVizinhos().size());
 
         int iterador = 0;
         for (No vizinho : rede.getVizinhos()) {
-            System.out.printf("\t[%d] %s %s\n", iterador, vizinho.getRedeService().getEnderecoIP(), vizinho.getRedeService().getPorta());
+            System.out.printf("\t[%d] %s %s\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta());
             iterador++;
         }
     }
@@ -61,8 +62,8 @@ public class RedeService {
         mensagem.setNumeroDeSequencia(caixaMensagensService.quantidadeRecebidas());
         caixaMensagensService.novaEnviada(mensagem);
         System.out.println(mensagemService.encaminhandoMensagem(mensagem));
-        try (Socket socket = new Socket(mensagem.getDestino().getRedeService().getEnderecoIP(),
-                                        mensagem.getDestino().getRedeService().getPorta())) {
+        try (Socket socket = new Socket(mensagem.getDestino().getRede().getEnderecoIP(),
+                                        mensagem.getDestino().getRede().getPorta())) {
 
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
@@ -76,7 +77,7 @@ public class RedeService {
         }
     }
 
-    private void threadEscuta() {
+    private void threadEscuta(Rede rede) {
         new Thread(() -> {
             while (rede.isRunning()) {
                 try {
@@ -95,22 +96,22 @@ public class RedeService {
     }
     
     
-    public String getEnderecoIP() {
+    public String getEnderecoIP(Rede rede) {
     	return rede.getEnderecoIP();
     }
     
     
-    public Integer getPorta() {
+    public Integer getPorta(Rede rede) {
     	return rede.getPorta();
     }
     
     
-    public List<No> getVizinhos() {
+    public List<No> getVizinhos(Rede rede) {
     	return rede.getVizinhos();
     }
     
 
-    private void adicinarVizinho(Socket socket) {
+    private void adicinarVizinho(Socket socket, Rede rede) {
         String endereco = socket.getInetAddress().getHostAddress();
         int porta = socket.getLocalPort();
         No novoNo = new No(endereco, porta);
@@ -122,7 +123,8 @@ public class RedeService {
         System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
     }
 
-    public void pararEscuta() {
+
+    public void pararEscuta(Rede rede) {
         rede.setRunning(false);
         try {
             rede.getServerSocket().close();

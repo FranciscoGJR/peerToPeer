@@ -31,7 +31,7 @@ public class Mensagem {
 
     @Override
     public String toString() {
-    	String enderecoPortaOrigem = origem.getRedeService().getEnderecoIP() + ":" + origem.getRedeService().getPorta();
+    	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
     	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
     }
 }

@@ -5,7 +5,7 @@ import dsid.peerToPeer.model.rede.Mensagem;
 public class MensagemService {
 
     public String encaminhandoMensagem(Mensagem mensagem) {
-        String enderecoPortaDestino = mensagem.getDestino().getRedeService().getEnderecoIP() + ":" + mensagem.getDestino().getRedeService().getPorta();
+        String enderecoPortaDestino = mensagem.getDestino().getRede().getEnderecoIP() + ":" + mensagem.getDestino().getRede().getPorta();
         return "Encaminhando mensagem '" + mensagem.toString() + "' para " + enderecoPortaDestino;
     }
 

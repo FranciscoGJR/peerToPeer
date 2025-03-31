@@ -9,16 +9,15 @@ import lombok.Data;
 @Data
 public class No {
 	
-	private RedeService redeService;
+	private Rede rede;
 
 	public No(String endereco, Integer porta, List<No> vizinhos) {
-		Rede rede = new Rede(endereco, porta, vizinhos);
-		this.redeService = new RedeService(rede);
+		this.rede = new Rede(endereco, porta, vizinhos);
 	}
 
+    // Construtor para classe No de um vizinho
 	public No(String endereco, int porta) {
-		Rede rede = new Rede(endereco, porta);
-		this.redeService = new RedeService(rede); 
+		this.rede = new Rede(endereco, porta);
 	}
 
 }

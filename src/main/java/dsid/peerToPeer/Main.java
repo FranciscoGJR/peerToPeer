@@ -1,22 +1,26 @@
 package dsid.peerToPeer;
 
-import static dsid.peerToPeer.utils.Constantes.*;
+import static dsid.peerToPeer.utils.Constantes.NULL;
+import static dsid.peerToPeer.utils.Constantes.UM;
+import static dsid.peerToPeer.utils.Constantes.ZERO;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import dsid.peerToPeer.controller.InterfaceUsuario;
+import dsid.peerToPeer.service.RedeService;
 
 public class Main {
+
+	private RedeService redeService = new RedeService();
 	
     public static void main(String[] args) {
     	
-    	String argumento0 = args[0];
-    	String argumento1 = args[1];
+    	String argumento0 = (args[0] != null) ? args[0] : null;
+    	String argumento1 = (args[1] != null) ? args[1] : null;
     	
     	String endereco = getEndereco(argumento0);
     	Integer porta = getPorta(argumento0);
@@ -25,7 +29,7 @@ public class Main {
     	List<No> vizinhos = decoderListaVizinhos(arquivoVizinhos);
     	
     	No no = new No(endereco, porta, vizinhos);
-    	
+
     	InterfaceUsuario interfaceUsuario = new InterfaceUsuario(no);
     	interfaceUsuario.iniciar(no);
     }	
