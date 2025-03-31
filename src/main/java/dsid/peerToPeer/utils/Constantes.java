@@ -20,6 +20,7 @@ public class Constantes {
             .append(OPCAO_EXIBIR_ESTATISTICAS).append("\n")
             .append(OPCAO_ALTERAR_CHUNK).append("\n")
             .append(OPCAO_SAIR).append("\n")
+            .append("> ")
             .toString();
 	
 	public static final int LISTAR_PEERS = 1;

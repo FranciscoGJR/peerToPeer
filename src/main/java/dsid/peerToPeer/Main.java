@@ -11,12 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dsid.peerToPeer.controller.InterfaceUsuario;
-import dsid.peerToPeer.service.RedeService;
 
 public class Main {
 
-	private RedeService redeService = new RedeService();
-	
     public static void main(String[] args) {
     	
     	String argumento0 = (args[0] != null) ? args[0] : null;
@@ -58,6 +55,7 @@ public class Main {
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
                 No no = new No(partes[ZERO], Integer.parseInt(partes[UM]));
+                System.out.println("Adicionando novo peer " + no.getRede().getEnderecoIP() + ":" + no.getRede().getPorta() + " status " + no.getRede().getStatus());
                 listaVizinhos.add(no);
             }
         } catch (IOException e) {

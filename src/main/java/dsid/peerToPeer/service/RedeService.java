@@ -40,7 +40,6 @@ public class RedeService {
     public void iniciarConexao(No no) {
         try {
             no.getRede().setServerSocket(new ServerSocket(no.getRede().getPorta()));
-            System.out.println(SERVIDOR_INICIADO + no.getRede().getPorta());
         } catch (IOException e) {
             System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
             e.printStackTrace();
