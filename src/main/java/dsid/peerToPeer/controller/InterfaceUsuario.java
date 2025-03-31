@@ -1,25 +1,10 @@
 package dsid.peerToPeer.controller;
 
-import static dsid.peerToPeer.utils.Constantes.ALTERAR_TTL_PADRAO;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_DEPTH_SEARCH;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_FLOODING;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_CHAVE_RANDOM_WALK;
-import static dsid.peerToPeer.utils.Constantes.CHAVE;
-import static dsid.peerToPeer.utils.Constantes.DIGITAR_CHAVE_DE_BUSCA;
-import static dsid.peerToPeer.utils.Constantes.ENVIAR_HELLO;
-import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_VIZINHOS;
-import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
-import static dsid.peerToPeer.utils.Constantes.SAIR;
-import static dsid.peerToPeer.utils.Constantes.UM;
-import static dsid.peerToPeer.utils.Constantes.VALOR;
+import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.util.Scanner;
 
 import dsid.peerToPeer.No;
-import dsid.peerToPeer.model.rede.Mensagem;
-import dsid.peerToPeer.utils.TipoMensagemEnum;
 
 public class InterfaceUsuario {
 	
@@ -39,22 +24,18 @@ public class InterfaceUsuario {
             opcao = scanner.nextInt();
             scanner.nextLine();
              switch (opcao) {
-                case LISTAR_VIZINHOS:
-                	this.listarVizinhos();
+                case LISTAR_PEERS:
+                	listarVizinhos();
                     break;
-                case ENVIAR_HELLO:
-                	this.enviarHello();
+                case OBTER_PEERS:
                     break;
-                case BUSCAR_CHAVE_FLOODING:
-                	this.flooding();
+                case LISTAR_ARQUIVOS_LOCAIS:
                     break;
-                case BUSCAR_CHAVE_RANDOM_WALK:
-                    break;
-                case BUSCAR_CHAVE_DEPTH_SEARCH:
+                case BUSCAR_ARQUIVOS:
                     break;
                 case EXIBIR_ESTATISTICAS:
                     break;
-                case ALTERAR_TTL_PADRAO:
+                case ALTERAR_CHUNK:
                     break;
                 case SAIR:
                 	encerrarNo();
@@ -65,28 +46,7 @@ public class InterfaceUsuario {
         }
     }
     
-    
-	private void flooding() {
-		System.out.println(DIGITAR_CHAVE_DE_BUSCA);
-		String chaveDeBusca = scanner.nextLine();
-		Integer valor = no.buscarLocalmente(chaveDeBusca);
-		if (valor != null) {
-			System.out.println("\t" + CHAVE + chaveDeBusca);
-			System.out.println("\t" + VALOR + valor);
-			return;
-		}
-	}
-	
 
-	private void enviarHello() {
-    	listarVizinhos();
-    	int escolha = scanner.nextInt();
-    	No vizinho = no.getRedeService().getVizinhos().get(escolha);
-    	Mensagem mensagem = new Mensagem(no, vizinho, UM, TipoMensagemEnum.HELLO);
-    	no.getRedeService().enviarMensagem(mensagem);
-	}
-
-	
 	private void listarVizinhos() {
     	no.getRedeService().listarVizinhos();
 	}
