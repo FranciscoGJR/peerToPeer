@@ -65,7 +65,7 @@ public class Constantes {
 	
 	// THREAD_COMUNICACAO
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
-	public static final String MENSAGEM_RECEBIDA = "Mensagem recebida: ";
+	public static final String MENSAGEM_RECEBIDA = "\nMensagem recebida: ";
 	
 	// OUTROS
 	public static final String NULL = "null";

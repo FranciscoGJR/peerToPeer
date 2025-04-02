@@ -33,7 +33,6 @@ public class InterfaceUsuario {
 	}
 	
     public void iniciar(No no) {
-		this.redeService.iniciarConexao(no);
         int opcao;
 
         while(true) {
