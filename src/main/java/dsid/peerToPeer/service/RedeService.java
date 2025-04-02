@@ -12,9 +12,10 @@ import java.net.Socket;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
-import dsid.peerToPeer.model.rede.CaixaMensagens;
+import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
+import dsid.peerToPeer.utils.Status;
 
 public class RedeService {
 
@@ -44,7 +45,8 @@ public class RedeService {
     }
     
 
-    public void enviarMensagem(Mensagem mensagem, CaixaMensagens caixaMensagens) {
+    public void enviarMensagem(No noRemetente, No noDestinatario, Mensagem mensagem) {
+    	CaixaDeMensagens caixaMensagens = noRemetente.getRede().getCaixaDeMensagens();
         mensagem.setNumeroDeSequencia(caixaMensagens.getEnviadas().size());
         this.caixaMensagensService.novaMensagemEnviada(mensagem, caixaMensagens);
         System.out.println(mensagemService.encaminhandoMensagem(mensagem));
@@ -57,6 +59,7 @@ public class RedeService {
             writer.println(mensagem.toString());
 
             System.out.println(mensagemService.encaminhadoComSucesso(mensagem));
+            noDestinatario.getRede().setStatus(Status.ONLINE);
             esperaEmSegundos(DOIS);
         } catch (IOException e) {
             e.printStackTrace();

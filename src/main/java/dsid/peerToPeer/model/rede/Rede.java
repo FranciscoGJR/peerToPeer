@@ -23,7 +23,7 @@ public class Rede {
 
     private List<No> vizinhos;
 
-    private CaixaMensagens caixaDeMensagens;
+    private CaixaDeMensagens caixaDeMensagens;
 
     private Status status = Status.ONLINE;
 
@@ -34,7 +34,7 @@ public class Rede {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.vizinhos = vizinhos;
-        this.caixaDeMensagens = new CaixaMensagens();
+        this.caixaDeMensagens = new CaixaDeMensagens();
         this.status = Status.ONLINE;
         this.iniciarConexao();
         this.threadEscuta();

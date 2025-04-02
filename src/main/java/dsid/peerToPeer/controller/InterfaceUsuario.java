@@ -73,9 +73,9 @@ public class InterfaceUsuario {
     
 
     private void enviarHello(int numeroVizinho) {
-    	No noVizinho = no.getRede().getVizinhos().get(numeroVizinho - 1);
-    	Mensagem mensagem = new Mensagem(this.no, noVizinho, UM, TipoMensagemEnum.HELLO);
-    	this.redeService.enviarMensagem(mensagem, no.getRede().getCaixaDeMensagens());
+    	No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
+    	Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.HELLO);
+    	this.redeService.enviarMensagem(this.no, noDestinatario, mensagem);
     }
 
 
