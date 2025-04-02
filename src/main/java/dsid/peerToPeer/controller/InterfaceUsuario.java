@@ -37,6 +37,7 @@ public class InterfaceUsuario {
 
         while(true) {
             exibirMenu();
+            
             opcao = scanner.nextInt();
             scanner.nextLine();
              switch (opcao) {
@@ -72,10 +73,9 @@ public class InterfaceUsuario {
     
 
     private void enviarHello(int numeroVizinho) {
-
     	No noVizinho = no.getRede().getVizinhos().get(numeroVizinho - 1);
     	Mensagem mensagem = new Mensagem(this.no, noVizinho, UM, TipoMensagemEnum.HELLO);
-    	redeService.enviarMensagem(mensagem, no.getRede().getCaixaDeMensagens());
+    	this.redeService.enviarMensagem(mensagem, no.getRede().getCaixaDeMensagens());
     }
 
 
@@ -87,6 +87,7 @@ public class InterfaceUsuario {
 	
 	
     private void encerrarNo() {
+    	this.redeService.pararEscuta(no.getRede());
 	}
 
 
