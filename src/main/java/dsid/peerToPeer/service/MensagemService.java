@@ -6,7 +6,7 @@ public class MensagemService {
 
     public String encaminhandoMensagem(Mensagem mensagem) {
         String enderecoPortaDestino = mensagem.getDestino().getRede().getEnderecoIP() + ":" + mensagem.getDestino().getRede().getPorta();
-        return "Encaminhando mensagem '" + mensagem.toString() + "' para " + enderecoPortaDestino;
+        return "\nEncaminhando mensagem '" + mensagem.toString() + "' para " + enderecoPortaDestino;
     }
 
     public String encaminhadoComSucesso(Mensagem mensagem) {

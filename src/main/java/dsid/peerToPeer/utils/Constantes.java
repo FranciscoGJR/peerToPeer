@@ -3,7 +3,8 @@ package dsid.peerToPeer.utils;
 public class Constantes {
 	
 	// INTERFACE
-	public static final String MENSAGEM_CABECALHO_MENU = "Escolha o comando";
+	public static final String OPCAO_VOLTAR_MENU = "\t[0] voltar para o menu anterior";
+	public static final String MENSAGEM_CABECALHO_MENU = "\nEscolha o comando";
 	public static final String OPCAO_LISTAR_PEERS = "\t[1] Listar peers";
 	public static final String OPCAO_OBTER_PEERS = "\t[2] Obter peers";
 	public static final String OPCAO_LISTAR_ARQUIVOS_LOCAIS = "\t[3] Listar arquivos locais";
@@ -11,6 +12,8 @@ public class Constantes {
 	public static final String OPCAO_EXIBIR_ESTATISTICAS = "\t[5] Exibir Estatísticas";
 	public static final String OPCAO_ALTERAR_CHUNK = "\t[6] Alterar tamanho de chunk";
 	public static final String OPCAO_SAIR = "\t[9] Sair";
+
+	
     public static final String MENU_COMPLETO = new StringBuilder()
             .append(MENSAGEM_CABECALHO_MENU).append("\n")
             .append(OPCAO_LISTAR_PEERS).append("\n")
@@ -51,6 +54,7 @@ public class Constantes {
 	public static final int MIL = 1000;
 	
 	// REDE
+	public static final String LISTA_DE_PEERS = "\nLista de peers:";
 	public static final String SOCKET_ENCERRADO = "Socket encerrado.";
 	public static final String ERRO_ACEITAR_CONECAO = "Erro ao aceitar conexão:";
 	public static final String SERVIDOR_INICIADO = "Servidor iniciado na porta ";

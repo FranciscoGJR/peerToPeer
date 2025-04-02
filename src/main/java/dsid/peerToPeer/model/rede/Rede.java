@@ -1,8 +1,11 @@
 package dsid.peerToPeer.model.rede;
 
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
-import dsid.peerToPeer.No;
+
+import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.utils.Status;
 import lombok.Data;
 
@@ -32,5 +35,15 @@ public class Rede {
         this.caixaDeMensagens = null;
         this.vizinhos = null;
         this.status = Status.OFFILINE;
+    }
+    
+    
+	public void pararEscuta() {
+        running = false;
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

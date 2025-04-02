@@ -5,15 +5,20 @@ import static dsid.peerToPeer.utils.Constantes.BUSCAR_ARQUIVOS;
 import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
 import static dsid.peerToPeer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
 import static dsid.peerToPeer.utils.Constantes.LISTAR_PEERS;
+import static dsid.peerToPeer.utils.Constantes.LISTA_DE_PEERS;
 import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
 import static dsid.peerToPeer.utils.Constantes.OBTER_PEERS;
 import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
+import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
 import static dsid.peerToPeer.utils.Constantes.SAIR;
+import static dsid.peerToPeer.utils.Constantes.UM;
 
 import java.util.Scanner;
 
-import dsid.peerToPeer.No;
+import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
+import dsid.peerToPeer.utils.TipoMensagemEnum;
 
 public class InterfaceUsuario {
 	
@@ -38,6 +43,14 @@ public class InterfaceUsuario {
              switch (opcao) {
                 case LISTAR_PEERS:
                 	listarVizinhos();
+                	System.out.print("> ");
+                	opcao = scanner.nextInt();
+                	
+                	if (opcao == 0) {
+                		continue;
+                	}
+                	
+                	enviarHello(opcao);
                     break;
                 case OBTER_PEERS:
                     break;
@@ -59,7 +72,17 @@ public class InterfaceUsuario {
     }
     
 
+    private void enviarHello(int numeroVizinho) {
+
+    	No noVizinho = no.getRede().getVizinhos().get(numeroVizinho - 1);
+    	Mensagem mensagem = new Mensagem(this.no, noVizinho, UM, TipoMensagemEnum.HELLO);
+    	redeService.enviarMensagem(mensagem, no.getRede().getCaixaDeMensagens());
+    }
+
+
 	private void listarVizinhos() {
+        System.out.println(LISTA_DE_PEERS);
+        System.out.println(OPCAO_VOLTAR_MENU);
 		this.redeService.listarVizinhos(no.getRede());
 	}
 	

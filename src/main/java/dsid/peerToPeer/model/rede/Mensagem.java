@@ -4,7 +4,7 @@ import static dsid.peerToPeer.utils.Constantes.*;
 
 import java.util.List;
 
-import dsid.peerToPeer.No;
+import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 import lombok.Data;
 

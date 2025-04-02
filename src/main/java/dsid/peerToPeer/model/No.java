@@ -1,4 +1,4 @@
-package dsid.peerToPeer;
+package dsid.peerToPeer.model;
 
 import java.util.List;
 

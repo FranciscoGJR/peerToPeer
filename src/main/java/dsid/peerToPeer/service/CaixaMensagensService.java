@@ -5,25 +5,22 @@ import dsid.peerToPeer.model.rede.Mensagem;
 
 public class CaixaMensagensService {
 
-    private CaixaMensagens caixaMensagens;
-
-    public CaixaMensagensService(CaixaMensagens caixaMensagens) {
-        this.caixaMensagens = caixaMensagens;
+    public CaixaMensagensService() {
     }
 
-    public void novaRecebida(Mensagem mensagem) {
-        caixaMensagens.getRecebidas().put(quantidadeRecebidas(), mensagem);
+    public void novaMensagemRecebida(Mensagem mensagem, CaixaMensagens caixaMensagens) {
+        caixaMensagens.getRecebidas().put(quantidadeMensagensRecebidas(caixaMensagens), mensagem);
     }
 
-    public void novaEnviada(Mensagem mensagem) {
-        caixaMensagens.getEnviadas().put(quantidadeEnviadas(), mensagem);
+    public void novaMensagemEnviada(Mensagem mensagem, CaixaMensagens caixaMensagens) {
+        caixaMensagens.getEnviadas().put(quantidadeMensagemEnviadas(caixaMensagens), mensagem);
     }
 
-    public int quantidadeRecebidas() {
+    public int quantidadeMensagensRecebidas(CaixaMensagens caixaMensagens) {
         return caixaMensagens.getRecebidas().size();
     }
 
-    public int quantidadeEnviadas() {
+    public int quantidadeMensagemEnviadas(CaixaMensagens caixaMensagens) {
         return caixaMensagens.getEnviadas().size();
     }
 }
