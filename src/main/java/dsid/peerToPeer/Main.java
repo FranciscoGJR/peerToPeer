@@ -3,6 +3,8 @@ package dsid.peerToPeer;
 import static dsid.peerToPeer.utils.Constantes.NULL;
 import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.Constantes.ZERO;
+import static dsid.peerToPeer.utils.MensagemUtil.getEndereco;
+import static dsid.peerToPeer.utils.MensagemUtil.getPorta;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,7 +14,6 @@ import java.util.List;
 
 import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -33,18 +34,6 @@ public class Main {
     }	
 
 
-	private static String getEndereco(String argumentoEnderecoPorta) {
-    	String[] partes = argumentoEnderecoPorta.split(":");
-    	return partes[ZERO];
-    }
-    
-    
-    private static Integer getPorta(String argumentoEnderecoPorta) {
-    	String[] partes = argumentoEnderecoPorta.split(":");
-    	return Integer.parseInt(partes[UM]);
-    }
-    
-    
     private static List<No> decoderListaVizinhos(String arquivoVizinhos) {
     	List<No> listaVizinhos = new ArrayList<>();
     	if (arquivoVizinhos.equalsIgnoreCase(NULL)) {
