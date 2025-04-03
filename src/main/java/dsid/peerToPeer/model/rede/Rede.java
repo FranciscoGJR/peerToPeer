@@ -66,7 +66,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket).run();
+                    new ThreadComunicacao(novoSocket, vizinhos, caixaDeMensagens).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);

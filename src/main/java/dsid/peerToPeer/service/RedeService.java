@@ -77,15 +77,14 @@ public class RedeService {
     }
     
 
-    private void adicinarVizinho(Socket socket, Rede rede) {
-        String endereco = socket.getInetAddress().getHostAddress();
-        int porta = socket.getLocalPort();
-        No novoNo = new No(endereco, porta);
-        if (rede.getVizinhos().contains(novoNo)) {
+    public static void adicinarVizinho(No novoNo, List<No> vizinhos) {
+        String endereco = novoNo.getRede().getEnderecoIP();
+        int porta = novoNo.getRede().getPorta();
+        if (vizinhos.contains(novoNo)) {
             System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);
             return;
         }
-        rede.getVizinhos().add(novoNo);
+        vizinhos.add(novoNo);
         System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
     }
 
