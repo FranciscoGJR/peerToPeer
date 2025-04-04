@@ -12,14 +12,16 @@ import java.net.Socket;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.Status;
 import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import lombok.Data;
-import static dsid.peerToPeer.service.RedeService.adicinarVizinho;
 
 @Data
 public class ThreadComunicacao implements Runnable{
-	
+
+	RedeService redeService = new RedeService();
+
 	private Socket socket;
 
 	private List<No> vizinhos;
@@ -42,7 +44,7 @@ public class ThreadComunicacao implements Runnable{
             noOrigem.getRede().setStatus(Status.ONLINE);;
             
             if (!vizinhoConhecido(noOrigem.getRede())) {
-            	adicinarVizinho(noOrigem, vizinhos);
+            	redeService.adicinarVizinho(noOrigem, vizinhos);
             }
             
             fecharConexao();

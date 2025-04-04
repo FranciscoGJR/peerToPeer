@@ -47,7 +47,7 @@ public class Rede {
         this.porta = porta;
         this.caixaDeMensagens = null;
         this.vizinhos = null;
-        this.status = Status.OFFILINE;
+        this.status = Status.OFFLINE;
     }
     
 

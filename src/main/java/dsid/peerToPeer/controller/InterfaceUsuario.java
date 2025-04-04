@@ -18,6 +18,7 @@ import java.util.Scanner;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
+import dsid.peerToPeer.utils.Status;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 
 public class InterfaceUsuario {
@@ -74,8 +75,9 @@ public class InterfaceUsuario {
 
     private void enviarHello(int numeroVizinho) {
     	No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
+    	noDestinatario.getRede().setStatus(Status.ONLINE);
     	Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.HELLO);
-    	this.redeService.enviarMensagem(this.no, noDestinatario, mensagem);
+    	this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     }
 
 

@@ -16,7 +16,7 @@ import java.net.Socket;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
-import dsid.peerToPeer.model.rede.CaixaMensagens;
+import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
 import dsid.peerToPeer.model.rede.ThreadComunicacao;
@@ -60,19 +60,19 @@ public class RedeService {
     }
 
 
-    public void enviarMensagem(Mensagem mensagem, CaixaMensagens caixaMensagens) {
-        mensagem.setNumeroDeSequencia(caixaMensagens.getEnviadas().size());
-        this.caixaMensagensService.novaMensagemEnviada(mensagem, caixaMensagens);
-        System.out.println(mensagemService.encaminhandoMensagem(mensagem));
-        try (Socket socket = new Socket(mensagem.getDestino().getRede().getEnderecoIP(),
-                                        mensagem.getDestino().getRede().getPorta())) {
+    public void enviarMensagem(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
+        mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeRecebidas());
+        this.caixaMensagensService.novaMensagemEnviada(mensagemEnviada, caixaMensagens);
+        System.out.println(mensagemService.encaminhandoMensagem(mensagemEnviada));
+        try (Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
+                                        mensagemEnviada.getDestino().getRede().getPorta())) {
 
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 
-            writer.println(mensagem.toString());
+            writer.println(mensagemEnviada.toString());
 
-            System.out.println(mensagemService.encaminhadoComSucesso(mensagem));
+            System.out.println(mensagemService.encaminhadoComSucesso(mensagemEnviada));
             esperaEmSegundos(DOIS);
         } catch (IOException e) {
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class RedeService {
             while (rede.isRunning()) {
                 try {
                     Socket novoSocket = rede.getServerSocket().accept();
-                    new ThreadComunicacao(novoSocket).run();
+                    new ThreadComunicacao(novoSocket, rede.getVizinhos(), rede.getCaixaDeMensagens()).run();
                 } catch (IOException e) {
                     if (!rede.isRunning()) {
                         System.out.println(SOCKET_ENCERRADO);
@@ -99,15 +99,15 @@ public class RedeService {
     }
     
 
-    private void adicinarVizinho(Socket socket, Rede rede) {
-        String endereco = socket.getInetAddress().getHostAddress();
-        int porta = socket.getLocalPort();
-        No novoNo = new No(endereco, porta);
-        if (rede.getVizinhos().contains(novoNo)) {
+    public void adicinarVizinho(No novoNo, List<No> vizinhos) {
+        String endereco = novoNo.getRede().getEnderecoIP();
+        int porta = novoNo.getRede().getPorta();
+
+        if (vizinhos.contains(novoNo)) {
             System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);
             return;
         }
-        rede.getVizinhos().add(novoNo);
+        vizinhos.add(novoNo);
         System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
     }
 
