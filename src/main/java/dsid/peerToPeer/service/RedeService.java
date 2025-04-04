@@ -1,6 +1,9 @@
 package dsid.peerToPeer.service;
 
 import static dsid.peerToPeer.utils.Constantes.DOIS;
+import static dsid.peerToPeer.utils.Constantes.ERRO_ACEITAR_CONECAO;
+import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
+import static dsid.peerToPeer.utils.Constantes.SOCKET_ENCERRADO;
 import static dsid.peerToPeer.utils.Constantes.VIZINHO_ADICIONADO;
 import static dsid.peerToPeer.utils.Constantes.VIZINHO_JA_ADICIONADA;
 import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
@@ -8,14 +11,15 @@ import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
-import dsid.peerToPeer.model.rede.CaixaDeMensagens;
+import dsid.peerToPeer.model.rede.CaixaMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
-import dsid.peerToPeer.utils.Status;
+import dsid.peerToPeer.model.rede.ThreadComunicacao;
 
 public class RedeService {
 
@@ -27,12 +31,23 @@ public class RedeService {
     public RedeService(Rede rede) {
         this.caixaMensagensService = new CaixaMensagensService();
         this.mensagemService = new MensagemService();
+        threadEscuta(rede);
     }
-    
+
 
     public RedeService() {
         this.mensagemService = new MensagemService();
         this.caixaMensagensService = new CaixaMensagensService();
+    }
+
+
+    public void iniciarConexao(No no) {
+        try {
+            no.getRede().setServerSocket(new ServerSocket(no.getRede().getPorta()));
+        } catch (IOException e) {
+            System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -43,10 +58,9 @@ public class RedeService {
             iterador++;
         }
     }
-    
 
-    public void enviarMensagem(No noRemetente, No noDestinatario, Mensagem mensagem) {
-    	CaixaDeMensagens caixaMensagens = noRemetente.getRede().getCaixaDeMensagens();
+
+    public void enviarMensagem(Mensagem mensagem, CaixaMensagens caixaMensagens) {
         mensagem.setNumeroDeSequencia(caixaMensagens.getEnviadas().size());
         this.caixaMensagensService.novaMensagemEnviada(mensagem, caixaMensagens);
         System.out.println(mensagemService.encaminhandoMensagem(mensagem));
@@ -59,11 +73,42 @@ public class RedeService {
             writer.println(mensagem.toString());
 
             System.out.println(mensagemService.encaminhadoComSucesso(mensagem));
-            noDestinatario.getRede().setStatus(Status.ONLINE);
             esperaEmSegundos(DOIS);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void threadEscuta(Rede rede) {
+        new Thread(() -> {
+            while (rede.isRunning()) {
+                try {
+                    Socket novoSocket = rede.getServerSocket().accept();
+                    new ThreadComunicacao(novoSocket).run();
+                } catch (IOException e) {
+                    if (!rede.isRunning()) {
+                        System.out.println(SOCKET_ENCERRADO);
+                    } else {
+                        System.err.println(ERRO_ACEITAR_CONECAO + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+    
+
+    private void adicinarVizinho(Socket socket, Rede rede) {
+        String endereco = socket.getInetAddress().getHostAddress();
+        int porta = socket.getLocalPort();
+        No novoNo = new No(endereco, porta);
+        if (rede.getVizinhos().contains(novoNo)) {
+            System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);
+            return;
+        }
+        rede.getVizinhos().add(novoNo);
+        System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
     }
 
 
@@ -76,18 +121,6 @@ public class RedeService {
         }
     }
     
-
-    public static void adicinarVizinho(No novoNo, List<No> vizinhos) {
-        String endereco = novoNo.getRede().getEnderecoIP();
-        int porta = novoNo.getRede().getPorta();
-        if (vizinhos.contains(novoNo)) {
-            System.out.println(VIZINHO_JA_ADICIONADA + endereco + ":" + porta);
-            return;
-        }
-        vizinhos.add(novoNo);
-        System.out.println(VIZINHO_ADICIONADO + endereco + ":" + porta);
-    }
-
     
     public String getEnderecoIP(Rede rede) {
     	return rede.getEnderecoIP();
