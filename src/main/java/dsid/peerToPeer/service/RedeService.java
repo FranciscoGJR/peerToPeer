@@ -49,11 +49,12 @@ public class RedeService {
     }
 
 
-    public void enviarMensagem(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
+    public boolean enviarMensageme(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
         mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeRecebidas());
         this.caixaMensagensService.novaMensagemEnviada(mensagemEnviada, caixaMensagens);
         System.out.println(mensagemService.encaminhandoMensagem(mensagemEnviada));
-        try (Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
+        try (
+        	Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
                                         mensagemEnviada.getDestino().getRede().getPorta())) {
 
             OutputStream output = socket.getOutputStream();
@@ -63,8 +64,9 @@ public class RedeService {
 
             System.out.println(peerAtualizado(mensagemEnviada));
             esperaEmSegundos(DOIS);
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+        	return false;
         }
     }
 

@@ -43,7 +43,7 @@ public class InterfaceUsuario {
             scanner.nextLine();
              switch (opcao) {
                 case LISTAR_PEERS:
-                	listarVizinhos();
+                	this.listarVizinhos();
                 	System.out.print("> ");
                 	opcao = scanner.nextInt();
                 	
@@ -51,9 +51,10 @@ public class InterfaceUsuario {
                 		continue;
                 	}
                 	
-                	enviarHello(opcao);
+                	this.enviarHello(opcao);
                     break;
                 case OBTER_PEERS:
+                	this.enviarGetPeers();
                     break;
                 case LISTAR_ARQUIVOS_LOCAIS:
                     break;
@@ -75,9 +76,31 @@ public class InterfaceUsuario {
 
     private void enviarHello(int numeroVizinho) {
     	No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
-    	noDestinatario.getRede().setStatus(Status.ONLINE);
     	Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.HELLO);
-    	this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
+
+    	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensageme(mensagem, this.no.getRede().getCaixaDeMensagens());
+    	if (mensagemEnviadaComSucesso) {
+    		noDestinatario.getRede().setStatus(Status.ONLINE);
+    		return;
+    	}
+    	
+    	noDestinatario.getRede().setStatus(Status.OFFLINE);
+    }
+
+
+    private void enviarGetPeers() {
+    	for (No vizinho : this.no.getRede().getVizinhos()) {
+    		No noDestinatario = vizinho;
+    		Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.GET_PEERS);
+
+    		boolean mensagemEnviadaComSucesso = this.redeService.enviarMensageme(mensagem, this.no.getRede().getCaixaDeMensagens());
+    		if (mensagemEnviadaComSucesso) {
+    			noDestinatario.getRede().setStatus(Status.ONLINE);
+    			return;
+    		}
+    	
+    		noDestinatario.getRede().setStatus(Status.OFFLINE);
+    	}
     }
 
 
