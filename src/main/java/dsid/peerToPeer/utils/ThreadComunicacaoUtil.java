@@ -1,8 +1,8 @@
 package dsid.peerToPeer.utils;
 
-import static dsid.peerToPeer.utils.Constantes.*;
-
-import dsid.peerToPeer.controller.InterfaceUsuario;
+import static dsid.peerToPeer.utils.Constantes.DOIS;
+import static dsid.peerToPeer.utils.Constantes.MENSAGEM_RECEBIDA;
+import static dsid.peerToPeer.utils.Constantes.MIL;
 
 public class ThreadComunicacaoUtil {
 
@@ -10,7 +10,6 @@ public class ThreadComunicacaoUtil {
 	public static void exibirMensagem(String mensagem) {
 		System.out.println(MENSAGEM_RECEBIDA + mensagem);
 		esperaEmSegundos(DOIS);
-		InterfaceUsuario.exibirMenu();
 	}
 	
 	

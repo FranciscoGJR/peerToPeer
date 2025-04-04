@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.Status;
@@ -47,6 +48,7 @@ public class ThreadComunicacao implements Runnable{
             	redeService.adicinarVizinho(noOrigem, vizinhos);
             }
             
+    		InterfaceUsuario.exibirMenu();
             fecharConexao();
 
         } catch (IOException e) {

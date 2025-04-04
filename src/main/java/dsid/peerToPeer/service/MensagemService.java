@@ -1,12 +1,15 @@
 package dsid.peerToPeer.service;
 
+import static dsid.peerToPeer.utils.Constantes.ENCAMINHANDO_MENSAGEM;
+import static dsid.peerToPeer.utils.Constantes.PARA;
+
 import dsid.peerToPeer.model.rede.Mensagem;
 
 public class MensagemService {
 	
     public String encaminhandoMensagem(Mensagem mensagem) {
         String enderecoPortaDestino = mensagem.getDestino().getRede().getEnderecoIP() + ":" + mensagem.getDestino().getRede().getPorta();
-        return "\nEncaminhando mensagem '" + mensagem.toString() + "' para " + enderecoPortaDestino;
+        return ENCAMINHANDO_MENSAGEM + mensagem.toString() + PARA + enderecoPortaDestino;
     }
 
 

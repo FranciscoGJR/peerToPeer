@@ -46,6 +46,9 @@ public class Constantes {
 	
 	// MENSAGEM
 	public static final String HELLO = "HELLO";
+	public static final String ENCAMINHANDO_MENSAGEM = "\n\tEncaminhando mensagem ";
+	public static final String PARA = " para ";
+	
 	
 	// VALORES INTEIROS (int)
 	public static final int ZERO = 0;
@@ -60,12 +63,11 @@ public class Constantes {
 	public static final String SERVIDOR_INICIADO = "Servidor iniciado na porta ";
 	public static final String ERRO_AO_INICIAR_SERVIDOR = "Erro ao iniciar o servidor: ";
 	public static final String QUANTIDADE_VIZINHOS = "Quantidade de vizinhos: ";
-	public static final String VIZINHO_JA_ADICIONADA = "Vizinho ja esta na tabela: ";
 	public static final String VIZINHO_ADICIONADO = "Adicionando vizinho na tabela: ";
 	
 	// THREAD_COMUNICACAO
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
-	public static final String MENSAGEM_RECEBIDA = "\nMensagem recebida: ";
+	public static final String MENSAGEM_RECEBIDA = "\n\n\tMensagem recebida: ";
 	
 	// OUTROS
 	public static final String NULL = "null";
