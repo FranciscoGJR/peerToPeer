@@ -1,7 +1,9 @@
 package dsid.peerToPeer.model.rede;
 
 import static dsid.peerToPeer.utils.Constantes.*;
+import static dsid.peerToPeer.utils.MensagemUtil.formartarArgumentos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
@@ -21,10 +23,10 @@ public class Mensagem {
 
 	private TipoMensagemEnum tipo;
 
-    private List<String> argumentos;
+    private List<String> argumentos = new ArrayList<>();
 
 
-    // Mensagem HELLO
+    // Mensagem
     public Mensagem(No origem, No destino, int ttl, TipoMensagemEnum tipoMensagem) {
     	this.texto = HELLO;
     	this.origem = origem;
@@ -45,6 +47,7 @@ public class Mensagem {
 	@Override
     public String toString() {
     	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
-    	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTipo();
+    	return enderecoPortaOrigem + " " + "CLOCK " + getTipo() + formartarArgumentos(origem, this.argumentos);
     }
+	
 }

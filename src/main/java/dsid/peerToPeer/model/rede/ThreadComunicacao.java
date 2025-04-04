@@ -1,10 +1,9 @@
 package dsid.peerToPeer.model.rede;
-import dsid.peerToPeer.service.MensagemService;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
-import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.MensagemUtil.serializarMensagem;
 import static dsid.peerToPeer.utils.Status.ONLINE;
 import static dsid.peerToPeer.utils.TipoMensagemEnum.GET_PEERS;
+import static dsid.peerToPeer.utils.TipoMensagemEnum.PEER_LIST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.service.MensagemService;
 import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
@@ -61,6 +61,14 @@ public class ThreadComunicacao implements Runnable{
             	List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
             	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
             	this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
+            }
+            
+            if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
+          		System.out.println("Argumento: ");
+            	for (String argumento : mensagemRecebida.getArgumentos()) {
+            		System.out.println(argumento);
+            		//this.redeService.adicinarVizinho(this.no, vizinhos);
+            	}
             }
 
     		InterfaceUsuario.exibirMenu();

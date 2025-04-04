@@ -75,4 +75,6 @@ public class Constantes {
 	public static final String NULL = "null";
 	public static final String VIZINHOS = "vizinhos";
 	public static final String ESPACO_EM_BRANCO = " ";
+	public static final String STRING_VAZIA = "";
+	
 }

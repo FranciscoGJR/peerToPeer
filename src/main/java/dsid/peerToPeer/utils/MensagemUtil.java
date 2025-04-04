@@ -4,8 +4,12 @@ import static dsid.peerToPeer.utils.Constantes.DOIS;
 import static dsid.peerToPeer.utils.Constantes.GET_PEERS;
 import static dsid.peerToPeer.utils.Constantes.HELLO;
 import static dsid.peerToPeer.utils.Constantes.PEER_LIST;
+import static dsid.peerToPeer.utils.Constantes.STRING_VAZIA;
 import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.Constantes.ZERO;
+import static dsid.peerToPeer.utils.Constantes.ESPACO_EM_BRANCO;
+
+import java.util.List;
 
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
@@ -76,4 +80,18 @@ public class MensagemUtil {
     	String[] partes = enderecoEPorta.split(":");
     	return Integer.parseInt(partes[UM]);
     }
+    
+    
+    public static String formartarArgumentos(No origem, List<String> argumentos) {
+    	if (argumentos.size() == ZERO) {
+    		return STRING_VAZIA;
+    	}
+
+    	String retorno = new String(ESPACO_EM_BRANCO + argumentos.get(ZERO) + ESPACO_EM_BRANCO);
+    	for (int iterador = 1; iterador < argumentos.size(); iterador++) {
+    		retorno = retorno + argumentos.get(iterador) + ESPACO_EM_BRANCO;
+    	}
+    	return retorno;
+    }
+    
 }
