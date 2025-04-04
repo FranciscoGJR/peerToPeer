@@ -1,6 +1,10 @@
 package dsid.peerToPeer.model.rede;
+import dsid.peerToPeer.service.MensagemService;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
+import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.MensagemUtil.serializarMensagem;
+import static dsid.peerToPeer.utils.Status.ONLINE;
+import static dsid.peerToPeer.utils.TipoMensagemEnum.GET_PEERS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,23 +18,28 @@ import java.util.List;
 import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.service.RedeService;
-import dsid.peerToPeer.utils.Status;
 import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
+import dsid.peerToPeer.utils.TipoMensagemEnum;
 import lombok.Data;
 
 @Data
 public class ThreadComunicacao implements Runnable{
+	
+	No no;
 
 	RedeService redeService = new RedeService();
-
+	
+	MensagemService mensagemService = new MensagemService();
+	
 	private Socket socket;
 
 	private List<No> vizinhos;
 
     private CaixaDeMensagens caixaDeMensagens;
 	
-    public ThreadComunicacao(Socket socket, List<No> vizinhos, CaixaDeMensagens caixaDeMensagens) {
+    public ThreadComunicacao(Socket socket, No no, List<No> vizinhos, CaixaDeMensagens caixaDeMensagens) {
         this.socket = socket;
+        this.no = no;
         this.vizinhos = vizinhos;
         this.caixaDeMensagens = caixaDeMensagens;
     }
@@ -42,12 +51,18 @@ public class ThreadComunicacao implements Runnable{
             Mensagem mensagemRecebida = receberMensagem();
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
-            noOrigem.getRede().setStatus(Status.ONLINE);;
+            noOrigem.getRede().setStatus(ONLINE);;
             
             if (!vizinhoConhecido(noOrigem.getRede())) {
             	redeService.adicinarVizinho(noOrigem, vizinhos);
             }
             
+            if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
+            	List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
+            	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
+            	this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
+            }
+
     		InterfaceUsuario.exibirMenu();
             fecharConexao();
 

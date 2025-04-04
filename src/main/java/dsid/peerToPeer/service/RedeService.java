@@ -49,9 +49,9 @@ public class RedeService {
     }
 
 
-    public boolean enviarMensageme(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
-        mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeRecebidas());
-        this.caixaMensagensService.novaMensagemEnviada(mensagemEnviada, caixaMensagens);
+    public boolean enviarMensagem(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
+        mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeEnviadas());
+        this.caixaMensagensService.adicionarNovaMensagemEnviada(mensagemEnviada, caixaMensagens);
         System.out.println(mensagemService.encaminhandoMensagem(mensagemEnviada));
         try (
         	Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),

@@ -12,7 +12,7 @@ public class CaixaMensagensService {
         caixaMensagens.getRecebidas().put(quantidadeMensagensRecebidas(caixaMensagens), mensagem);
     }
 
-    public void novaMensagemEnviada(Mensagem mensagem, CaixaDeMensagens caixaMensagens) {
+    public void adicionarNovaMensagemEnviada(Mensagem mensagem, CaixaDeMensagens caixaMensagens) {
         caixaMensagens.getEnviadas().put(quantidadeMensagemEnviadas(caixaMensagens), mensagem);
     }
 

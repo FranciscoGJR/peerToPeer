@@ -51,7 +51,7 @@ public class Rede {
     }
     
 
-    public void iniciarConexao() {
+	public void iniciarConexao() {
         try {
             this.serverSocket = new ServerSocket(this.getPorta());
         } catch (IOException e) {
@@ -66,7 +66,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket, vizinhos, caixaDeMensagens).run();
+                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta), this.vizinhos, this.caixaDeMensagens).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);

@@ -12,26 +12,39 @@ import lombok.Data;
 public class Mensagem {
 	
 	private Integer numeroDeSequencia;
+
 	private String texto;
+
 	private No origem;
+
 	private No destino;
-    private int ttl;
+
 	private TipoMensagemEnum tipo;
+
     private List<String> argumentos;
 
-    // Mensagem HELOO
+
+    // Mensagem HELLO
     public Mensagem(No origem, No destino, int ttl, TipoMensagemEnum tipoMensagem) {
     	this.texto = HELLO;
     	this.origem = origem;
     	this.destino = destino;
-    	this.ttl = ttl;
     	this.tipo = tipoMensagem;
     	this.numeroDeSequencia = 1;
     }
 
-    @Override
+
+    // Mensagem com argumentos
+    public Mensagem(No noOrigem, No noDestino, TipoMensagemEnum peerList, List<String> argumentos) {
+    	this.origem = noOrigem;
+    	this.destino = noDestino;
+    	this.tipo = peerList;
+    	this.argumentos = argumentos;
+	}
+
+	@Override
     public String toString() {
     	String enderecoPortaOrigem = origem.getRede().getEnderecoIP() + ":" + origem.getRede().getPorta();
-    	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTtl() + " " + getTipo();
+    	return enderecoPortaOrigem + " " + getNumeroDeSequencia() + " " + getTipo();
     }
 }
