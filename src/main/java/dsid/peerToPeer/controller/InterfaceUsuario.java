@@ -13,6 +13,7 @@ import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
 import static dsid.peerToPeer.utils.Constantes.SAIR;
 import static dsid.peerToPeer.utils.Constantes.UM;
 
+import java.io.File;
 import java.util.Scanner;
 
 import dsid.peerToPeer.model.No;
@@ -60,6 +61,7 @@ public class InterfaceUsuario {
                 	this.enviarGetPeers();
                     break;
                 case LISTAR_ARQUIVOS_LOCAIS:
+                	this.listarArquivosLocais();
                     break;
                 case BUSCAR_ARQUIVOS:
                     break;
@@ -104,6 +106,17 @@ public class InterfaceUsuario {
     	
     		noDestinatario.getRede().setStatus(Status.OFFLINE);
     	}
+    }
+    
+    
+    private void listarArquivosLocais() {
+        File diretorio = new File(this.diretorioCompartilhado);
+        File[] arquivos = diretorio.listFiles();
+        for (File arquivo : arquivos) {
+            if (arquivo.isFile()) {
+                System.out.println(arquivo.getName());
+            }
+        }
     }
 
 
