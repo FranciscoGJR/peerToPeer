@@ -38,6 +38,7 @@ public class Constantes {
 	public static final String DIGITAR_CHAVE_DE_BUSCA = "Digite a chave a ser buscada: ";
 	public static final String CHAVE = "chave: ";
 	public static final String VALOR = "valor: ";	
+	public static final String ERRO_NA_LEITURA_DO_DIRETORIO = "Erro: O diretório compartilhado especificado não existe ou não é um diretório válido.";	
 	
 	
 	// TEMPO

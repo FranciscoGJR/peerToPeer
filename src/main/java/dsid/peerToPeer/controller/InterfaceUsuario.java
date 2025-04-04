@@ -29,8 +29,11 @@ public class InterfaceUsuario {
 
 	private Scanner scanner = new Scanner(System.in);
 	
-	public InterfaceUsuario(No no) {
+	private String diretorioCompartilhado;
+	
+	public InterfaceUsuario(No no, String diretorioCompartilhado) {
 		this.no = no;
+		this.diretorioCompartilhado = diretorioCompartilhado;
 	}
 	
     public void iniciar(No no) {
