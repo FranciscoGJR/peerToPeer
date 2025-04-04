@@ -18,6 +18,7 @@ import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.service.MensagemService;
 import dsid.peerToPeer.service.RedeService;
+import dsid.peerToPeer.utils.Status;
 import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 import lombok.Data;
@@ -49,6 +50,7 @@ public class ThreadComunicacao implements Runnable{
     public void run() {
         try {
             Mensagem mensagemRecebida = receberMensagem();
+            System.out.println(mensagemRecebida.toString());
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
             noOrigem.getRede().setStatus(ONLINE);;
@@ -64,10 +66,13 @@ public class ThreadComunicacao implements Runnable{
             }
             
             if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
-          		System.out.println("Argumento: ");
-            	for (String argumento : mensagemRecebida.getArgumentos()) {
-            		System.out.println(argumento);
-            		//this.redeService.adicinarVizinho(this.no, vizinhos);
+            	for (int iterador = 1; iterador < mensagemRecebida.getArgumentos().size(); iterador++) {
+            		String[] tokens = mensagemRecebida.getArgumentos().get(iterador).split(":");
+            		String enderecoIP = tokens[0];
+            		String porta = tokens[1];
+            		Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
+
+            		this.redeService.adicinarVizinho(new No(enderecoIP, porta, status), this.vizinhos);
             	}
             }
 

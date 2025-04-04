@@ -1,14 +1,15 @@
 package dsid.peerToPeer.utils;
 
 import static dsid.peerToPeer.utils.Constantes.DOIS;
+import static dsid.peerToPeer.utils.Constantes.ESPACO_EM_BRANCO;
 import static dsid.peerToPeer.utils.Constantes.GET_PEERS;
 import static dsid.peerToPeer.utils.Constantes.HELLO;
 import static dsid.peerToPeer.utils.Constantes.PEER_LIST;
 import static dsid.peerToPeer.utils.Constantes.STRING_VAZIA;
 import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.Constantes.ZERO;
-import static dsid.peerToPeer.utils.Constantes.ESPACO_EM_BRANCO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
@@ -45,7 +46,8 @@ public class MensagemUtil {
         String edereco = getEndereco(getEnderecoEPorta(mensagemEmTexto));
         Integer porta = getPorta(getEnderecoEPorta(mensagemEmTexto));
         TipoMensagemEnum tipoMensagem = getTipoMensagem(mensagemEmTexto);
-        return new Mensagem(new No(edereco, porta), null, ZERO, tipoMensagem);
+        List<String> argumentos = getArgumentos(mensagemEmTexto);
+        return new Mensagem(new No(edereco, porta), null, tipoMensagem, argumentos);
 	}
 
 
@@ -91,6 +93,15 @@ public class MensagemUtil {
     	for (int iterador = 1; iterador < argumentos.size(); iterador++) {
     		retorno = retorno + argumentos.get(iterador) + ESPACO_EM_BRANCO;
     	}
+    	return retorno;
+    }
+    
+    public static List<String> getArgumentos(String mensagemCompleta) {
+    	List<String> retorno = new ArrayList<>();
+		String[] tokens = mensagemCompleta.split(" ");
+		for (int iterador = 3; iterador < tokens.length; iterador++) {
+			retorno.add(tokens[iterador]);
+		}
     	return retorno;
     }
     

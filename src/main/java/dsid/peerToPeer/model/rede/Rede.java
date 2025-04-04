@@ -51,6 +51,16 @@ public class Rede {
     }
     
 
+	// Consttrutor para classe No de um vizinho enviado por LIST_PEER
+	public Rede(String enderecoIP, String porta, Status status) {
+        this.enderecoIP = enderecoIP;
+        this.porta = Integer.decode(porta);
+        this.caixaDeMensagens = null;
+        this.vizinhos = null;
+        this.status = status;
+	}
+
+
 	public void iniciarConexao() {
         try {
             this.serverSocket = new ServerSocket(this.getPorta());
