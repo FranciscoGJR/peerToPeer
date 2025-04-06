@@ -23,14 +23,11 @@ https://github.com/FranciscoGJR/peerToPeer.git
 # Como executar
 ---
 
-Construir imagem docker:
-
 ```
-<<<<<<< HEAD
 ./ep_distsys <endereco_ip>:<porta> <arquivo_com_vizinhos> <lista_chave_valores>
 ```
 
-Os parâmetros `arquivo_com_vizinhos` e `lista_chave_valores` são opicionais.
+Os parâmetros `arquivo_com_vizinhos` 
 
 
 # Decisões de projeto
