@@ -50,7 +50,6 @@ public class ThreadComunicacao implements Runnable{
     public void run() {
         try {
             Mensagem mensagemRecebida = receberMensagem();
-            System.out.println(mensagemRecebida.toString());
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
             noOrigem.getRede().setStatus(ONLINE);;
