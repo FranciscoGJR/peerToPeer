@@ -16,6 +16,7 @@ import static dsid.peerToPeer.utils.Constantes.UM;
 import java.io.File;
 import java.util.Scanner;
 
+import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
@@ -38,6 +39,7 @@ public class InterfaceUsuario {
 	}
 	
     public void iniciar(No no) {
+    	ThreadComunicacaoUtil.esperaEmSegundos(UM);
         int opcao;
 
         while(true) {
