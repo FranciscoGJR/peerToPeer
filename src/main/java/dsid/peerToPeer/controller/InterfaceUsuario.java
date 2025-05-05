@@ -85,7 +85,6 @@ public class InterfaceUsuario {
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
-    		noDestinatario.getRede().setStatus(Status.ONLINE);
     		return;
     	}
     	
