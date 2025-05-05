@@ -1,10 +1,7 @@
 package dsid.peerToPeer.service;
 
-import static dsid.peerToPeer.utils.Constantes.DOIS;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.MensagemUtil.peerAdicionado;
-import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
-import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -64,8 +61,6 @@ public class RedeService {
             writer.println(mensagemEnviada.toString());
             mensagemEnviada.getDestino().getRede().setStatus(Status.ONLINE);
 
-            System.out.println(peerAtualizado(mensagemEnviada));
-            esperaEmSegundos(DOIS);
             return true;
         } catch (IOException e) {
         	return false;

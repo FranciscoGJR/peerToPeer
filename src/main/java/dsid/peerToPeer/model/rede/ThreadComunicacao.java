@@ -3,6 +3,7 @@ import static dsid.peerToPeer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
 import static dsid.peerToPeer.utils.MensagemUtil.serializarMensagem;
 import static dsid.peerToPeer.utils.Status.ONLINE;
 import static dsid.peerToPeer.utils.TipoMensagemEnum.GET_PEERS;
+import static dsid.peerToPeer.utils.TipoMensagemEnum.HELLO;
 import static dsid.peerToPeer.utils.TipoMensagemEnum.PEER_LIST;
 
 import java.io.BufferedReader;
@@ -14,7 +15,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.controller.InterfaceUsuario;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.service.MensagemService;
 import dsid.peerToPeer.service.RedeService;
@@ -52,10 +52,13 @@ public class ThreadComunicacao implements Runnable{
             Mensagem mensagemRecebida = receberMensagem();
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
-            noOrigem.getRede().setStatus(ONLINE);;
+
+            if (mensagemRecebida.getTipo().equals(HELLO)) {
+            	noOrigem.getRede().setStatus(ONLINE);
             
-            if (!vizinhoConhecido(noOrigem.getRede())) {
-            	redeService.adicinarVizinho(noOrigem, vizinhos);
+            	if (!vizinhoConhecido(noOrigem.getRede())) {
+            		redeService.adicinarVizinho(noOrigem, vizinhos);
+            	}
             }
             
             if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
@@ -75,7 +78,6 @@ public class ThreadComunicacao implements Runnable{
             	}
             }
 
-    		InterfaceUsuario.exibirMenu();
             fecharConexao();
 
         } catch (IOException e) {

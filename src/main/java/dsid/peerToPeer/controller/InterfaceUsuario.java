@@ -2,6 +2,7 @@ package dsid.peerToPeer.controller;
 
 import static dsid.peerToPeer.utils.Constantes.ALTERAR_CHUNK;
 import static dsid.peerToPeer.utils.Constantes.BUSCAR_ARQUIVOS;
+import static dsid.peerToPeer.utils.Constantes.DOIS;
 import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
 import static dsid.peerToPeer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
 import static dsid.peerToPeer.utils.Constantes.LISTAR_PEERS;
@@ -12,15 +13,17 @@ import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
 import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
 import static dsid.peerToPeer.utils.Constantes.SAIR;
 import static dsid.peerToPeer.utils.Constantes.UM;
+import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
+import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
 
 import java.io.File;
 import java.util.Scanner;
 
-import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.Status;
+import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 
 public class InterfaceUsuario {
@@ -87,6 +90,8 @@ public class InterfaceUsuario {
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
+    		exibirMensagemPeerAtualizado(mensagem);
+            esperaEmSegundos(DOIS);
     		return;
     	}
     	

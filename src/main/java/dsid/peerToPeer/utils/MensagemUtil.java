@@ -18,11 +18,11 @@ import dsid.peerToPeer.model.rede.Rede;
 
 public class MensagemUtil {
 	
-	public static String peerAtualizado(Mensagem mensagemEnviada) {
+	public static void exibirMensagemPeerAtualizado(Mensagem mensagemEnviada) {
 		String enderecoIP = mensagemEnviada.getDestino().getRede().getEnderecoIP();
 		Integer porta = mensagemEnviada.getDestino().getRede().getPorta();
 		Status status = mensagemEnviada.getDestino().getRede().getStatus();
-		return new String("\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
+		System.out.println("\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
 	}
 	
 	
