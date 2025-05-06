@@ -50,16 +50,13 @@ public class ThreadComunicacao implements Runnable{
     public void run() {
         try {
             Mensagem mensagemRecebida = receberMensagem();
-            System.out.println(mensagemRecebida.toString());
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
-
-            if (mensagemRecebida.getTipo().equals(HELLO)) {
-            	noOrigem.getRede().setStatus(ONLINE);
             
-            	if (!vizinhoConhecido(noOrigem.getRede())) {
-            		redeService.adicinarVizinho(noOrigem, vizinhos);
-            	}
+            noOrigem.getRede().setStatus(ONLINE);
+            
+            if (!vizinhoConhecido(noOrigem.getRede())) {
+            	redeService.adicinarVizinho(noOrigem, vizinhos);
             }
             
             if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
@@ -86,7 +83,6 @@ public class ThreadComunicacao implements Runnable{
             e.printStackTrace();
         }
     }
-    
     
     private boolean vizinhoConhecido(Rede rede) {
     	String enderecoBuscado = rede.getEnderecoIP();

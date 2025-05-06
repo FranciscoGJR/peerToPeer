@@ -14,6 +14,7 @@ import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
 import static dsid.peerToPeer.utils.Constantes.SAIR;
 import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
+import static dsid.peerToPeer.utils.Status.ONLINE;
 import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
 
 import java.io.File;
@@ -90,6 +91,7 @@ public class InterfaceUsuario {
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
+            noDestinatario.getRede().setStatus(ONLINE);
     		exibirMensagemPeerAtualizado(mensagem);
             esperaEmSegundos(DOIS);
     		return;

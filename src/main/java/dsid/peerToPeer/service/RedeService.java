@@ -14,7 +14,6 @@ import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
-import dsid.peerToPeer.utils.Status;
 
 public class RedeService {
 
@@ -59,7 +58,6 @@ public class RedeService {
             PrintWriter writer = new PrintWriter(output, true);
 
             writer.println(mensagemEnviada.toString());
-            mensagemEnviada.getDestino().getRede().setStatus(Status.ONLINE);
 
             return true;
         } catch (IOException e) {
