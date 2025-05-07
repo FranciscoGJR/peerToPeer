@@ -106,13 +106,7 @@ public class InterfaceUsuario {
     		No noDestinatario = vizinho;
     		Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.GET_PEERS);
 
-    		boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
-    		if (mensagemEnviadaComSucesso) {
-    			noDestinatario.getRede().setStatus(Status.ONLINE);
-    			return;
-    		}
-    	
-    		noDestinatario.getRede().setStatus(Status.OFFLINE);
+    		this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	}
     }
     

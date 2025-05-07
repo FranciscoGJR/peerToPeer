@@ -53,10 +53,13 @@ public class ThreadComunicacao implements Runnable{
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
             
-            noOrigem.getRede().setStatus(ONLINE);
-            
             if (!vizinhoConhecido(noOrigem.getRede())) {
-            	redeService.adicinarVizinho(noOrigem, vizinhos);
+            	noOrigem.getRede().setStatus(ONLINE);
+            	redeService.adicinarVizinho(noOrigem, this.vizinhos);
+            }
+
+            if (mensagemRecebida.getTipo().equals(HELLO)) {
+            	noOrigem.getRede().setStatus(ONLINE);
             }
             
             if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
@@ -66,6 +69,8 @@ public class ThreadComunicacao implements Runnable{
             }
             
             if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
+            	noOrigem.getRede().setStatus(ONLINE);
+            	redeService.adicinarVizinho(noOrigem, this.vizinhos);
             	for (int iterador = 1; iterador < mensagemRecebida.getArgumentos().size(); iterador++) {
             		String[] tokens = mensagemRecebida.getArgumentos().get(iterador).split(":");
             		String enderecoIP = tokens[0];

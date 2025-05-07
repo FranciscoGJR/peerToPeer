@@ -57,7 +57,7 @@ public class Constantes {
 	public static final int ZERO = 0;
 	public static final int UM = 1;
 	public static final int DOIS = 2;	
-	public static final int MIL = 1000;
+	public static final int MIL = 200;
 	
 	// REDE
 	public static final String LISTA_DE_PEERS = "\nLista de peers:";
