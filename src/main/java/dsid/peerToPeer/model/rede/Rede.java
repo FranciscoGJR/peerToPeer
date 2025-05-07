@@ -94,5 +94,10 @@ public class Rede {
             }
         }).start();
     }
+    
+    public void incrementarClock() {
+    	this.clock++;
+    	System.out.print("\n=> Atualizando relogio para " + getClock());
+    }
 
 }

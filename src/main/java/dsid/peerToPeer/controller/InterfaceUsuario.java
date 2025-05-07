@@ -89,6 +89,7 @@ public class InterfaceUsuario {
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
+    		this.no.getRede().incrementarClock();
             noDestinatario.getRede().setStatus(ONLINE);
     		exibirMensagemPeerAtualizado(mensagem);
     		return;
@@ -99,8 +100,8 @@ public class InterfaceUsuario {
 
 
     private void enviarGetPeers() {
-    	for (No vizinho : this.no.getRede().getVizinhos()) {
-    		No noDestinatario = vizinho;
+    	for (No noDestinatario : this.no.getRede().getVizinhos()) {
+    		this.no.getRede().incrementarClock();
     		Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.GET_PEERS);
 
     		this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
