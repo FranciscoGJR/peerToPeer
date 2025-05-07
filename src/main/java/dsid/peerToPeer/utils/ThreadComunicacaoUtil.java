@@ -6,7 +6,7 @@ public class ThreadComunicacaoUtil {
 
 
 	public static void exibirMensagem(String mensagem) {
-		System.out.println(MENSAGEM_RECEBIDA + mensagem);
+		System.out.print(MENSAGEM_RECEBIDA + mensagem);
 	}
 	
 }

@@ -22,7 +22,7 @@ public class MensagemUtil {
 		String enderecoIP = mensagemEnviada.getDestino().getRede().getEnderecoIP();
 		Integer porta = mensagemEnviada.getDestino().getRede().getPorta();
 		Status status = mensagemEnviada.getDestino().getRede().getStatus();
-		System.out.print("\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
+		System.out.print("\n\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
 	}
 	
 	
@@ -30,7 +30,7 @@ public class MensagemUtil {
 		String enderecoIP = rede.getEnderecoIP();
 		Integer porta = rede.getPorta();
 		Status status = rede.getStatus();
-		return new String("\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
+		return new String("\n\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
 	}
 	
 
