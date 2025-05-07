@@ -52,7 +52,8 @@ public class ThreadComunicacao implements Runnable{
             Mensagem mensagemRecebida = receberMensagem();
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
-            
+            this.no.getRede().incrementarClock();
+     
             if (!vizinhoConhecido(noOrigem.getRede())) {
             	noOrigem.getRede().setStatus(ONLINE);
             	redeService.adicionarVizinho(noOrigem, this.vizinhos);

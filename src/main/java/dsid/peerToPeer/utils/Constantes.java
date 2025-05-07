@@ -4,7 +4,7 @@ public class Constantes {
 	
 	// INTERFACE
 	public static final String OPCAO_VOLTAR_MENU = "\t[0] voltar para o menu anterior";
-	public static final String MENSAGEM_CABECALHO_MENU = "\nEscolha o comando";
+	public static final String MENSAGEM_CABECALHO_MENU = "\n\nEscolha o comando";
 	public static final String OPCAO_LISTAR_PEERS = "\t[1] Listar peers";
 	public static final String OPCAO_OBTER_PEERS = "\t[2] Obter peers";
 	public static final String OPCAO_LISTAR_ARQUIVOS_LOCAIS = "\t[3] Listar arquivos locais";
