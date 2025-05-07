@@ -49,7 +49,7 @@ public class RedeService {
     public boolean enviarMensagem(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
         mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeEnviadas());
         this.caixaMensagensService.adicionarNovaMensagemEnviada(mensagemEnviada, caixaMensagens);
-        System.out.println(mensagemService.encaminhandoMensagem(mensagemEnviada));
+        System.out.print(mensagemService.encaminhandoMensagem(mensagemEnviada));
         try (
         	Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
                                         mensagemEnviada.getDestino().getRede().getPorta())) {
@@ -58,13 +58,12 @@ public class RedeService {
             PrintWriter writer = new PrintWriter(output, true);
 
             writer.println(mensagemEnviada.toString());
-
             return true;
         } catch (IOException e) {
         	return false;
         }
     }
-
+    
 
     public void adicinarVizinho(No novoNo, List<No> vizinhos) {
         if (vizinhos.contains(novoNo)) {

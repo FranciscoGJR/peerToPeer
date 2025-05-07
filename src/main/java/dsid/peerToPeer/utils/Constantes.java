@@ -49,7 +49,7 @@ public class Constantes {
 	public static final String HELLO = "HELLO";
 	public static final String GET_PEERS = "GET_PEERS";
 	public static final String PEER_LIST = "PEER_LIST";
-	public static final String ENCAMINHANDO_MENSAGEM = "\n\tEncaminhando mensagem ";
+	public static final String ENCAMINHANDO_MENSAGEM = "\tEncaminhando mensagem ";
 	public static final String PARA = " para ";
 	
 	
@@ -57,7 +57,8 @@ public class Constantes {
 	public static final int ZERO = 0;
 	public static final int UM = 1;
 	public static final int DOIS = 2;	
-	public static final int MIL = 200;
+	public static final int TRES = 3;
+	public static final int MIL = 1000;
 	
 	// REDE
 	public static final String LISTA_DE_PEERS = "\nLista de peers:";
@@ -70,7 +71,7 @@ public class Constantes {
 	
 	// THREAD_COMUNICACAO
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
-	public static final String MENSAGEM_RECEBIDA = "\n\n\tMensagem recebida: ";
+	public static final String MENSAGEM_RECEBIDA = "\n\tMensagem recebida: ";
 	
 	// OUTROS
 	public static final String NULL = "null";
