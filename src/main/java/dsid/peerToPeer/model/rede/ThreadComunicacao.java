@@ -55,7 +55,7 @@ public class ThreadComunicacao implements Runnable{
             
             if (!vizinhoConhecido(noOrigem.getRede())) {
             	noOrigem.getRede().setStatus(ONLINE);
-            	redeService.adicinarVizinho(noOrigem, this.vizinhos);
+            	redeService.adicionarVizinho(noOrigem, this.vizinhos);
             }
 
             if (mensagemRecebida.getTipo().equals(HELLO)) {
@@ -70,7 +70,7 @@ public class ThreadComunicacao implements Runnable{
             
             if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
             	noOrigem.getRede().setStatus(ONLINE);
-            	redeService.adicinarVizinho(noOrigem, this.vizinhos);
+            	redeService.adicionarVizinho(noOrigem, this.vizinhos);
             	for (int iterador = 1; iterador < mensagemRecebida.getArgumentos().size(); iterador++) {
             		String[] tokens = mensagemRecebida.getArgumentos().get(iterador).split(":");
             		String enderecoIP = tokens[0];
@@ -78,7 +78,7 @@ public class ThreadComunicacao implements Runnable{
             		Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
             		Integer clock = mensagemRecebida.getClock();
 
-            		this.redeService.adicinarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
+            		this.redeService.adicionarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
             	}
             }
 

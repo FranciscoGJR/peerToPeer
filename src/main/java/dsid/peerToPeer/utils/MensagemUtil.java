@@ -26,7 +26,7 @@ public class MensagemUtil {
 	}
 	
 	
-	public static String peerAdicionado(Rede rede) {
+	public static String peerAtualizado(Rede rede) {
 		String enderecoIP = rede.getEnderecoIP();
 		Integer porta = rede.getPorta();
 		Status status = rede.getStatus();

@@ -1,7 +1,7 @@
 package dsid.peerToPeer.service;
 
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
-import static dsid.peerToPeer.utils.MensagemUtil.peerAdicionado;
+import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,6 +14,7 @@ import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
+import dsid.peerToPeer.utils.Status;
 
 public class RedeService {
 
@@ -65,21 +66,26 @@ public class RedeService {
     }
     
 
-    public void adicinarVizinho(No novoNo, List<No> vizinhos) {
+    public void adicionarVizinho(No novoNo, List<No> vizinhos) {
     	String enderecoBuscado = novoNo.getRede().getEnderecoIP();
     	Integer portaBuscada = novoNo.getRede().getPorta();
+
     	for (No vizinho : vizinhos) {
-    		if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP())  && portaBuscada == vizinho.getRede().getPorta()) {
-    			return;
-    		}
+    	    if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP()) &&
+    	        portaBuscada.equals(vizinho.getRede().getPorta())) {
+
+    	        if (!vizinho.getRede().getStatus().equals(novoNo.getRede().getStatus()) &&
+    	            novoNo.getRede().getStatus() == Status.ONLINE) {
+    	        	vizinho.getRede().setStatus(Status.ONLINE);
+    	            System.out.print(peerAtualizado(novoNo.getRede()));
+    	        }
+    	        return;
+    	    }
     	}
 
-        if (vizinhos.contains(novoNo)) {
-            return;
-        }
-        vizinhos.add(novoNo);
-      	System.out.print(peerAdicionado(novoNo.getRede()));
-    }
+    	vizinhos.add(novoNo);
+    	System.out.print(peerAtualizado(novoNo.getRede()));
+    	}
     
 
     public void pararEscuta(Rede rede) {
