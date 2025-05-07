@@ -16,13 +16,13 @@ public class No {
 	}
 
     // Construtor para classe No de um vizinho
-	public No(String endereco, int porta) {
-		this.rede = new Rede(endereco, porta);
+	public No(String endereco, int porta, Integer clock) {
+		this.rede = new Rede(endereco, porta, clock);
 	}
 
 	// Consttrutor para classe No de um vizinho enviado por LIST_PEER
-	public No(String enderecoIP, String porta, Status status) {
-		this.rede = new Rede(enderecoIP, porta, status);
+	public No(String enderecoIP, String porta, Status status, Integer clock) {
+		this.rede = new Rede(enderecoIP, porta, status, clock);
 	}
 
 }

@@ -13,7 +13,6 @@ import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
 import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
 import static dsid.peerToPeer.utils.Constantes.SAIR;
 import static dsid.peerToPeer.utils.Constantes.TRES;
-import static dsid.peerToPeer.utils.Constantes.UM;
 import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
 import static dsid.peerToPeer.utils.Status.ONLINE;
 
@@ -86,7 +85,7 @@ public class InterfaceUsuario {
 
     private void enviarHello(int numeroVizinho) {
     	No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
-    	Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.HELLO);
+    	Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.HELLO);
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
@@ -102,7 +101,7 @@ public class InterfaceUsuario {
     private void enviarGetPeers() {
     	for (No vizinho : this.no.getRede().getVizinhos()) {
     		No noDestinatario = vizinho;
-    		Mensagem mensagem = new Mensagem(this.no, noDestinatario, UM, TipoMensagemEnum.GET_PEERS);
+    		Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.GET_PEERS);
 
     		this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	}

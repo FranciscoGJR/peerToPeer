@@ -66,13 +66,21 @@ public class RedeService {
     
 
     public void adicinarVizinho(No novoNo, List<No> vizinhos) {
+    	String enderecoBuscado = novoNo.getRede().getEnderecoIP();
+    	Integer portaBuscada = novoNo.getRede().getPorta();
+    	for (No vizinho : vizinhos) {
+    		if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP())  && portaBuscada == vizinho.getRede().getPorta()) {
+    			return;
+    		}
+    	}
+
         if (vizinhos.contains(novoNo)) {
             return;
         }
         vizinhos.add(novoNo);
-      	System.out.println(peerAdicionado(novoNo.getRede()));
+      	System.out.print(peerAdicionado(novoNo.getRede()));
     }
-
+    
 
     public void pararEscuta(Rede rede) {
         rede.setRunning(false);

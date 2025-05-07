@@ -24,7 +24,7 @@ public class NoUtil {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
-                No no = new No(partes[ZERO], Integer.parseInt(partes[UM]));
+                No no = new No(partes[ZERO], Integer.parseInt(partes[UM]), ZERO);
                 System.out.println("Adicionando novo peer " + no.getRede().getEnderecoIP() + ":" + no.getRede().getPorta() + " status " + no.getRede().getStatus());
                 listaVizinhos.add(no);
             }

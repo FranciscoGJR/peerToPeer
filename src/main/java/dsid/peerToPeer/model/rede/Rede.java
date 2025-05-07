@@ -2,6 +2,7 @@ package dsid.peerToPeer.model.rede;
 import static dsid.peerToPeer.utils.Constantes.ERRO_ACEITAR_CONECAO;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.Constantes.SOCKET_ENCERRADO;
+import static dsid.peerToPeer.utils.Constantes.ZERO;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,6 +21,8 @@ public class Rede {
     private String enderecoIP;
 
     private Integer porta;
+    
+    private Integer clock;
 
     private List<No> vizinhos;
 
@@ -33,30 +36,33 @@ public class Rede {
     public Rede(String enderecoIP, Integer porta, List<No> vizinhos) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
+        this.clock = ZERO;
         this.vizinhos = vizinhos;
         this.caixaDeMensagens = new CaixaDeMensagens();
         this.status = Status.ONLINE;
         this.iniciarConexao();
         this.threadEscuta();
     }
-
-
-    // Construtor para classe Rede de um vizinho
-    public Rede(String enderecoIP, Integer porta) {
+    
+    
+    // Construtor um vizinho
+    public Rede(String enderecoIP, Integer porta, Integer clock) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.caixaDeMensagens = null;
+        this.clock = clock;
         this.vizinhos = null;
         this.status = Status.OFFLINE;
     }
     
 
-	// Consttrutor para classe No de um vizinho enviado por LIST_PEER
-	public Rede(String enderecoIP, String porta, Status status) {
+	// Consttrutor um vizinho enviado por LIST_PEER
+	public Rede(String enderecoIP, String porta, Status status, Integer clock) {
         this.enderecoIP = enderecoIP;
         this.porta = Integer.decode(porta);
         this.caixaDeMensagens = null;
         this.vizinhos = null;
+        this.clock = clock;
         this.status = status;
 	}
 
@@ -76,7 +82,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta), this.vizinhos, this.caixaDeMensagens).run();
+                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);

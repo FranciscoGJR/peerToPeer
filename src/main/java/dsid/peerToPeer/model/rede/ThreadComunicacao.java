@@ -76,8 +76,9 @@ public class ThreadComunicacao implements Runnable{
             		String enderecoIP = tokens[0];
             		String porta = tokens[1];
             		Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
+            		Integer clock = mensagemRecebida.getClock();
 
-            		this.redeService.adicinarVizinho(new No(enderecoIP, porta, status), this.vizinhos);
+            		this.redeService.adicinarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
             	}
             }
 

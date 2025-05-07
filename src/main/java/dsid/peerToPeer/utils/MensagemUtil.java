@@ -45,9 +45,10 @@ public class MensagemUtil {
 	public static Mensagem serializarMensagem(String mensagemEmTexto) {
         String edereco = getEndereco(getEnderecoEPorta(mensagemEmTexto));
         Integer porta = getPorta(getEnderecoEPorta(mensagemEmTexto));
+        Integer clock = getClock(mensagemEmTexto);
         TipoMensagemEnum tipoMensagem = getTipoMensagem(mensagemEmTexto);
         List<String> argumentos = getArgumentos(mensagemEmTexto);
-        return new Mensagem(new No(edereco, porta), null, tipoMensagem, argumentos);
+        return new Mensagem(new No(edereco, porta, clock), null, tipoMensagem, argumentos);
 	}
 
 
@@ -69,6 +70,12 @@ public class MensagemUtil {
 	public static String getEnderecoEPorta(String mensagemCompleta) {
 		String[] tokens = mensagemCompleta.split(" ");
 		return tokens[ZERO];
+	}
+	
+
+	public static Integer getClock(String mensagemCompleta) {
+		String[] tokens = mensagemCompleta.split(" ");
+		return Integer.valueOf(tokens[UM]);
 	}
 
 
