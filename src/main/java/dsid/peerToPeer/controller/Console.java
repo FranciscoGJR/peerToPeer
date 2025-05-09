@@ -86,10 +86,10 @@ public class Console {
     private void enviarHello(int numeroVizinho) {
     	No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
     	Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.HELLO);
+    	this.no.getRede().incrementarClock();
 
     	boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	if (mensagemEnviadaComSucesso) {
-    		this.no.getRede().incrementarClock();
             noDestinatario.getRede().setStatus(ONLINE);
     		exibirMensagemPeerAtualizado(mensagem);
     		return;
