@@ -7,17 +7,17 @@ import static dsid.peerToPeer.utils.MensagemUtil.desserializarArgumentoListPeer;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.model.Peer;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
 
 public class MensagemService {
 	
-	public List<String> preencherArgumentosParaMensagemListPeer(List<No> vizinhos, No noDestinatario) {
+	public List<String> preencherArgumentosParaMensagemListPeer(List<Peer> vizinhos, Peer noDestinatario) {
 		List<String> argumentos = new ArrayList<>();
 		argumentos.add(String.valueOf(vizinhos.size()));
    		String noDestinatarioTexto = noDestinatario.getRede().getEnderecoIP() + ":" + noDestinatario.getRede().getPorta();
-		for (No vizinho : vizinhos) {
+		for (Peer vizinho : vizinhos) {
 			if (nosIguais(vizinho.getRede(), noDestinatarioTexto)) {
 				continue;
 			}

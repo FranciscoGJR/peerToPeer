@@ -9,8 +9,8 @@ import static dsid.peerToPeer.utils.MensagemUtil.getPorta;
 import java.io.File;
 import java.util.List;
 
-import dsid.peerToPeer.controller.InterfaceUsuario;
-import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.controller.Console;
+import dsid.peerToPeer.model.Peer;
 import dsid.peerToPeer.utils.NoUtil;
 public class Main {
 	
@@ -27,9 +27,9 @@ public class Main {
     	String arquivoVizinhos = argumento1;
     	String diretorioCompartilhado = argumento2;
     	
-    	List<No> vizinhos = noUtil.decoderListaVizinhos(arquivoVizinhos);
+    	List<Peer> vizinhos = noUtil.decoderListaVizinhos(arquivoVizinhos);
     	
-    	No no = new No(endereco, porta, vizinhos);
+    	Peer no = new Peer(endereco, porta, vizinhos);
 
         File diretorio = new File(diretorioCompartilhado);
         if (!diretorio.exists() || !diretorio.isDirectory()) {
@@ -37,7 +37,7 @@ public class Main {
             return;
         }
         
-    	InterfaceUsuario interfaceUsuario = new InterfaceUsuario(no, diretorioCompartilhado);
+    	Console interfaceUsuario = new Console(no, diretorioCompartilhado);
     	interfaceUsuario.iniciar(no);
     }	
 

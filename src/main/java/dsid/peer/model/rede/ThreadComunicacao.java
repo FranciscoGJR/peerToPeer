@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.model.Peer;
 import dsid.peerToPeer.service.MensagemService;
 import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.Status;
@@ -26,7 +26,7 @@ import lombok.Data;
 @Data
 public class ThreadComunicacao implements Runnable{
 	
-	No no;
+	Peer no;
 
 	RedeService redeService = new RedeService();
 	
@@ -34,11 +34,11 @@ public class ThreadComunicacao implements Runnable{
 	
 	private Socket socket;
 
-	private List<No> vizinhos;
+	private List<Peer> vizinhos;
 
     private CaixaDeMensagens caixaDeMensagens;
 	
-    public ThreadComunicacao(Socket socket, No no, List<No> vizinhos, CaixaDeMensagens caixaDeMensagens) {
+    public ThreadComunicacao(Socket socket, Peer no, List<Peer> vizinhos, CaixaDeMensagens caixaDeMensagens) {
         this.socket = socket;
         this.no = no;
         this.vizinhos = vizinhos;
@@ -51,7 +51,7 @@ public class ThreadComunicacao implements Runnable{
         try {
             Mensagem mensagemRecebida = receberMensagem();
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
-            No noOrigem = mensagemRecebida.getOrigem();
+            Peer noOrigem = mensagemRecebida.getOrigem();
 
             redeService.atualizarParaMaiorClock(this.no.getRede(), mensagemRecebida);
 
@@ -80,7 +80,7 @@ public class ThreadComunicacao implements Runnable{
             		Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
             		Integer clock = mensagemRecebida.getClock();
 
-            		this.redeService.adicionarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
+            		this.redeService.adicionarVizinho(new Peer(enderecoIP, porta, status, clock), this.vizinhos);
             	}
             }
 
@@ -96,7 +96,7 @@ public class ThreadComunicacao implements Runnable{
     private boolean vizinhoConhecido(Rede rede) {
     	String enderecoBuscado = rede.getEnderecoIP();
     	Integer portaBuscada = rede.getPorta();
-    	for (No vizinho : this.vizinhos) {
+    	for (Peer vizinho : this.vizinhos) {
     		if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP())  && portaBuscada == vizinho.getRede().getPorta()) {
     			return true;
     		}

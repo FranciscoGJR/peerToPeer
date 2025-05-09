@@ -10,7 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.model.Peer;
 import dsid.peerToPeer.utils.Status;
 import lombok.Data;
 
@@ -25,7 +25,7 @@ public class Rede {
     
     private Integer clock;
 
-    private List<No> vizinhos;
+    private List<Peer> vizinhos;
 
     private CaixaDeMensagens caixaDeMensagens;
 
@@ -34,7 +34,7 @@ public class Rede {
     private volatile boolean running = true;
 
 
-    public Rede(String enderecoIP, Integer porta, List<No> vizinhos) {
+    public Rede(String enderecoIP, Integer porta, List<Peer> vizinhos) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.clock = ZERO;
@@ -83,7 +83,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens).run();
+                    new ThreadComunicacao(novoSocket, new Peer(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);
