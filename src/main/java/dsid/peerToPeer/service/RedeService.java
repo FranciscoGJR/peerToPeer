@@ -1,5 +1,6 @@
 package dsid.peerToPeer.service;
 
+import static dsid.peerToPeer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
 
@@ -35,6 +36,15 @@ public class RedeService {
             System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+
+    public void atualizarParaMaiorClock(Rede redeLocal, Mensagem mensagemRecebida) {
+    	Integer maiorClock = Integer.max(mensagemRecebida.getClock(), redeLocal.getClock());
+    	maiorClock++;
+
+    	redeLocal.setClock(maiorClock);
+    	System.out.print(ATUALIZANDO_RELOGIO_PARA + maiorClock);
     }
 
 

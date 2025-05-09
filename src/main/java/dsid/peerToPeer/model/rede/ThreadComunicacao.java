@@ -52,8 +52,9 @@ public class ThreadComunicacao implements Runnable{
             Mensagem mensagemRecebida = receberMensagem();
             caixaDeMensagens.adicionarMensagemRecebida(mensagemRecebida);
             No noOrigem = mensagemRecebida.getOrigem();
-            this.no.getRede().incrementarClock();
-     
+
+            redeService.atualizarParaMaiorClock(this.no.getRede(), mensagemRecebida);
+
             if (!vizinhoConhecido(noOrigem.getRede())) {
             	noOrigem.getRede().setStatus(ONLINE);
             	redeService.adicionarVizinho(noOrigem, this.vizinhos);
@@ -90,6 +91,7 @@ public class ThreadComunicacao implements Runnable{
             e.printStackTrace();
         }
     }
+
     
     private boolean vizinhoConhecido(Rede rede) {
     	String enderecoBuscado = rede.getEnderecoIP();

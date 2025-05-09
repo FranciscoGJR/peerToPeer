@@ -1,4 +1,5 @@
 package dsid.peerToPeer.model.rede;
+import static dsid.peerToPeer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
 import static dsid.peerToPeer.utils.Constantes.ERRO_ACEITAR_CONECAO;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.Constantes.SOCKET_ENCERRADO;
@@ -95,9 +96,10 @@ public class Rede {
         }).start();
     }
     
+
     public void incrementarClock() {
     	this.clock++;
-    	System.out.print("\n\t=> Atualizando relogio para " + getClock());
+    	System.out.print(ATUALIZANDO_RELOGIO_PARA + getClock());
     }
-
+    
 }
