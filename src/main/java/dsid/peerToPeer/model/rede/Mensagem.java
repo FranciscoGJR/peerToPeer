@@ -5,7 +5,7 @@ import static dsid.peerToPeer.utils.MensagemUtil.formartarArgumentos;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
+import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 import lombok.Data;
 
@@ -14,9 +14,9 @@ public class Mensagem {
 	
 	private Integer numeroDeSequencia;
 
-	private Peer origem;
+	private No origem;
 
-	private Peer destino;
+	private No destino;
 	
 	private Integer clock;
 
@@ -25,7 +25,7 @@ public class Mensagem {
     private List<String> argumentos = new ArrayList<>();
     
 
-    public Mensagem(Peer origem, Peer destino, TipoMensagemEnum tipoMensagem) {
+    public Mensagem(No origem, No destino, TipoMensagemEnum tipoMensagem) {
     	this.origem = origem;
     	this.clock = origem.getRede().getClock();
     	this.destino = destino;
@@ -34,7 +34,7 @@ public class Mensagem {
     }
 
 
-    public Mensagem(Peer origem, Peer destino, TipoMensagemEnum tipoMensagem, Integer clock) {
+    public Mensagem(No origem, No destino, TipoMensagemEnum tipoMensagem, Integer clock) {
     	this.origem = origem;
     	this.clock = origem.getRede().getClock();
     	this.destino = destino;
@@ -44,7 +44,7 @@ public class Mensagem {
 
 
     // Mensagem com argumentos
-    public Mensagem(Peer noOrigem, Peer noDestino, TipoMensagemEnum peerList, List<String> argumentos) {
+    public Mensagem(No noOrigem, No noDestino, TipoMensagemEnum peerList, List<String> argumentos) {
     	this.origem = noOrigem;
     	this.clock = noOrigem.getRede().getClock();
     	this.destino = noDestino;

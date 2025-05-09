@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
+import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
@@ -29,7 +29,7 @@ public class RedeService {
     }
 
 
-    public void iniciarConexao(Peer no) {
+    public void iniciarConexao(No no) {
         try {
             no.getRede().setServerSocket(new ServerSocket(no.getRede().getPorta()));
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class RedeService {
 
     public void listarVizinhos(Rede rede) {
         int iterador = 1;
-        for (Peer vizinho : rede.getVizinhos()) {
+        for (No vizinho : rede.getVizinhos()) {
             System.out.printf("\t[%d] %s:%s %s\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta(), vizinho.getRede().getStatus());
             iterador++;
         }
@@ -76,11 +76,11 @@ public class RedeService {
     }
     
 
-    public void adicionarVizinho(Peer novoNo, List<Peer> vizinhos) {
+    public void adicionarVizinho(No novoNo, List<No> vizinhos) {
     	String enderecoBuscado = novoNo.getRede().getEnderecoIP();
     	Integer portaBuscada = novoNo.getRede().getPorta();
 
-    	for (Peer vizinho : vizinhos) {
+    	for (No vizinho : vizinhos) {
     	    if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP()) &&
     	        portaBuscada.equals(vizinho.getRede().getPorta())) {
 
@@ -118,7 +118,7 @@ public class RedeService {
     }
     
     
-    public List<Peer> getVizinhos(Rede rede) {
+    public List<No> getVizinhos(Rede rede) {
     	return rede.getVizinhos();
     }
 }

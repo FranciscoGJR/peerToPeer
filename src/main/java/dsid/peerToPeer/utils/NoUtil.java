@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
+import dsid.peerToPeer.model.No;
 
 public class NoUtil {
 
-    public List<Peer> decoderListaVizinhos(String arquivoVizinhos) {
-    	List<Peer> listaVizinhos = new ArrayList<>();
+    public List<No> decoderListaVizinhos(String arquivoVizinhos) {
+    	List<No> listaVizinhos = new ArrayList<>();
     	if (arquivoVizinhos.equalsIgnoreCase(NULL)) {
     		return listaVizinhos;
     	}
@@ -24,7 +24,7 @@ public class NoUtil {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] partes = linha.split(":");
-                Peer no = new Peer(partes[ZERO], Integer.parseInt(partes[UM]), ZERO);
+                No no = new No(partes[ZERO], Integer.parseInt(partes[UM]), ZERO);
                 System.out.println("Adicionando novo peer " + no.getRede().getEnderecoIP() + ":" + no.getRede().getPorta() + " status " + no.getRede().getStatus());
                 listaVizinhos.add(no);
             }

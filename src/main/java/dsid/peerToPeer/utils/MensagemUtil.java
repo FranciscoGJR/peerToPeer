@@ -12,7 +12,7 @@ import static dsid.peerToPeer.utils.Constantes.ZERO;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
+import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
 
@@ -48,7 +48,7 @@ public class MensagemUtil {
         Integer clock = getClock(mensagemEmTexto);
         TipoMensagemEnum tipoMensagem = getTipoMensagem(mensagemEmTexto);
         List<String> argumentos = getArgumentos(mensagemEmTexto);
-        return new Mensagem(new Peer(edereco, porta, clock), null, tipoMensagem, argumentos);
+        return new Mensagem(new No(edereco, porta, clock), null, tipoMensagem, argumentos);
 	}
 
 
@@ -91,7 +91,7 @@ public class MensagemUtil {
     }
     
     
-    public static String formartarArgumentos(Peer origem, List<String> argumentos) {
+    public static String formartarArgumentos(No origem, List<String> argumentos) {
     	if (argumentos.size() == ZERO) {
     		return STRING_VAZIA;
     	}
