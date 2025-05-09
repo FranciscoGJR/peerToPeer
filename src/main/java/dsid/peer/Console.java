@@ -1,143 +1,71 @@
-package dsid.peer.controller;
-
-import static dsid.peer.utils.Constantes.ALTERAR_CHUNK;
-import static dsid.peer.utils.Constantes.BUSCAR_ARQUIVOS;
-import static dsid.peer.utils.Constantes.EXIBIR_ESTATISTICAS;
-import static dsid.peer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
-import static dsid.peer.utils.Constantes.LISTAR_PEERS;
-import static dsid.peer.utils.Constantes.LISTA_DE_PEERS;
-import static dsid.peer.utils.Constantes.MENU_COMPLETO;
-import static dsid.peer.utils.Constantes.MIL;
-import static dsid.peer.utils.Constantes.OBTER_PEERS;
-import static dsid.peer.utils.Constantes.OPCAO_INVALIDA;
-import static dsid.peer.utils.Constantes.OPCAO_VOLTAR_MENU;
-import static dsid.peer.utils.Constantes.SAIR;
-import static dsid.peer.utils.Constantes.TRES;
-import static dsid.peer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
-import static dsid.peer.utils.Status.ONLINE;
-
-import java.io.File;
-import java.util.Scanner;
+package dsid.peer;
 
 import dsid.peer.model.Peer;
-import dsid.peer.model.rede.Mensagem;
-import dsid.peer.service.RedeService;
-import dsid.peer.utils.Status;
-import dsid.peer.utils.TipoMensagemEnum;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class Console {
+	private final ServicePeer servicoPeer;
+	private final Scanner scanner = new Scanner(System.in);
 
-	private RedeService redeService = new RedeService();
-
-	private Peer no;
-
-	private Scanner scanner = new Scanner(System.in);
-
-	private String diretorioCompartilhado;
-
-	public Console(Peer no, String diretorioCompartilhado) {
-		this.no = no;
-		this.diretorioCompartilhado = diretorioCompartilhado;
+	public Console(ServicePeer servicoPeer) {
+		this.servicoPeer = servicoPeer;
 	}
 
-	public void iniciar(Peer no) {
-		int opcao;
-
+	public void iniciar() {
 		while (true) {
-			esperaEmSegundos(TRES);
 			exibirMenu();
-
-			opcao = scanner.nextInt();
-			scanner.nextLine();
+			int opcao = lerInteiro();
 			switch (opcao) {
-			case LISTAR_PEERS:
-				this.listarVizinhos();
-				System.out.print("> ");
-				opcao = scanner.nextInt();
-
-				if (opcao == 0) {
-					continue;
-				}
-
-				this.enviarHello(opcao);
+			case 1:
+				menuListarVizinhos();
 				break;
-			case OBTER_PEERS:
-				this.enviarGetPeers();
+			case 2:
+				servicoPeer.obterVizinhos();
 				break;
-			case LISTAR_ARQUIVOS_LOCAIS:
-				this.listarArquivosLocais();
+			case 3:
+				servicoPeer.listarArquivosLocais();
 				break;
-			case BUSCAR_ARQUIVOS:
-				break;
-			case EXIBIR_ESTATISTICAS:
-				break;
-			case ALTERAR_CHUNK:
-				break;
-			case SAIR:
-				encerrarNo();
+			case 9:
+				servicoPeer.encerrar();
+				System.out.println("Saindo...");
 				return;
 			default:
-				System.out.println(OPCAO_INVALIDA);
+				System.out.println("Opção inválida!");
 			}
 		}
 	}
 
-	private void enviarHello(int numeroVizinho) {
-		Peer noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
-		Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.HELLO);
-
-		boolean mensagemEnviadaComSucesso = this.redeService.enviarMensagem(mensagem,
-				this.no.getRede().getCaixaDeMensagens());
-		if (mensagemEnviadaComSucesso) {
-			this.no.getRede().incrementarClock();
-			noDestinatario.getRede().setStatus(ONLINE);
-			exibirMensagemPeerAtualizado(mensagem);
-			return;
-		}
-
-		noDestinatario.getRede().setStatus(Status.OFFLINE);
+	private void exibirMenu() {
+		System.out.println("\nEscolha um comando:");
+		System.out.println("[1] Listar peers");
+		System.out.println("[2] Obter peers");
+		System.out.println("[3] Listar arquivos locais");
+		System.out.println("[9] Sair");
+		System.out.print("> ");
 	}
 
-	private void enviarGetPeers() {
-		for (Peer noDestinatario : this.no.getRede().getVizinhos()) {
-			this.no.getRede().incrementarClock();
-			Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.GET_PEERS);
-
-			this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
+	private void menuListarVizinhos() {
+		List<Peer> vizinhos = servicoPeer.listarVizinhos();
+		for (int i = 0; i < vizinhos.size(); i++) {
+			System.out.printf("[%d] %s\n", i + 1, vizinhos.get(i));
+		}
+		System.out.println("[0] Voltar ao menu principal");
+		System.out.print("> ");
+		int escolha = lerInteiro();
+		if (escolha > 0 && escolha <= vizinhos.size()) {
+			servicoPeer.enviarHello(vizinhos.get(escolha - 1));
 		}
 	}
 
-	private void listarArquivosLocais() {
-		File diretorio = new File(this.diretorioCompartilhado);
-		File[] arquivos = diretorio.listFiles();
-		for (File arquivo : arquivos) {
-			if (arquivo.isFile()) {
-				System.out.println(arquivo.getName());
-			}
+	private int lerInteiro() {
+		while (!scanner.hasNextInt()) {
+			scanner.nextLine();
+			System.out.print("> ");
 		}
+		int valor = scanner.nextInt();
+		scanner.nextLine();
+		return valor;
 	}
-
-	private void listarVizinhos() {
-		System.out.println(LISTA_DE_PEERS);
-		System.out.println(OPCAO_VOLTAR_MENU);
-		this.redeService.listarVizinhos(no.getRede());
-	}
-
-	private void encerrarNo() {
-		this.redeService.pararEscuta(no.getRede());
-	}
-
-	public static void exibirMenu() {
-		System.out.print(MENU_COMPLETO);
-	}
-
-	// TO-DO: adicionar em um util separado
-	public static void esperaEmSegundos(Integer segundos) {
-		try {
-			Thread.sleep(segundos * MIL);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

@@ -1,28 +1,25 @@
 package dsid.peer.model;
-
 import java.util.List;
 
-import dsid.peer.model.rede.Rede;
-import dsid.peer.utils.Status;
-import lombok.Data;
-
-@Data
 public class Peer {
-	
-	private Rede rede;
+	private final Network network;
 
-	public Peer(String endereco, Integer porta, List<Peer> vizinhos) {
-		this.rede = new Rede(endereco, porta, vizinhos);
+	public Peer(String enderecoPorta, List<Peer> vizinhos) {
+    	String[] partes = enderecoPorta.split(":");
+    	this.network = new Network(partes[0], Integer.parseInt(partes[1]), vizinhos);
 	}
 
-    // Construtor para classe No de um vizinho
-	public Peer(String endereco, int porta, Integer clock) {
-		this.rede = new Rede(endereco, porta, clock);
+	public Peer(String enderecoPorta) {
+    	String[] partes = enderecoPorta.split(":");
+    	this.network = new Network(partes[0], Integer.parseInt(partes[1]), null);
 	}
 
-	// Consttrutor para classe No de um vizinho enviado por LIST_PEER
-	public Peer(String enderecoIP, String porta, Status status, Integer clock) {
-		this.rede = new Rede(enderecoIP, porta, status, clock);
+	public Network getNetwork() {
+    	return network;
 	}
 
+	@Override
+	public String toString() {
+    	return network.getEndereco() + ":" + network.getPorta() + " " + (network.isStatusOnline() ? "ONLINE" : "OFFLINE");
+	}
 }

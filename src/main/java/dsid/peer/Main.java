@@ -4,30 +4,30 @@ import java.io.File;
 import java.util.List;
 
 import dsid.peer.model.Peer;
-import dsid.peer.util.PeerFileUtil;
+import dsid.peer.util.ArquivoVizinhosUtil;
 
 public class Main {
 	public static void main(String[] args) {
 		if (args.length < 3) {
-			System.out.println("Usage: java Main <address:port> <neighbors.txt> <shared_directory>");
+			System.out.println("Uso: java Main <endereco:porta> <vizinhos.txt> <diretorio_compartilhado>");
 			return;
 		}
 
-		String addressPort = args[0];
-		String neighborsFile = args[1];
-		String sharedDir = args[2];
+		String enderecoPorta = args[0];
+		String arquivoVizinhos = args[1];
+		String diretorioCompartilhado = args[2];
 
-		List<Peer> neighbors = PeerFileUtil.parseNeighbors(neighborsFile);
-		Peer localPeer = new Peer(addressPort, neighbors);
-		File sharedDirectory = new File(sharedDir);
+		List<Peer> vizinhos = ArquivoVizinhosUtil.lerVizinhos(arquivoVizinhos);
+		Peer noLocal = new Peer(enderecoPorta, vizinhos);
+		File pastaCompartilhada = new File(diretorioCompartilhado);
 
-		if (!sharedDirectory.exists() || !sharedDirectory.isDirectory()) {
-        	System.err.println("Error: Shared directory does not exist or is not a valid directory.");
-        return;
+		if (!pastaCompartilhada.exists() || !pastaCompartilhada.isDirectory()) {
+			System.err.println("Erro: Diretório compartilhado não existe ou não é válido.");
+			return;
 		}
 
-		PeerService peerService = new PeerService(localPeer, sharedDirectory);
-		PeerConsoleUI ui = new PeerConsoleUI(peerService);
-		ui.start();
+		ServicePeer servicoPeer = new ServicePeer(noLocal, pastaCompartilhada);
+		Console ui = new Console(servicoPeer);
+		ui.iniciar();
 	}
 }

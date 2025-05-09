@@ -1,5 +1,8 @@
-package network;
+package dsid.peer.network;
 
-public class MessageType {
-
+public enum MessageType {
+	HELLO,
+	GET_PEERS,
+	PEER_LIST,
+	BYE
 }

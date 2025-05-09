@@ -1,124 +1,93 @@
-package dsid.peer.service;
+package dsid.peer;
 
-import static dsid.peer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
-import static dsid.peer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
-import static dsid.peer.utils.MensagemUtil.peerAtualizado;
-
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collections;
 import java.util.List;
 
 import dsid.peer.model.Peer;
-import dsid.peer.model.rede.CaixaDeMensagens;
-import dsid.peer.model.rede.Mensagem;
-import dsid.peer.model.rede.Rede;
-import dsid.peer.utils.Status;
+import dsid.peer.network.CommunicationThread;
+import dsid.peer.network.MessageType;
+import dsid.peer.network.Message;
 
-public class RedeService {
+public class ServicePeer {
+	private final Peer PeerLocal;
+	private final File pastaCompartilhada;
+	private ServerSocket servidor;
+	private volatile boolean rodando = true;
 
-    private CaixaMensagensService caixaMensagensService;
+	public ServicePeer(Peer PeerLocal, File pastaCompartilhada) {
+		this.PeerLocal = PeerLocal;
+		this.pastaCompartilhada = pastaCompartilhada;
+		iniciarServidor();
+	}
 
-    private MensagemService mensagemService;
+	public List<Peer> listarVizinhos() {
+		return Collections.unmodifiableList(PeerLocal.getNetwork().getVizinhos());
+	}
 
-    public RedeService() {
-        this.mensagemService = new MensagemService();
-        this.caixaMensagensService = new CaixaMensagensService();
-    }
+	public void enviarHello(Peer destiPeer) {
+		Message hello = new Message(PeerLocal, destiPeer, MessageType.HELLO, PeerLocal.getNetwork().incrementarClock());
+		enviarMessage(hello);
+		destiPeer.getNetwork().setStatusOnline(true);
+		System.out.printf("Atualizando peer %s status ONLINE\n", destiPeer);
+	}
 
+	public void obterVizinhos() {
+		for (Peer vizinho : PeerLocal.getNetwork().getVizinhos()) {
+			Message getPeers = new Message(PeerLocal, vizinho, MessageType.GET_PEERS,
+					PeerLocal.getNetwork().incrementarClock());
+			enviarMessage(getPeers);
+		}
+	}
 
-    public void iniciarConexao(Peer no) {
-        try {
-            no.getRede().setServerSocket(new ServerSocket(no.getRede().getPorta()));
-        } catch (IOException e) {
-            System.err.println(ERRO_AO_INICIAR_SERVIDOR + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
+	public void listarArquivosLocais() {
+		File[] arquivos = pastaCompartilhada.listFiles();
+		if (arquivos == null)
+			return;
+		for (File arquivo : arquivos) {
+			if (arquivo.isFile()) {
+				System.out.println(arquivo.getName());
+			}
+		}
+	}
 
-    public void atualizarParaMaiorClock(Rede redeLocal, Mensagem mensagemRecebida) {
-    	Integer maiorClock = Integer.max(mensagemRecebida.getClock(), redeLocal.getClock());
-    	maiorClock++;
+	public void encerrar() {
+		rodando = false;
+		try {
+			if (servidor != null)
+				servidor.close();
+		} catch (IOException igPeerred) {
+		}
+	}
 
-    	redeLocal.setClock(maiorClock);
-    	System.out.print(ATUALIZANDO_RELOGIO_PARA + maiorClock);
-    }
+	// Networking
+	private void iniciarServidor() {
+		new Thread(() -> {
+			try {
+				servidor = new ServerSocket(PeerLocal.getNetwork().getPorta());
+				while (rodando) {
+					Socket socket = servidor.accept();
+					new Thread(new CommunicationThread(socket, PeerLocal)).start();
+				}
+			} catch (IOException e) {
+				if (rodando)
+					System.err.println("Erro Peer servidor: " + e.getMessage());
+			}
+		}).start();
+	}
 
-
-    public void listarVizinhos(Rede rede) {
-        int iterador = 1;
-        for (Peer vizinho : rede.getVizinhos()) {
-            System.out.printf("\t[%d] %s:%s %s\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta(), vizinho.getRede().getStatus());
-            iterador++;
-        }
-    }
-
-
-    public boolean enviarMensagem(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
-        mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeEnviadas());
-        this.caixaMensagensService.adicionarNovaMensagemEnviada(mensagemEnviada, caixaMensagens);
-        System.out.print(mensagemService.encaminhandoMensagem(mensagemEnviada));
-        try (
-        	Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
-                                        mensagemEnviada.getDestino().getRede().getPorta())) {
-
-            OutputStream output = socket.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
-
-            writer.println(mensagemEnviada.toString());
-            return true;
-        } catch (IOException e) {
-        	return false;
-        }
-    }
-    
-
-    public void adicionarVizinho(Peer novoNo, List<Peer> vizinhos) {
-    	String enderecoBuscado = novoNo.getRede().getEnderecoIP();
-    	Integer portaBuscada = novoNo.getRede().getPorta();
-
-    	for (Peer vizinho : vizinhos) {
-    	    if (enderecoBuscado.equals(vizinho.getRede().getEnderecoIP()) &&
-    	        portaBuscada.equals(vizinho.getRede().getPorta())) {
-
-    	        if (!vizinho.getRede().getStatus().equals(novoNo.getRede().getStatus()) &&
-    	            novoNo.getRede().getStatus() == Status.ONLINE) {
-    	        	vizinho.getRede().setStatus(Status.ONLINE);
-    	            System.out.print(peerAtualizado(novoNo.getRede()));
-    	        }
-    	        return;
-    	    }
-    	}
-
-    	vizinhos.add(novoNo);
-    	System.out.print(peerAtualizado(novoNo.getRede()));
-    	}
-    
-
-    public void pararEscuta(Rede rede) {
-        rede.setRunning(false);
-        try {
-            rede.getServerSocket().close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    
-    public String getEnderecoIP(Rede rede) {
-    	return rede.getEnderecoIP();
-    }
-    
-    
-    public Integer getPorta(Rede rede) {
-    	return rede.getPorta();
-    }
-    
-    
-    public List<Peer> getVizinhos(Rede rede) {
-    	return rede.getVizinhos();
-    }
+	private void enviarMessage(Message  message) {
+		Peer destiPeer =  message.getDestino();
+		try (Socket socket = new Socket(destiPeer.getNetwork().getEndereco(), destiPeer.getNetwork().getPorta());
+				PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
+			writer.println( message.toProtocolString());
+		} catch (IOException e) {
+			System.err.printf("Falha ao enviar  message para %s: %s\n", destiPeer, e.getMessage());
+			destiPeer.getNetwork().setStatusOnline(false);
+		}
+	}
 }
