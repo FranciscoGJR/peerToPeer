@@ -12,7 +12,7 @@ public class Constantes {
 	public static final String OPCAO_EXIBIR_ESTATISTICAS = "\t[5] Exibir Estatísticas";
 	public static final String OPCAO_ALTERAR_CHUNK = "\t[6] Alterar tamanho de chunk";
 	public static final String OPCAO_SAIR = "\t[9] Sair";
-	public static final String ATUALIZANDO_RELOGIO_PARA = "\n\t=> Atualizando relogio para";
+	public static final String ATUALIZANDO_RELOGIO_PARA = "\n\t=> Atualizando relogio para ";
 
 	
     public static final String MENU_COMPLETO = new StringBuilder()
