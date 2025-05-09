@@ -68,6 +68,7 @@ public class ThreadComunicacao implements Runnable{
             if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
             	List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
             	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
+            	this.no.getRede().incrementarClock();
             	this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
             }
             
