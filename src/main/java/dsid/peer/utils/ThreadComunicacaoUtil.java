@@ -1,6 +1,6 @@
-package dsid.peerToPeer.utils;
+package dsid.peer.utils;
 
-import static dsid.peerToPeer.utils.Constantes.MENSAGEM_RECEBIDA;
+import static dsid.peer.utils.Constantes.MENSAGEM_RECEBIDA;
 
 public class ThreadComunicacaoUtil {
 

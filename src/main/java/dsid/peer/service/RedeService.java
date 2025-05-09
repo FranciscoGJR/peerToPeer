@@ -1,8 +1,8 @@
-package dsid.peerToPeer.service;
+package dsid.peer.service;
 
-import static dsid.peerToPeer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
-import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
-import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
+import static dsid.peer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
+import static dsid.peer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
+import static dsid.peer.utils.MensagemUtil.peerAtualizado;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,11 +11,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.model.rede.CaixaDeMensagens;
-import dsid.peerToPeer.model.rede.Mensagem;
-import dsid.peerToPeer.model.rede.Rede;
-import dsid.peerToPeer.utils.Status;
+import dsid.peer.model.Peer;
+import dsid.peer.model.rede.CaixaDeMensagens;
+import dsid.peer.model.rede.Mensagem;
+import dsid.peer.model.rede.Rede;
+import dsid.peer.utils.Status;
 
 public class RedeService {
 

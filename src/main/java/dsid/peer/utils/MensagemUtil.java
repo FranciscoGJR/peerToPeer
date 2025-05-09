@@ -1,20 +1,20 @@
-package dsid.peerToPeer.utils;
+package dsid.peer.utils;
 
-import static dsid.peerToPeer.utils.Constantes.DOIS;
-import static dsid.peerToPeer.utils.Constantes.ESPACO_EM_BRANCO;
-import static dsid.peerToPeer.utils.Constantes.GET_PEERS;
-import static dsid.peerToPeer.utils.Constantes.HELLO;
-import static dsid.peerToPeer.utils.Constantes.PEER_LIST;
-import static dsid.peerToPeer.utils.Constantes.STRING_VAZIA;
-import static dsid.peerToPeer.utils.Constantes.UM;
-import static dsid.peerToPeer.utils.Constantes.ZERO;
+import static dsid.peer.utils.Constantes.DOIS;
+import static dsid.peer.utils.Constantes.ESPACO_EM_BRANCO;
+import static dsid.peer.utils.Constantes.GET_PEERS;
+import static dsid.peer.utils.Constantes.HELLO;
+import static dsid.peer.utils.Constantes.PEER_LIST;
+import static dsid.peer.utils.Constantes.STRING_VAZIA;
+import static dsid.peer.utils.Constantes.UM;
+import static dsid.peer.utils.Constantes.ZERO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.model.rede.Mensagem;
-import dsid.peerToPeer.model.rede.Rede;
+import dsid.peer.model.Peer;
+import dsid.peer.model.rede.Mensagem;
+import dsid.peer.model.rede.Rede;
 
 public class MensagemUtil {
 	

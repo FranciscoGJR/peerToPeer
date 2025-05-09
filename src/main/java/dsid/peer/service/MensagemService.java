@@ -1,15 +1,15 @@
-package dsid.peerToPeer.service;
+package dsid.peer.service;
 
-import static dsid.peerToPeer.utils.Constantes.ENCAMINHANDO_MENSAGEM;
-import static dsid.peerToPeer.utils.Constantes.PARA;
-import static dsid.peerToPeer.utils.MensagemUtil.desserializarArgumentoListPeer;
+import static dsid.peer.utils.Constantes.ENCAMINHANDO_MENSAGEM;
+import static dsid.peer.utils.Constantes.PARA;
+import static dsid.peer.utils.MensagemUtil.desserializarArgumentoListPeer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.model.rede.Mensagem;
-import dsid.peerToPeer.model.rede.Rede;
+import dsid.peer.model.Peer;
+import dsid.peer.model.rede.Mensagem;
+import dsid.peer.model.rede.Rede;
 
 public class MensagemService {
 	

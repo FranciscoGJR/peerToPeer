@@ -1,29 +1,29 @@
-package dsid.peerToPeer.controller;
+package dsid.peer.controller;
 
-import static dsid.peerToPeer.utils.Constantes.ALTERAR_CHUNK;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_ARQUIVOS;
-import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_PEERS;
-import static dsid.peerToPeer.utils.Constantes.LISTA_DE_PEERS;
-import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
-import static dsid.peerToPeer.utils.Constantes.MIL;
-import static dsid.peerToPeer.utils.Constantes.OBTER_PEERS;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
-import static dsid.peerToPeer.utils.Constantes.SAIR;
-import static dsid.peerToPeer.utils.Constantes.TRES;
-import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
-import static dsid.peerToPeer.utils.Status.ONLINE;
+import static dsid.peer.utils.Constantes.ALTERAR_CHUNK;
+import static dsid.peer.utils.Constantes.BUSCAR_ARQUIVOS;
+import static dsid.peer.utils.Constantes.EXIBIR_ESTATISTICAS;
+import static dsid.peer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
+import static dsid.peer.utils.Constantes.LISTAR_PEERS;
+import static dsid.peer.utils.Constantes.LISTA_DE_PEERS;
+import static dsid.peer.utils.Constantes.MENU_COMPLETO;
+import static dsid.peer.utils.Constantes.MIL;
+import static dsid.peer.utils.Constantes.OBTER_PEERS;
+import static dsid.peer.utils.Constantes.OPCAO_INVALIDA;
+import static dsid.peer.utils.Constantes.OPCAO_VOLTAR_MENU;
+import static dsid.peer.utils.Constantes.SAIR;
+import static dsid.peer.utils.Constantes.TRES;
+import static dsid.peer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
+import static dsid.peer.utils.Status.ONLINE;
 
 import java.io.File;
 import java.util.Scanner;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.model.rede.Mensagem;
-import dsid.peerToPeer.service.RedeService;
-import dsid.peerToPeer.utils.Status;
-import dsid.peerToPeer.utils.TipoMensagemEnum;
+import dsid.peer.model.Peer;
+import dsid.peer.model.rede.Mensagem;
+import dsid.peer.service.RedeService;
+import dsid.peer.utils.Status;
+import dsid.peer.utils.TipoMensagemEnum;
 
 public class Console {
 

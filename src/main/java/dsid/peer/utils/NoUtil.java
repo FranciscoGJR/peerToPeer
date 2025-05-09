@@ -1,8 +1,8 @@
-package dsid.peerToPeer.utils;
+package dsid.peer.utils;
 
-import static dsid.peerToPeer.utils.Constantes.NULL;
-import static dsid.peerToPeer.utils.Constantes.UM;
-import static dsid.peerToPeer.utils.Constantes.ZERO;
+import static dsid.peer.utils.Constantes.NULL;
+import static dsid.peer.utils.Constantes.UM;
+import static dsid.peer.utils.Constantes.ZERO;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
+import dsid.peer.model.Peer;
 
 public class NoUtil {
 

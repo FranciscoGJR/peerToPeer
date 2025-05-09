@@ -1,12 +1,12 @@
-package dsid.peerToPeer.model.rede;
+package dsid.peer.model.rede;
 
-import static dsid.peerToPeer.utils.MensagemUtil.formartarArgumentos;
+import static dsid.peer.utils.MensagemUtil.formartarArgumentos;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.utils.TipoMensagemEnum;
+import dsid.peer.model.Peer;
+import dsid.peer.utils.TipoMensagemEnum;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package dsid.peerToPeer.model;
+package dsid.peer.model;
 
 public class Network {
 

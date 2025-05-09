@@ -1,44 +1,33 @@
-package dsid.peerToPeer;
-import static dsid.peerToPeer.utils.Constantes.DOIS;
-import static dsid.peerToPeer.utils.Constantes.ERRO_NA_LEITURA_DO_DIRETORIO;
-import static dsid.peerToPeer.utils.Constantes.UM;
-import static dsid.peerToPeer.utils.Constantes.ZERO;
-import static dsid.peerToPeer.utils.MensagemUtil.getEndereco;
-import static dsid.peerToPeer.utils.MensagemUtil.getPorta;
+package dsid.peer;
 
 import java.io.File;
 import java.util.List;
 
-import dsid.peerToPeer.controller.Console;
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.utils.NoUtil;
+import dsid.peer.model.Peer;
+import dsid.peer.util.PeerFileUtil;
+
 public class Main {
-	
-	static NoUtil noUtil = new NoUtil();
+	public static void main(String[] args) {
+		if (args.length < 3) {
+			System.out.println("Usage: java Main <address:port> <neighbors.txt> <shared_directory>");
+			return;
+		}
 
-    public static void main(String[] args) {
-    	
-    	String argumento0 = (args[ZERO] != null) ? args[ZERO] : null;
-    	String argumento1 = (args[UM] != null) ? args[UM] : null;
-    	String argumento2 = (args[DOIS] != null) ? args[DOIS] : null;
-    	
-    	String endereco = getEndereco(argumento0);
-    	Integer porta = getPorta(argumento0);
-    	String arquivoVizinhos = argumento1;
-    	String diretorioCompartilhado = argumento2;
-    	
-    	List<Peer> vizinhos = noUtil.decoderListaVizinhos(arquivoVizinhos);
-    	
-    	Peer no = new Peer(endereco, porta, vizinhos);
+		String addressPort = args[0];
+		String neighborsFile = args[1];
+		String sharedDir = args[2];
 
-        File diretorio = new File(diretorioCompartilhado);
-        if (!diretorio.exists() || !diretorio.isDirectory()) {
-            System.err.println(ERRO_NA_LEITURA_DO_DIRETORIO);
-            return;
-        }
-        
-    	Console interfaceUsuario = new Console(no, diretorioCompartilhado);
-    	interfaceUsuario.iniciar(no);
-    }	
+		List<Peer> neighbors = PeerFileUtil.parseNeighbors(neighborsFile);
+		Peer localPeer = new Peer(addressPort, neighbors);
+		File sharedDirectory = new File(sharedDir);
 
+		if (!sharedDirectory.exists() || !sharedDirectory.isDirectory()) {
+        	System.err.println("Error: Shared directory does not exist or is not a valid directory.");
+        return;
+		}
+
+		PeerService peerService = new PeerService(localPeer, sharedDirectory);
+		PeerConsoleUI ui = new PeerConsoleUI(peerService);
+		ui.start();
+	}
 }

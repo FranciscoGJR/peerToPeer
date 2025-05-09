@@ -1,10 +1,10 @@
-package dsid.peerToPeer.model.rede;
-import static dsid.peerToPeer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
-import static dsid.peerToPeer.utils.MensagemUtil.serializarMensagem;
-import static dsid.peerToPeer.utils.Status.ONLINE;
-import static dsid.peerToPeer.utils.TipoMensagemEnum.GET_PEERS;
-import static dsid.peerToPeer.utils.TipoMensagemEnum.HELLO;
-import static dsid.peerToPeer.utils.TipoMensagemEnum.PEER_LIST;
+package dsid.peer.model.rede;
+import static dsid.peer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
+import static dsid.peer.utils.MensagemUtil.serializarMensagem;
+import static dsid.peer.utils.Status.ONLINE;
+import static dsid.peer.utils.TipoMensagemEnum.GET_PEERS;
+import static dsid.peer.utils.TipoMensagemEnum.HELLO;
+import static dsid.peer.utils.TipoMensagemEnum.PEER_LIST;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,12 +15,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.Peer;
-import dsid.peerToPeer.service.MensagemService;
-import dsid.peerToPeer.service.RedeService;
-import dsid.peerToPeer.utils.Status;
-import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
-import dsid.peerToPeer.utils.TipoMensagemEnum;
+import dsid.peer.model.Peer;
+import dsid.peer.service.MensagemService;
+import dsid.peer.service.RedeService;
+import dsid.peer.utils.Status;
+import dsid.peer.utils.ThreadComunicacaoUtil;
+import dsid.peer.utils.TipoMensagemEnum;
 import lombok.Data;
 
 @Data
