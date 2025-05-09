@@ -1,4 +1,4 @@
-package dsid.peerToPeer.utils;
+package dsid.peer.utils;
 
 public class Constantes {
 	

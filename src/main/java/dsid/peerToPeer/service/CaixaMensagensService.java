@@ -1,7 +1,7 @@
-package dsid.peerToPeer.service;
+package dsid.peer.service;
 
-import dsid.peerToPeer.model.rede.CaixaDeMensagens;
-import dsid.peerToPeer.model.rede.Mensagem;
+import dsid.peer.model.rede.CaixaDeMensagens;
+import dsid.peer.model.rede.Mensagem;
 
 public class CaixaMensagensService {
 

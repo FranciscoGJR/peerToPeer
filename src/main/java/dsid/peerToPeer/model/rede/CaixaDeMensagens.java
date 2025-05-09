@@ -1,4 +1,4 @@
-package dsid.peerToPeer.model.rede;
+package dsid.peer.model.rede;
 
 import java.util.HashMap;
 import lombok.Data;

@@ -1,9 +1,9 @@
-package dsid.peerToPeer.model;
+package dsid.peer.model;
 
 import java.util.List;
 
-import dsid.peerToPeer.model.rede.Rede;
-import dsid.peerToPeer.utils.Status;
+import dsid.peer.model.rede.Rede;
+import dsid.peer.utils.Status;
 import lombok.Data;
 
 @Data

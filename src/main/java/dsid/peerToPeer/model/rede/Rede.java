@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/main/java/dsid/peerToPeer/model/rede/Rede.java
 package dsid.peerToPeer.model.rede;
 import static dsid.peerToPeer.utils.Constantes.ERRO_ACEITAR_CONECAO;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
@@ -90,3 +91,5 @@ public class Rede {
     }
 
 }
+=======
+>>>>>>> Stashed changes:src/main/java/dsid/peer/model/rede/Rede.java

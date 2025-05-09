@@ -1,10 +1,16 @@
-package dsid.peerToPeer.service;
+package dsid.peer.service;
 
+<<<<<<< Updated upstream:src/main/java/dsid/peerToPeer/service/RedeService.java
 import static dsid.peerToPeer.utils.Constantes.DOIS;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.MensagemUtil.peerAdicionado;
 import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
 import static dsid.peerToPeer.utils.ThreadComunicacaoUtil.esperaEmSegundos;
+=======
+import static dsid.peer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
+import static dsid.peer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
+import static dsid.peer.utils.MensagemUtil.peerAtualizado;
+>>>>>>> Stashed changes:src/main/java/dsid/peer/service/RedeService.java
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,10 +19,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+<<<<<<< Updated upstream:src/main/java/dsid/peerToPeer/service/RedeService.java
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
+=======
+import dsid.peer.model.Peer;
+import dsid.peer.model.rede.CaixaDeMensagens;
+import dsid.peer.model.rede.Mensagem;
+import dsid.peer.model.rede.Rede;
+import dsid.peer.utils.Status;
+>>>>>>> Stashed changes:src/main/java/dsid/peer/service/RedeService.java
 
 public class RedeService {
 
