@@ -100,9 +100,9 @@ public class Console {
 
 
     private void enviarGetPeers() {
-    	for (No noDestinatario : this.no.getRede().getVizinhos()) {
+    	for (No vizinho : this.no.getRede().getVizinhos()) {
     		this.no.getRede().incrementarClock();
-    		Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.GET_PEERS);
+    		Mensagem mensagem = new Mensagem(this.no, vizinho, TipoMensagemEnum.GET_PEERS);
 
     		this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	}

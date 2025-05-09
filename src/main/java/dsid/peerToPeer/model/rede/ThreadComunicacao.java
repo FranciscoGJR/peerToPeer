@@ -1,4 +1,5 @@
 package dsid.peerToPeer.model.rede;
+
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_COMUNICAR_COM_VIZINHO;
 import static dsid.peerToPeer.utils.MensagemUtil.serializarMensagem;
 import static dsid.peerToPeer.utils.Status.ONLINE;

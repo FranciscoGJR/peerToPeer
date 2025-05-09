@@ -6,5 +6,6 @@ public enum TipoMensagemEnum {
     PEER_LIST,
     FLOODING,
     RANDOM_WALK,
+    BYE,
     PROFUNDIDADE;
 }

@@ -15,6 +15,7 @@ import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
+import dsid.peerToPeer.utils.MensagemUtil;
 import dsid.peerToPeer.utils.Status;
 
 public class RedeService {
@@ -51,7 +52,7 @@ public class RedeService {
     public void listarVizinhos(Rede rede) {
         int iterador = 1;
         for (No vizinho : rede.getVizinhos()) {
-            System.out.printf("\t[%d] %s:%s %s\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta(), vizinho.getRede().getStatus());
+            System.out.printf("\t[%d] %s:%s %s %d\n", iterador, vizinho.getRede().getEnderecoIP(), vizinho.getRede().getPorta(), vizinho.getRede().getStatus(), vizinho.getRede().getClock());
             iterador++;
         }
     }

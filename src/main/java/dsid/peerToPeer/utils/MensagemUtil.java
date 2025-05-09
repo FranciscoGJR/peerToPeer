@@ -50,7 +50,7 @@ public class MensagemUtil {
         List<String> argumentos = getArgumentos(mensagemEmTexto);
         return new Mensagem(new No(edereco, porta, clock), null, tipoMensagem, argumentos);
 	}
-
+	
 
 	public static TipoMensagemEnum getTipoMensagem(String mensagemCompleta) {
 		String[] tokens = mensagemCompleta.split(" ");
