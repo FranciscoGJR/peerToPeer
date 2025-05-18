@@ -16,6 +16,8 @@ import lombok.Data;
 
 @Data
 public class Rede {
+	
+	private No noPrincipal;
 
     private ServerSocket serverSocket;
 
@@ -86,7 +88,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens, this.diretorioCompartilhado).run();
+                    new ThreadComunicacao(novoSocket, this.noPrincipal, this.vizinhos, this.caixaDeMensagens, this.diretorioCompartilhado).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);

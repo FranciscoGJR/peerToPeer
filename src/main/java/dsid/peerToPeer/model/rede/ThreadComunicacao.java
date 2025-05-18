@@ -75,8 +75,8 @@ public class ThreadComunicacao implements Runnable{
             
             if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
             	List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
-            	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
             	this.no.getRede().incrementarClock();
+            	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
             	this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
             }
             
@@ -107,9 +107,9 @@ public class ThreadComunicacao implements Runnable{
                     if (f.isFile())
                         argumentos.add(f.getName() + ":" + f.length());
                 }
-                Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.LS_LIST, argumentos);
                 this.no.getRede().incrementarClock();
-                enviarResposta(resposta.toString());
+                Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.LS_LIST, argumentos);
+                this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
                 return;
             }
 

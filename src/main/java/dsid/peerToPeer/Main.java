@@ -30,6 +30,7 @@ public class Main {
     	List<No> vizinhos = noUtil.decoderListaVizinhos(arquivoVizinhos);
     	
     	No no = new No(endereco, porta, vizinhos, diretorioCompartilhado);
+    	no.getRede().setNoPrincipal(no);
 
         File diretorio = new File(diretorioCompartilhado);
         if (!diretorio.exists() || !diretorio.isDirectory()) {
