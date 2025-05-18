@@ -4,7 +4,10 @@ import static dsid.peerToPeer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
 import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
 import static dsid.peerToPeer.utils.MensagemUtil.peerAtualizado;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -75,6 +78,32 @@ public class RedeService {
         	return false;
         }
     }
+    
+    
+    public Mensagem enviarMensagemEsperandoResposta(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
+    	mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeEnviadas());
+    	this.caixaMensagensService.adicionarNovaMensagemEnviada(mensagemEnviada, caixaMensagens);
+    	System.out.print(mensagemService.encaminhandoMensagem(mensagemEnviada));
+    	try (
+    	    Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
+    	                               mensagemEnviada.getDestino().getRede().getPorta())) {
+
+    	    OutputStream output = socket.getOutputStream();
+    	    PrintWriter writer = new PrintWriter(output, true);
+
+    	    writer.println(mensagemEnviada.toString());
+
+    	    // Aguarda resposta
+    	    InputStream input = socket.getInputStream();
+    	    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+    	    String respostaTexto = reader.readLine();
+    	    if (respostaTexto != null) {
+    	        return MensagemUtil.serializarMensagem(respostaTexto);
+    	    }
+    	} catch (IOException e) {
+    	}
+    	return null;
+    	}
     
 
     public void adicionarVizinho(No novoNo, List<No> vizinhos) {

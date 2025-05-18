@@ -11,8 +11,8 @@ public class No {
 	
 	private Rede rede;
 
-	public No(String endereco, Integer porta, List<No> vizinhos) {
-		this.rede = new Rede(endereco, porta, vizinhos);
+	public No(String endereco, Integer porta, List<No> vizinhos, String diretorioCompartilhado) {
+		this.rede = new Rede(endereco, porta, vizinhos, diretorioCompartilhado);
 	}
 
     // Construtor para classe No de um vizinho

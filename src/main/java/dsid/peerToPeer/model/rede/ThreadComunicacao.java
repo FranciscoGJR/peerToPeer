@@ -8,12 +8,17 @@ import static dsid.peerToPeer.utils.TipoMensagemEnum.HELLO;
 import static dsid.peerToPeer.utils.TipoMensagemEnum.PEER_LIST;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import dsid.peerToPeer.model.No;
@@ -38,12 +43,15 @@ public class ThreadComunicacao implements Runnable{
 	private List<No> vizinhos;
 
     private CaixaDeMensagens caixaDeMensagens;
-	
-    public ThreadComunicacao(Socket socket, No no, List<No> vizinhos, CaixaDeMensagens caixaDeMensagens) {
+    
+    private String diretorioCompartilhado;
+
+    public ThreadComunicacao(Socket socket, No no, List<No> vizinhos, CaixaDeMensagens caixaDeMensagens, String diretorioCompartilhado) {
         this.socket = socket;
         this.no = no;
         this.vizinhos = vizinhos;
         this.caixaDeMensagens = caixaDeMensagens;
+        this.diretorioCompartilhado = diretorioCompartilhado;
     }
     
 
@@ -84,6 +92,37 @@ public class ThreadComunicacao implements Runnable{
 
             		this.redeService.adicionarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
             	}
+            }
+            
+            if (mensagemRecebida.getTipo().equals(TipoMensagemEnum.LS)) {
+                File dir = new File(this.diretorioCompartilhado);
+                File[] arquivos = dir.listFiles();
+                List<String> argumentos = new ArrayList();
+                int count = 0;
+                for (File f : arquivos) {
+                    if (f.isFile()) count++;
+                }
+                argumentos.add(String.valueOf(count));
+                for (File f : arquivos) {
+                    if (f.isFile())
+                        argumentos.add(f.getName() + ":" + f.length());
+                }
+                Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.LS_LIST, argumentos);
+                this.no.getRede().incrementarClock();
+                enviarResposta(resposta.toString());
+                return;
+            }
+
+            if (mensagemRecebida.getTipo().equals(TipoMensagemEnum.DL)) {
+                String nomeArquivo = mensagemRecebida.getArgumentos().get(0);
+                File file = new File(this.diretorioCompartilhado, nomeArquivo);
+                byte[] conteudo = Files.readAllBytes(file.toPath());
+                String base64 = Base64.getEncoder().encodeToString(conteudo);
+                List<String> argumentos = Arrays.asList(nomeArquivo, "0", "0", base64);
+                Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
+                this.no.getRede().incrementarClock();
+                enviarResposta(resposta.toString());
+                return;
             }
 
             fecharConexao();

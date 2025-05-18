@@ -17,14 +17,14 @@ import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.model.rede.Rede;
 
 public class MensagemUtil {
-	
+
 	public static void exibirMensagemPeerAtualizado(Mensagem mensagemEnviada) {
 		String enderecoIP = mensagemEnviada.getDestino().getRede().getEnderecoIP();
 		Integer porta = mensagemEnviada.getDestino().getRede().getPorta();
 		Status status = mensagemEnviada.getDestino().getRede().getStatus();
 		System.out.print("\n\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
 	}
-	
+
 	
 	public static String peerAtualizado(Rede rede) {
 		String enderecoIP = rede.getEnderecoIP();
@@ -32,8 +32,8 @@ public class MensagemUtil {
 		Status status = rede.getStatus();
 		return new String("\n\tAtualizando peer " + enderecoIP + ":" + porta + " status " + status);
 	}
-	
 
+	
 	public static String desserializarArgumentoListPeer(Rede rede) {
 		String endereco = rede.getEnderecoIP();
 		String porta = String.valueOf(rede.getPorta());
@@ -43,73 +43,78 @@ public class MensagemUtil {
 
 	
 	public static Mensagem serializarMensagem(String mensagemEmTexto) {
-        String edereco = getEndereco(getEnderecoEPorta(mensagemEmTexto));
-        Integer porta = getPorta(getEnderecoEPorta(mensagemEmTexto));
-        Integer clock = getClock(mensagemEmTexto);
-        TipoMensagemEnum tipoMensagem = getTipoMensagem(mensagemEmTexto);
-        List<String> argumentos = getArgumentos(mensagemEmTexto);
-        return new Mensagem(new No(edereco, porta, clock), null, tipoMensagem, argumentos);
+		String edereco = getEndereco(getEnderecoEPorta(mensagemEmTexto));
+		Integer porta = getPorta(getEnderecoEPorta(mensagemEmTexto));
+		Integer clock = getClock(mensagemEmTexto);
+		TipoMensagemEnum tipoMensagem = getTipoMensagem(mensagemEmTexto);
+		List<String> argumentos = getArgumentos(mensagemEmTexto);
+		return new Mensagem(new No(edereco, porta, clock), null, tipoMensagem, argumentos);
 	}
-	
 
+	
 	public static TipoMensagemEnum getTipoMensagem(String mensagemCompleta) {
 		String[] tokens = mensagemCompleta.split(" ");
 		switch (tokens[DOIS]) {
-        	case HELLO:
-        		return TipoMensagemEnum.HELLO;
-        	case GET_PEERS:
-        		return TipoMensagemEnum.GET_PEERS;
-        	case PEER_LIST:
-        		return TipoMensagemEnum.PEER_LIST;
+		case HELLO:
+			return TipoMensagemEnum.HELLO;
+		case GET_PEERS:
+			return TipoMensagemEnum.GET_PEERS;
+		case PEER_LIST:
+			return TipoMensagemEnum.PEER_LIST;
+		case "LS":
+			return TipoMensagemEnum.LS;
+		case "LS_LIST":
+			return TipoMensagemEnum.LS_LIST;
+		case "DL":
+			return TipoMensagemEnum.DL;
+		case "FILE":
+			return TipoMensagemEnum.FILE;
 		}
-		
 		return null;
 	}
-
+	
 
 	public static String getEnderecoEPorta(String mensagemCompleta) {
 		String[] tokens = mensagemCompleta.split(" ");
 		return tokens[ZERO];
 	}
-	
 
 	public static Integer getClock(String mensagemCompleta) {
 		String[] tokens = mensagemCompleta.split(" ");
 		return Integer.valueOf(tokens[UM]);
 	}
 
-
 	public static String getEndereco(String enderecoEPorta) {
-    	String[] partes = enderecoEPorta.split(":");
-    	return partes[ZERO];
-    }
-    
-    
-    public static Integer getPorta(String enderecoEPorta) {
-    	String[] partes = enderecoEPorta.split(":");
-    	return Integer.parseInt(partes[UM]);
-    }
-    
-    
-    public static String formartarArgumentos(No origem, List<String> argumentos) {
-    	if (argumentos.size() == ZERO) {
-    		return STRING_VAZIA;
-    	}
+		String[] partes = enderecoEPorta.split(":");
+		return partes[ZERO];
+	}
 
-    	String retorno = new String(ESPACO_EM_BRANCO + argumentos.get(ZERO) + ESPACO_EM_BRANCO);
-    	for (int iterador = 1; iterador < argumentos.size(); iterador++) {
-    		retorno = retorno + argumentos.get(iterador) + ESPACO_EM_BRANCO;
-    	}
-    	return retorno;
-    }
-    
-    public static List<String> getArgumentos(String mensagemCompleta) {
-    	List<String> retorno = new ArrayList<>();
+	public static Integer getPorta(String enderecoEPorta) {
+		String[] partes = enderecoEPorta.split(":");
+		return Integer.parseInt(partes[UM]);
+	}
+
+	
+	public static String formartarArgumentos(No origem, List<String> argumentos) {
+		if (argumentos.size() == ZERO) {
+			return STRING_VAZIA;
+		}
+
+		String retorno = new String(ESPACO_EM_BRANCO + argumentos.get(ZERO) + ESPACO_EM_BRANCO);
+		for (int iterador = 1; iterador < argumentos.size(); iterador++) {
+			retorno = retorno + argumentos.get(iterador) + ESPACO_EM_BRANCO;
+		}
+		return retorno;
+	}
+
+	
+	public static List<String> getArgumentos(String mensagemCompleta) {
+		List<String> retorno = new ArrayList<>();
 		String[] tokens = mensagemCompleta.split(" ");
 		for (int iterador = 3; iterador < tokens.length; iterador++) {
 			retorno.add(tokens[iterador]);
 		}
-    	return retorno;
-    }
-    
+		return retorno;
+	}
+
 }

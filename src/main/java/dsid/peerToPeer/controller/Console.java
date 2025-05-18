@@ -17,6 +17,14 @@ import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
 import static dsid.peerToPeer.utils.Status.ONLINE;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 import java.util.Scanner;
 
 import dsid.peerToPeer.model.No;
@@ -68,6 +76,7 @@ public class Console {
                 	this.listarArquivosLocais();
                     break;
                 case BUSCAR_ARQUIVOS:
+                	buscarArquivos();
                     break;
                 case EXIBIR_ESTATISTICAS:
                     break;
@@ -106,6 +115,76 @@ public class Console {
 
     		this.redeService.enviarMensagem(mensagem, this.no.getRede().getCaixaDeMensagens());
     	}
+    }
+    
+    
+    private void buscarArquivos() {
+        List<ArquivoDisponivel> arquivosEncontrados = new ArrayList();
+        for (No vizinho : this.no.getRede().getVizinhos()) {
+            if (vizinho.getRede().getStatus() == Status.ONLINE) {
+                this.no.getRede().incrementarClock();
+                Mensagem msg = new Mensagem(this.no, vizinho, TipoMensagemEnum.LS);
+                Mensagem resposta = redeService.enviarMensagemEsperandoResposta(msg, this.no.getRede().getCaixaDeMensagens());
+                if (resposta != null && resposta.getTipo() == TipoMensagemEnum.LS_LIST) {
+                    int qtd = Integer.parseInt(resposta.getArgumentos().get(0));
+                    for (int i = 1; i <= qtd; i++) {
+                        String[] tokens = resposta.getArgumentos().get(i).split(":");
+                        String nome = tokens[0];
+                        long tamanho = Long.parseLong(tokens[1]);
+                        arquivosEncontrados.add(new ArquivoDisponivel(nome, tamanho, vizinho));
+                    }
+                }
+            }
+        }
+        exibirMenuArquivos(arquivosEncontrados);
+    }
+
+    private void exibirMenuArquivos(List<ArquivoDisponivel> arquivos) {
+        System.out.println("Arquivos encontrados na rede:");
+        System.out.println("Nome | Tamanho | Peer");
+        System.out.println("[ 0] <Cancelar> | |");
+        int idx = 1;
+        for (ArquivoDisponivel arq : arquivos) {
+            System.out.printf("[%2d] %s | %d | %s:%d\n", idx, arq.nome, arq.tamanho, arq.peer.getRede().getEnderecoIP(), arq.peer.getRede().getPorta());
+            idx++;
+        }
+        System.out.print("Digite o numero do arquivo para fazer o download:\n> ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+        if (opcao > 0 && opcao <= arquivos.size()) {
+            baixarArquivo(arquivos.get(opcao - 1));
+        }
+    }
+
+    private void baixarArquivo(ArquivoDisponivel arq) {
+        this.no.getRede().incrementarClock();
+        List<String> args = Arrays.asList(arq.nome, "0", "0");
+        Mensagem dlMsg = new Mensagem(this.no, arq.peer, TipoMensagemEnum.DL, args);
+        Mensagem resposta = redeService.enviarMensagemEsperandoResposta(dlMsg, this.no.getRede().getCaixaDeMensagens());
+        if (resposta != null && resposta.getTipo() == TipoMensagemEnum.FILE) {
+            String nome = resposta.getArgumentos().get(0);
+            String conteudoBase64 = resposta.getArgumentos().get(3);
+            byte[] conteudo = Base64.getDecoder().decode(conteudoBase64);
+            Path path = Paths.get(diretorioCompartilhado, nome);
+            try {
+                Files.write(path, conteudo);
+                System.out.println("Download do arquivo " + nome + " finalizado.");
+            } catch (IOException e) {
+                System.err.println("Erro ao salvar arquivo: " + e.getMessage());
+            }
+        }
+    }
+
+    public static class ArquivoDisponivel {
+        String nome;
+        long tamanho;
+        No peer;
+
+        public ArquivoDisponivel(String nome, long tamanho, No peer) {
+            this.nome = nome;
+            this.tamanho = tamanho;
+            this.peer = peer;
+        }
     }
     
     

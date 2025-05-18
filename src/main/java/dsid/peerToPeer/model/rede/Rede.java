@@ -30,17 +30,20 @@ public class Rede {
     private CaixaDeMensagens caixaDeMensagens;
 
     private Status status = Status.ONLINE;
+    
+	private String diretorioCompartilhado;
 
     private volatile boolean running = true;
 
 
-    public Rede(String enderecoIP, Integer porta, List<No> vizinhos) {
+    public Rede(String enderecoIP, Integer porta, List<No> vizinhos, String diretorioCompartilhado) {
         this.enderecoIP = enderecoIP;
         this.porta = porta;
         this.clock = ZERO;
         this.vizinhos = vizinhos;
         this.caixaDeMensagens = new CaixaDeMensagens();
         this.status = Status.ONLINE;
+        this.diretorioCompartilhado = diretorioCompartilhado;
         this.iniciarConexao();
         this.threadEscuta();
     }
@@ -83,7 +86,7 @@ public class Rede {
             while (running) {
                 try {
                     Socket novoSocket = serverSocket.accept();
-                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens).run();
+                    new ThreadComunicacao(novoSocket, new No(this.enderecoIP, this.porta, this.clock), this.vizinhos, this.caixaDeMensagens, this.diretorioCompartilhado).run();
                 } catch (IOException e) {
                     if (!running) {
                         System.out.println(SOCKET_ENCERRADO);
