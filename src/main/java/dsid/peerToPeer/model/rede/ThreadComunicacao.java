@@ -109,7 +109,7 @@ public class ThreadComunicacao implements Runnable{
                 }
                 this.no.getRede().incrementarClock();
                 Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.LS_LIST, argumentos);
-                this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
+                enviarResposta(mensagemDeResposta);
                 return;
             }
 
@@ -121,7 +121,7 @@ public class ThreadComunicacao implements Runnable{
                 List<String> argumentos = Arrays.asList(nomeArquivo, "0", "0", base64);
                 Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
                 this.no.getRede().incrementarClock();
-                enviarResposta(resposta.toString());
+                enviarResposta(resposta);
                 return;
             }
 
@@ -167,10 +167,11 @@ public class ThreadComunicacao implements Runnable{
     }
 
 
-    public void enviarResposta(String mensagem) throws IOException {
+    public void enviarResposta(Mensagem mensagem) throws IOException {
+    	System.out.println(this.mensagemService.encaminhandoMensagem(mensagem));
         OutputStream outputStream = this.socket.getOutputStream();
         PrintWriter writer = new PrintWriter(outputStream);
-        writer.println(mensagem);
+        writer.println(mensagem.toString());
         writer.flush();
     }
 

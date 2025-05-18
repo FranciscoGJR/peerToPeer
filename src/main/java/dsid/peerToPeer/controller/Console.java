@@ -31,6 +31,7 @@ import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
 import dsid.peerToPeer.utils.Status;
+import dsid.peerToPeer.utils.ThreadComunicacaoUtil;
 import dsid.peerToPeer.utils.TipoMensagemEnum;
 
 public class Console {
@@ -124,7 +125,7 @@ public class Console {
 				Mensagem msg = new Mensagem(this.no, vizinho, TipoMensagemEnum.LS);
 				Mensagem resposta = redeService.enviarMensagemEsperandoResposta(msg,
 						this.no.getRede().getCaixaDeMensagens());
-					System.out.println(resposta.toString());
+		        ThreadComunicacaoUtil.exibirMensagem(resposta.toString());
 				if (resposta != null && resposta.getTipo() == TipoMensagemEnum.LS_LIST) {
 					int qtd = Integer.parseInt(resposta.getArgumentos().get(0));
 					for (int i = 1; i <= qtd; i++) {
