@@ -114,16 +114,31 @@ public class ThreadComunicacao implements Runnable{
             }
 
             if (mensagemRecebida.getTipo().equals(TipoMensagemEnum.DL)) {
-                String nomeArquivo = mensagemRecebida.getArgumentos().get(0);
-                File file = new File(this.diretorioCompartilhado, nomeArquivo);
-                byte[] conteudo = Files.readAllBytes(file.toPath());
-                String base64 = Base64.getEncoder().encodeToString(conteudo);
-                List<String> argumentos = Arrays.asList(nomeArquivo, "0", "0", base64);
-                Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
-                this.no.getRede().incrementarClock();
-                enviarResposta(resposta);
-                return;
-            }
+            	String nomeArquivo = mensagemRecebida.getArgumentos().get(0);
+            	File file = new File(this.diretorioCompartilhado, nomeArquivo);
+
+            	if (!file.exists()) {
+            	    System.out.println("Arquivo solicitado não existe: " + nomeArquivo);
+            	    return;
+            	}
+
+            	if (file.length() == 0) {
+            	    System.out.println("Arquivo solicitado está vazio: " + nomeArquivo);
+            	    return;
+            	}
+
+            	try {
+            	    byte[] conteudo = Files.readAllBytes(file.toPath());
+            	    String base64 = Base64.getEncoder().encodeToString(conteudo);
+            	    List<String> argumentos = Arrays.asList(nomeArquivo, "0", "0", base64);
+            	    Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
+            	    this.no.getRede().incrementarClock();
+            	    enviarResposta(resposta);
+            	} catch (IOException e) {
+            	    System.out.println("Erro ao ler o arquivo: " + nomeArquivo);
+            	}
+            	return;
+            	}
 
             fecharConexao();
 

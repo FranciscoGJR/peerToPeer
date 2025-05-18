@@ -125,8 +125,9 @@ public class Console {
 				Mensagem msg = new Mensagem(this.no, vizinho, TipoMensagemEnum.LS);
 				Mensagem resposta = redeService.enviarMensagemEsperandoResposta(msg,
 						this.no.getRede().getCaixaDeMensagens());
-		        ThreadComunicacaoUtil.exibirMensagem(resposta.toString());
 				if (resposta != null && resposta.getTipo() == TipoMensagemEnum.LS_LIST) {
+					ThreadComunicacaoUtil.exibirMensagem(resposta.toString());
+					this.no.getRede().incrementarClock();
 					int qtd = Integer.parseInt(resposta.getArgumentos().get(0));
 					for (int i = 1; i <= qtd; i++) {
 						String[] tokens = resposta.getArgumentos().get(i).split(":");
@@ -151,6 +152,12 @@ public class Console {
 			idx++;
 		}
 		System.out.print("Digite o numero do arquivo para fazer o download:\n> ");
+		int opcao = scanner.nextInt();
+		scanner.nextLine();
+		if (opcao > 0 && opcao <= arquivos.size()) {
+			System.out.println("arquivo escolhido " + arquivos.get(opcao - 1).nome);
+			baixarArquivo(arquivos.get(opcao - 1));
+		}
 	}
 
 	private void baixarArquivo(ArquivoDisponivel arq) {
@@ -159,13 +166,15 @@ public class Console {
 		Mensagem dlMsg = new Mensagem(this.no, arq.peer, TipoMensagemEnum.DL, args);
 		Mensagem resposta = redeService.enviarMensagemEsperandoResposta(dlMsg, this.no.getRede().getCaixaDeMensagens());
 		if (resposta != null && resposta.getTipo() == TipoMensagemEnum.FILE) {
+			ThreadComunicacaoUtil.exibirMensagem(resposta.toString());
+			this.no.getRede().incrementarClock();
 			String nome = resposta.getArgumentos().get(0);
 			String conteudoBase64 = resposta.getArgumentos().get(3);
 			byte[] conteudo = Base64.getDecoder().decode(conteudoBase64);
 			Path path = Paths.get(diretorioCompartilhado, nome);
 			try {
 				Files.write(path, conteudo);
-				System.out.println("Download do arquivo " + nome + " finalizado.");
+				System.out.println("\n\nDownload do arquivo " + nome + " finalizado.");
 			} catch (IOException e) {
 				System.err.println("Erro ao salvar arquivo: " + e.getMessage());
 			}
