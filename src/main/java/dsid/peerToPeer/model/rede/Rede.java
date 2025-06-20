@@ -1,18 +1,15 @@
 package dsid.peerToPeer.model.rede;
-import static dsid.peerToPeer.utils.Constantes.ATUALIZANDO_RELOGIO_PARA;
-import static dsid.peerToPeer.utils.Constantes.ERRO_ACEITAR_CONECAO;
-import static dsid.peerToPeer.utils.Constantes.ERRO_AO_INICIAR_SERVIDOR;
-import static dsid.peerToPeer.utils.Constantes.SOCKET_ENCERRADO;
-import static dsid.peerToPeer.utils.Constantes.ZERO;
+
+import dsid.peerToPeer.model.No;
+import dsid.peerToPeer.utils.Status;
+import lombok.Data;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-import dsid.peerToPeer.model.No;
-import dsid.peerToPeer.utils.Status;
-import lombok.Data;
+import static dsid.peerToPeer.utils.Constantes.*;
 
 @Data
 public class Rede {
@@ -26,6 +23,8 @@ public class Rede {
     private Integer porta;
     
     private Integer clock;
+
+    private Integer chunk = CHUNK_INICIAL;
 
     private List<No> vizinhos;
 

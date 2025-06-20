@@ -41,7 +41,11 @@ public class RedeService {
             e.printStackTrace();
         }
     }
-    
+
+    public void alterarChunk(Rede rede, int novoChunk) {
+        rede.setChunk(novoChunk);
+    }
+
 
     public void atualizarParaMaiorClock(Rede redeLocal, Mensagem mensagemRecebida) {
     	Integer maiorClock = Integer.max(mensagemRecebida.getClock(), redeLocal.getClock());

@@ -62,21 +62,18 @@ public class Constantes {
 	public static final int MIL = 1000;
 	
 	// REDE
+	public static final Integer CHUNK_INICIAL = 256;
 	public static final String LISTA_DE_PEERS = "\nLista de peers:";
 	public static final String SOCKET_ENCERRADO = "Socket encerrado.";
 	public static final String ERRO_ACEITAR_CONECAO = "Erro ao aceitar conexão:";
-	public static final String SERVIDOR_INICIADO = "Servidor iniciado na porta ";
 	public static final String ERRO_AO_INICIAR_SERVIDOR = "Erro ao iniciar o servidor: ";
-	public static final String QUANTIDADE_VIZINHOS = "Quantidade de vizinhos: ";
-	public static final String VIZINHO_ADICIONADO = "Adicionando vizinho na tabela: ";
-	
+
 	// THREAD_COMUNICACAO
 	public static final String ERRO_AO_COMUNICAR_COM_VIZINHO = "Erro ao comunicar com vizinho: ";
 	public static final String MENSAGEM_RECEBIDA = "\n\tMensagem recebida: ";
 	
 	// OUTROS
 	public static final String NULL = "null";
-	public static final String VIZINHOS = "vizinhos";
 	public static final String ESPACO_EM_BRANCO = " ";
 	public static final String STRING_VAZIA = "";
 	

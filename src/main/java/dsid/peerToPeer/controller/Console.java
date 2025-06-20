@@ -1,18 +1,6 @@
 package dsid.peerToPeer.controller;
 
-import static dsid.peerToPeer.utils.Constantes.ALTERAR_CHUNK;
-import static dsid.peerToPeer.utils.Constantes.BUSCAR_ARQUIVOS;
-import static dsid.peerToPeer.utils.Constantes.EXIBIR_ESTATISTICAS;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_ARQUIVOS_LOCAIS;
-import static dsid.peerToPeer.utils.Constantes.LISTAR_PEERS;
-import static dsid.peerToPeer.utils.Constantes.LISTA_DE_PEERS;
-import static dsid.peerToPeer.utils.Constantes.MENU_COMPLETO;
-import static dsid.peerToPeer.utils.Constantes.MIL;
-import static dsid.peerToPeer.utils.Constantes.OBTER_PEERS;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_INVALIDA;
-import static dsid.peerToPeer.utils.Constantes.OPCAO_VOLTAR_MENU;
-import static dsid.peerToPeer.utils.Constantes.SAIR;
-import static dsid.peerToPeer.utils.Constantes.TRES;
+import static dsid.peerToPeer.utils.Constantes.*;
 import static dsid.peerToPeer.utils.MensagemUtil.exibirMensagemPeerAtualizado;
 import static dsid.peerToPeer.utils.Status.ONLINE;
 
@@ -53,7 +41,7 @@ public class Console {
 		int opcao;
 
 		while (true) {
-			esperaEmSegundos(TRES);
+			esperaEmSegundos(UM);
 			exibirMenu();
 
 			opcao = scanner.nextInt();
@@ -82,6 +70,7 @@ public class Console {
 			case EXIBIR_ESTATISTICAS:
 				break;
 			case ALTERAR_CHUNK:
+				alterarChunk();
 				break;
 			case SAIR:
 				encerrarNo();
@@ -208,6 +197,21 @@ public class Console {
 		System.out.println(OPCAO_VOLTAR_MENU);
 		this.redeService.listarVizinhos(no.getRede());
 	}
+
+
+	private void alterarChunk() {
+		System.out.printf("Digite o novo tamanho de chunk:\n> ");
+		int novoChunk = scanner.nextInt();
+
+		if (novoChunk <= 0) {
+			System.out.println("Valor inválido. O chunk deve ser maior que zero.");
+			return;
+		}
+
+		this.redeService.alterarChunk(this.no.getRede(), novoChunk);
+		System.out.println("\tTamanho de chunk alterado: " + novoChunk);
+	}
+
 
 	private void encerrarNo() {
 		this.redeService.pararEscuta(no.getRede());
