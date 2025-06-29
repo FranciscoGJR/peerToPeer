@@ -123,7 +123,7 @@ public class ThreadComunicacao implements Runnable{
             	}
 
             	if (file.length() == 0) {
-            	    System.out.println("Arquivo solicitado está vazio: " + nomeArquivo);
+            	    System.out.println("\n\tArquivo solicitado está vazio: " + nomeArquivo);
             	    return;
             	}
 
