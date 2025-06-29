@@ -52,7 +52,7 @@ public class RedeService {
     	maiorClock++;
 
     	redeLocal.setClock(maiorClock);
-    	System.out.print(ATUALIZANDO_RELOGIO_PARA + maiorClock);
+    	System.out.println(ATUALIZANDO_RELOGIO_PARA + maiorClock);
     }
 
 
@@ -87,7 +87,7 @@ public class RedeService {
     public Mensagem enviarMensagemEsperandoResposta(Mensagem mensagemEnviada, CaixaDeMensagens caixaMensagens) {
     	mensagemEnviada.setNumeroDeSequencia(caixaMensagens.quantidadeEnviadas());
     	this.caixaMensagensService.adicionarNovaMensagemEnviada(mensagemEnviada, caixaMensagens);
-    	System.out.print(mensagemService.encaminhandoMensagem(mensagemEnviada));
+    	System.out.printf(mensagemService.encaminhandoMensagem(mensagemEnviada));
     	try (
     	    Socket socket = new Socket(mensagemEnviada.getDestino().getRede().getEnderecoIP(),
     	                               mensagemEnviada.getDestino().getRede().getPorta())) {

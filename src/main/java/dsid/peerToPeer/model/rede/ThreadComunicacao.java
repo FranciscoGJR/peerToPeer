@@ -65,35 +65,35 @@ public class ThreadComunicacao implements Runnable{
             redeService.atualizarParaMaiorClock(this.no.getRede(), mensagemRecebida);
 
             if (!vizinhoConhecido(noOrigem.getRede())) {
-            	noOrigem.getRede().setStatus(ONLINE);
-            	redeService.adicionarVizinho(noOrigem, this.vizinhos);
+                noOrigem.getRede().setStatus(ONLINE);
+                redeService.adicionarVizinho(noOrigem, this.vizinhos);
             }
 
             if (mensagemRecebida.getTipo().equals(HELLO)) {
-            	noOrigem.getRede().setStatus(ONLINE);
+                noOrigem.getRede().setStatus(ONLINE);
             }
-            
-            if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
-            	List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
-            	this.no.getRede().incrementarClock();
-            	Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
-            	this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
-            }
-            
-            if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
-            	noOrigem.getRede().setStatus(ONLINE);
-            	redeService.adicionarVizinho(noOrigem, this.vizinhos);
-            	for (int iterador = 1; iterador < mensagemRecebida.getArgumentos().size(); iterador++) {
-            		String[] tokens = mensagemRecebida.getArgumentos().get(iterador).split(":");
-            		String enderecoIP = tokens[0];
-            		String porta = tokens[1];
-            		Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
-            		Integer clock = mensagemRecebida.getClock();
 
-            		this.redeService.adicionarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
-            	}
+            if (mensagemRecebida.getTipo().equals(GET_PEERS)) {
+                List<String> argumentos = this.mensagemService.preencherArgumentosParaMensagemListPeer(this.vizinhos, noOrigem);
+                this.no.getRede().incrementarClock();
+                Mensagem mensagemDeResposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.PEER_LIST, argumentos);
+                this.redeService.enviarMensagem(mensagemDeResposta, caixaDeMensagens);
             }
-            
+
+            if (mensagemRecebida.getTipo().equals(PEER_LIST)) {
+                noOrigem.getRede().setStatus(ONLINE);
+                redeService.adicionarVizinho(noOrigem, this.vizinhos);
+                for (int iterador = 1; iterador < mensagemRecebida.getArgumentos().size(); iterador++) {
+                    String[] tokens = mensagemRecebida.getArgumentos().get(iterador).split(":");
+                    String enderecoIP = tokens[0];
+                    String porta = tokens[1];
+                    Status status = (tokens[2].equals("ONLINE")) ? Status.ONLINE : Status.OFFLINE;
+                    Integer clock = mensagemRecebida.getClock();
+
+                    this.redeService.adicionarVizinho(new No(enderecoIP, porta, status, clock), this.vizinhos);
+                }
+            }
+
             if (mensagemRecebida.getTipo().equals(TipoMensagemEnum.LS)) {
                 File dir = new File(this.diretorioCompartilhado);
                 File[] arquivos = dir.listFiles();
@@ -114,37 +114,52 @@ public class ThreadComunicacao implements Runnable{
             }
 
             if (mensagemRecebida.getTipo().equals(TipoMensagemEnum.DL)) {
-            	String nomeArquivo = mensagemRecebida.getArgumentos().get(0);
-            	File file = new File(this.diretorioCompartilhado, nomeArquivo);
+                String nomeArquivo = mensagemRecebida.getArgumentos().get(0);
+                int chunkSize = Integer.parseInt(mensagemRecebida.getArgumentos().get(1));
+                int chunkIndex = Integer.parseInt(mensagemRecebida.getArgumentos().get(2));
 
-            	if (!file.exists()) {
-            	    System.out.println("Arquivo solicitado não existe: " + nomeArquivo);
-            	    return;
-            	}
+                File file = new File(this.diretorioCompartilhado, nomeArquivo);
 
-            	if (file.length() == 0) {
-            	    System.out.println("\n\tArquivo solicitado está vazio: " + nomeArquivo);
-            	    return;
-            	}
+                if (!file.exists()) {
+                    System.out.println("Arquivo solicitado não existe: " + nomeArquivo);
+                    return;
+                }
 
-            	try {
-            	    byte[] conteudo = Files.readAllBytes(file.toPath());
-            	    String base64 = Base64.getEncoder().encodeToString(conteudo);
-            	    List<String> argumentos = Arrays.asList(nomeArquivo, "0", "0", base64);
-            	    Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
-            	    this.no.getRede().incrementarClock();
-            	    enviarResposta(resposta);
-            	} catch (IOException e) {
-            	    System.out.println("Erro ao ler o arquivo: " + nomeArquivo);
-            	}
-            	return;
-            	}
+                if (file.length() == 0) {
+                    System.out.println("\n\tArquivo solicitado está vazio: " + nomeArquivo);
+                    return;
+                }
 
-            fecharConexao();
+                try {
+                    byte[] conteudoCompleto = Files.readAllBytes(file.toPath());
+                    int inicio = chunkIndex * chunkSize;
+                    int fim = Math.min(inicio + chunkSize, conteudoCompleto.length);
 
+                    if (inicio >= conteudoCompleto.length) {
+                        System.out.println("\n\tÍndice de chunk inválido para o arquivo: " + nomeArquivo);
+                        return;
+                    }
+
+                    byte[] chunkConteudo = Arrays.copyOfRange(conteudoCompleto, inicio, fim);
+                    int tamanhoRealChunk = fim - inicio;
+
+                    String base64 = Base64.getEncoder().encodeToString(chunkConteudo);
+                    List<String> argumentos = Arrays.asList(
+                            nomeArquivo,
+                            String.valueOf(tamanhoRealChunk),
+                            String.valueOf(chunkIndex),
+                            base64
+                    );
+
+                    Mensagem resposta = new Mensagem(this.no, noOrigem, TipoMensagemEnum.FILE, argumentos);
+                    this.no.getRede().incrementarClock();
+                    enviarResposta(resposta);
+                } catch (IOException e) {
+                    System.out.println("Erro ao ler o arquivo: " + nomeArquivo);
+                }
+            }
         } catch (IOException e) {
-            System.err.println(ERRO_AO_COMUNICAR_COM_VIZINHO + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

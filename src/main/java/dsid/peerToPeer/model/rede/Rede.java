@@ -103,7 +103,7 @@ public class Rede {
 
     public void incrementarClock() {
     	this.clock++;
-    	System.out.print(ATUALIZANDO_RELOGIO_PARA + getClock());
+    	System.out.println(ATUALIZANDO_RELOGIO_PARA + getClock());
     }
     
 }

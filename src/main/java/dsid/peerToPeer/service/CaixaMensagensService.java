@@ -3,7 +3,7 @@ package dsid.peerToPeer.service;
 import dsid.peerToPeer.model.rede.CaixaDeMensagens;
 import dsid.peerToPeer.model.rede.Mensagem;
 
-public class CaixaMensagensService {
+    public class CaixaMensagensService {
 
     public CaixaMensagensService() {
     }

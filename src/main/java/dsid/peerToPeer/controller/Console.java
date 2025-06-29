@@ -105,7 +105,6 @@ public class Console {
 		}
 	}
 
-
 	private void buscarArquivos() {
 		// Mapa: chave = "nome:tamanho", valor = ArquivoAgrupado
 		Map<String, ArquivoAgrupado> arquivosAgrupados = new HashMap();
@@ -136,22 +135,9 @@ public class Console {
 		exibirMenuArquivosAgrupados(new ArrayList(arquivosAgrupados.values()));
 	}
 
-
-	public static class ArquivoAgrupado {
-		String nome;
-		long tamanho;
-		List<No> peers = new ArrayList();
-
-		public ArquivoAgrupado(String nome, long tamanho) {
-			this.nome = nome;
-			this.tamanho = tamanho;
-		}
-	}
-
-
 	private void exibirMenuArquivosAgrupados(List<ArquivoAgrupado> arquivos) {
-		System.out.println();
-		System.out.printf("%-20s %-10s %-30s\n", "Nome", "Tamanho", "Peers");
+		System.out.println("\nArquivos encontrados na rede:");
+		System.out.printf("%-20s %-10s %-30s\n", "Nome", "Tamanho", "Peer");
 		System.out.printf("%-4s %-20s %-10s %-30s\n", "[ 0]", "<Cancelar>", "", "");
 		int idx = 1;
 		for (ArquivoAgrupado arq : arquivos) {
@@ -167,22 +153,106 @@ public class Console {
 		scanner.nextLine();
 		if (opcao > 0 && opcao <= arquivos.size()) {
 			ArquivoAgrupado escolhido = arquivos.get(opcao - 1);
-			// Pergunte de qual peer baixar caso haja mais de um
-			if (escolhido.peers.size() == 1) {
-				baixarArquivo(new ArquivoDisponivel(escolhido.nome, escolhido.tamanho, escolhido.peers.get(0)));
-			} else {
-				System.out.println("O arquivo está disponível em vários peers:");
-				for (int i = 0; i < escolhido.peers.size(); i++) {
-					No peer = escolhido.peers.get(i);
-					System.out.printf("[%d] %s:%d\n", i+1, peer.getRede().getEnderecoIP(), peer.getRede().getPorta());
+			System.out.println("\tArquivo escolhido " + escolhido.nome);
+			baixarArquivoEmChunks(escolhido);
+		}
+	}
+
+	private void baixarArquivoEmChunks(ArquivoAgrupado arquivo) {
+		int chunkSize = this.no.getRede().getChunk();
+		long tamanhoArquivo = arquivo.tamanho;
+		int numChunks = (int) Math.ceil((double) tamanhoArquivo / chunkSize);
+
+		// Array para armazenar os chunks recebidos
+		byte[][] chunks = new byte[numChunks][];
+
+		// Distribuir os chunks entre os peers disponíveis usando Round Robin
+		List<No> peersDisponiveis = new ArrayList(arquivo.peers);
+
+		for (int i = 0; i < numChunks; i++) {
+			// Seleciona o peer usando Round Robin
+			No peerSelecionado = peersDisponiveis.get(i % peersDisponiveis.size());
+
+			this.no.getRede().incrementarClock();
+			List<String> args = Arrays.asList(
+					arquivo.nome,
+					String.valueOf(chunkSize),
+					String.valueOf(i)
+			);
+
+			Mensagem dlMsg = new Mensagem(this.no, peerSelecionado, TipoMensagemEnum.DL, args);
+
+			Mensagem resposta = redeService.enviarMensagemEsperandoResposta(dlMsg,
+					this.no.getRede().getCaixaDeMensagens());
+
+			if (resposta != null && resposta.getTipo() == TipoMensagemEnum.FILE) {
+				// Exibe apenas parte da mensagem para não poluir a saída
+				String mensagemResumida = resposta.toString();
+				mensagemResumida = resposta.toString()
+				if (mensagemResumida.length() > 100) {
+					mensagemResumida = mensagemResumida.substring(0, 100) + "...";
 				}
-				System.out.print("Escolha o peer para baixar:\n> ");
-				int peerOpcao = scanner.nextInt();
-				scanner.nextLine();
-				if (peerOpcao > 0 && peerOpcao <= escolhido.peers.size()) {
-					baixarArquivo(new ArquivoDisponivel(escolhido.nome, escolhido.tamanho, escolhido.peers.get(peerOpcao - 1)));
+				System.out.println("\n\tResposta recebida: \"" + mensagemResumida + "\"");
+
+				this.no.getRede().incrementarClock();
+				peerSelecionado.getRede().setStatus(ONLINE);
+				System.out.println("\tAtualizando peer " + peerSelecionado.getRede().getEnderecoIP() + ":" +
+						peerSelecionado.getRede().getPorta() + " status ONLINE");
+
+				String conteudoBase64 = resposta.getArgumentos().get(3);
+				int chunkIndex = Integer.parseInt(resposta.getArgumentos().get(2));
+				chunks[chunkIndex] = Base64.getDecoder().decode(conteudoBase64);
+			} else {
+				// Se falhar, tenta outro peer
+				i--; // Tenta novamente este chunk
+				peersDisponiveis.remove(peerSelecionado); // Remove o peer que falhou
+
+				if (peersDisponiveis.isEmpty()) {
+					System.out.println("Não foi possível baixar o arquivo: todos os peers falharam");
+					return;
 				}
 			}
+		}
+
+		// Combina os chunks e salva o arquivo
+		try {
+			Path path = Paths.get(diretorioCompartilhado, arquivo.nome);
+
+			// Calcula o tamanho total dos chunks
+			int tamanhoTotal = 0;
+			for (byte[] chunk : chunks) {
+				if (chunk != null) {
+					tamanhoTotal += chunk.length;
+				}
+			}
+
+			// Combina os chunks em um único array
+			byte[] arquivoCompleto = new byte[tamanhoTotal];
+			int posicao = 0;
+			for (byte[] chunk : chunks) {
+				if (chunk != null) {
+					System.arraycopy(chunk, 0, arquivoCompleto, posicao, chunk.length);
+					posicao += chunk.length;
+				}
+			}
+
+			// Salva o arquivo
+			Files.write(path, arquivoCompleto);
+			System.out.println("\tDownload do arquivo " + arquivo.nome + " finalizado.");
+		} catch (IOException e) {
+			System.err.println("\tErro ao salvar arquivo: " + e.getMessage());
+		}
+	}
+
+
+	public static class ArquivoAgrupado {
+		String nome;
+		long tamanho;
+		List<No> peers = new ArrayList();
+
+		public ArquivoAgrupado(String nome, long tamanho) {
+			this.nome = nome;
+			this.tamanho = tamanho;
 		}
 	}
 
