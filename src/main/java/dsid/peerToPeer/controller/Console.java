@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import dsid.peerToPeer.model.EstatisticasDownload;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
 import dsid.peerToPeer.service.RedeService;
@@ -65,6 +66,7 @@ public class Console {
 				buscarArquivos();
 				break;
 			case EXIBIR_ESTATISTICAS:
+				exibirEstatisticas();
 				break;
 			case ALTERAR_CHUNK:
 				alterarChunk();
@@ -168,6 +170,10 @@ public class Console {
 
 		// Distribuir os chunks entre os peers disponíveis usando Round Robin
 		List<No> peersDisponiveis = new ArrayList(arquivo.peers);
+		int numPeersUsados = Math.min(peersDisponiveis.size(), numChunks);
+
+		// Iniciar medição de tempo
+		long tempoInicio = System.nanoTime();
 
 		for (int i = 0; i < numChunks; i++) {
 			// Seleciona o peer usando Round Robin
@@ -188,7 +194,6 @@ public class Console {
 			if (resposta != null && resposta.getTipo() == TipoMensagemEnum.FILE) {
 				// Exibe apenas parte da mensagem para não poluir a saída
 				String mensagemResumida = resposta.toString();
-				mensagemResumida = resposta.toString()
 				if (mensagemResumida.length() > 100) {
 					mensagemResumida = mensagemResumida.substring(0, 100) + "...";
 				}
@@ -203,9 +208,8 @@ public class Console {
 				int chunkIndex = Integer.parseInt(resposta.getArgumentos().get(2));
 				chunks[chunkIndex] = Base64.getDecoder().decode(conteudoBase64);
 			} else {
-				// Se falhar, tenta outro peer
-				i--; // Tenta novamente este chunk
-				peersDisponiveis.remove(peerSelecionado); // Remove o peer que falhou
+				i--;
+				peersDisponiveis.remove(peerSelecionado);
 
 				if (peersDisponiveis.isEmpty()) {
 					System.out.println("Não foi possível baixar o arquivo: todos os peers falharam");
@@ -214,11 +218,15 @@ public class Console {
 			}
 		}
 
-		// Combina os chunks e salva o arquivo
+		long tempoFim = System.nanoTime();
+		double tempoSegundos = (tempoFim - tempoInicio) / 1_000_000_000.0;
+
+		this.no.getRede().getEstatisticasDownload().registrarDownload(
+				chunkSize, numPeersUsados, tamanhoArquivo, tempoSegundos);
+
 		try {
 			Path path = Paths.get(diretorioCompartilhado, arquivo.nome);
 
-			// Calcula o tamanho total dos chunks
 			int tamanhoTotal = 0;
 			for (byte[] chunk : chunks) {
 				if (chunk != null) {
@@ -226,7 +234,6 @@ public class Console {
 				}
 			}
 
-			// Combina os chunks em um único array
 			byte[] arquivoCompleto = new byte[tamanhoTotal];
 			int posicao = 0;
 			for (byte[] chunk : chunks) {
@@ -236,7 +243,6 @@ public class Console {
 				}
 			}
 
-			// Salva o arquivo
 			Files.write(path, arquivoCompleto);
 			System.out.println("\tDownload do arquivo " + arquivo.nome + " finalizado.");
 		} catch (IOException e) {
@@ -320,6 +326,27 @@ public class Console {
 
 		this.redeService.alterarChunk(this.no.getRede(), novoChunk);
 		System.out.println("\tTamanho de chunk alterado: " + novoChunk);
+	}
+
+	private void exibirEstatisticas() {
+		List<EstatisticasDownload.EstatisticaItem> estatisticas =
+				this.no.getRede().getEstatisticasDownload().getEstatisticas();
+
+		if (estatisticas.isEmpty()) {
+			System.out.println("\nNenhuma estatística disponível. Faça alguns downloads primeiro.");
+			return;
+		}
+
+		System.out.println("\nTam. chunk | N peers | Tam. arquivo | N | Tempo [s] | Desvio");
+		for (EstatisticasDownload.EstatisticaItem item : estatisticas) {
+			System.out.printf("%-10d | %-7d | %-12d | %-1d | %-9.5f | %.5f\n",
+					item.getTamChunk(),
+					item.getNumPeers(),
+					item.getTamArquivo(),
+					item.getNumAmostras(),
+					item.getTempoMedio(),
+					item.getDesvioPadrao());
+		}
 	}
 
 

@@ -1,5 +1,6 @@
 package dsid.peerToPeer.model.rede;
 
+import dsid.peerToPeer.model.EstatisticasDownload;
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.utils.Status;
 import lombok.Data;
@@ -35,6 +36,8 @@ public class Rede {
 	private String diretorioCompartilhado;
 
     private volatile boolean running = true;
+
+    private EstatisticasDownload estatisticasDownload = new EstatisticasDownload();
 
 
     public Rede(String enderecoIP, Integer porta, List<No> vizinhos, String diretorioCompartilhado) {
@@ -100,10 +103,13 @@ public class Rede {
         }).start();
     }
     
-
     public void incrementarClock() {
     	this.clock++;
     	System.out.println(ATUALIZANDO_RELOGIO_PARA + getClock());
     }
-    
+
+
+    public EstatisticasDownload getEstatisticasDownload() {
+        return this.estatisticasDownload;
+    }
 }
