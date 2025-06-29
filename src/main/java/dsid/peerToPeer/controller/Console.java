@@ -9,11 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import dsid.peerToPeer.model.No;
 import dsid.peerToPeer.model.rede.Mensagem;
@@ -36,6 +32,7 @@ public class Console {
 		this.no = no;
 		this.diretorioCompartilhado = diretorioCompartilhado;
 	}
+
 
 	public void iniciar(No no) {
 		int opcao;
@@ -81,6 +78,7 @@ public class Console {
 		}
 	}
 
+
 	private void enviarHello(int numeroVizinho) {
 		No noDestinatario = no.getRede().getVizinhos().get(numeroVizinho - 1);
 		Mensagem mensagem = new Mensagem(this.no, noDestinatario, TipoMensagemEnum.HELLO);
@@ -97,6 +95,7 @@ public class Console {
 		noDestinatario.getRede().setStatus(Status.OFFLINE);
 	}
 
+
 	private void enviarGetPeers() {
 		for (No vizinho : this.no.getRede().getVizinhos()) {
 			this.no.getRede().incrementarClock();
@@ -106,8 +105,11 @@ public class Console {
 		}
 	}
 
+
 	private void buscarArquivos() {
-		List<ArquivoDisponivel> arquivosEncontrados = new ArrayList();
+		// Mapa: chave = "nome:tamanho", valor = ArquivoAgrupado
+		Map<String, ArquivoAgrupado> arquivosAgrupados = new HashMap();
+
 		for (No vizinho : this.no.getRede().getVizinhos()) {
 			if (vizinho.getRede().getStatus() == Status.ONLINE) {
 				this.no.getRede().incrementarClock();
@@ -122,36 +124,72 @@ public class Console {
 						String[] tokens = resposta.getArgumentos().get(i).split(":");
 						String nome = tokens[0];
 						long tamanho = Long.parseLong(tokens[1]);
-						arquivosEncontrados.add(new ArquivoDisponivel(nome, tamanho, vizinho));
+						String chave = nome + ":" + tamanho;
+
+						ArquivoAgrupado agrupado = arquivosAgrupados.getOrDefault(chave, new ArquivoAgrupado(nome, tamanho));
+						agrupado.peers.add(vizinho);
+						arquivosAgrupados.put(chave, agrupado);
 					}
 				}
 			}
 		}
-		exibirMenuArquivos(arquivosEncontrados);
+		exibirMenuArquivosAgrupados(new ArrayList(arquivosAgrupados.values()));
 	}
 
-	private void exibirMenuArquivos(List<ArquivoDisponivel> arquivos) {
+
+	public static class ArquivoAgrupado {
+		String nome;
+		long tamanho;
+		List<No> peers = new ArrayList();
+
+		public ArquivoAgrupado(String nome, long tamanho) {
+			this.nome = nome;
+			this.tamanho = tamanho;
+		}
+	}
+
+
+	private void exibirMenuArquivosAgrupados(List<ArquivoAgrupado> arquivos) {
 		System.out.println();
-		System.out.printf("%-20s %-10s %-21s\n", "Nome", "Tamanho", "Peer");
-		System.out.printf("%-4s %-20s %-10s %-21s\n", "[ 0]", "<Cancelar>", "", "");
+		System.out.printf("%-20s %-10s %-30s\n", "Nome", "Tamanho", "Peers");
+		System.out.printf("%-4s %-20s %-10s %-30s\n", "[ 0]", "<Cancelar>", "", "");
 		int idx = 1;
-		for (ArquivoDisponivel arq : arquivos) {
-			System.out.printf("[%2d] %-16s %-10d %-21s\n", idx, arq.nome, arq.tamanho,
-					arq.peer.getRede().getEnderecoIP() + ":" + arq.peer.getRede().getPorta());
+		for (ArquivoAgrupado arq : arquivos) {
+			String peersStr = arq.peers.stream()
+					.map(p -> p.getRede().getEnderecoIP() + ":" + p.getRede().getPorta())
+					.reduce((a, b) -> a + ", " + b)
+					.orElse("");
+			System.out.printf("[%2d] %-16s %-10d %-30s\n", idx, arq.nome, arq.tamanho, peersStr);
 			idx++;
 		}
 		System.out.print("Digite o numero do arquivo para fazer o download:\n> ");
 		int opcao = scanner.nextInt();
 		scanner.nextLine();
 		if (opcao > 0 && opcao <= arquivos.size()) {
-			System.out.println("arquivo escolhido " + arquivos.get(opcao - 1).nome);
-			baixarArquivo(arquivos.get(opcao - 1));
+			ArquivoAgrupado escolhido = arquivos.get(opcao - 1);
+			// Pergunte de qual peer baixar caso haja mais de um
+			if (escolhido.peers.size() == 1) {
+				baixarArquivo(new ArquivoDisponivel(escolhido.nome, escolhido.tamanho, escolhido.peers.get(0)));
+			} else {
+				System.out.println("O arquivo está disponível em vários peers:");
+				for (int i = 0; i < escolhido.peers.size(); i++) {
+					No peer = escolhido.peers.get(i);
+					System.out.printf("[%d] %s:%d\n", i+1, peer.getRede().getEnderecoIP(), peer.getRede().getPorta());
+				}
+				System.out.print("Escolha o peer para baixar:\n> ");
+				int peerOpcao = scanner.nextInt();
+				scanner.nextLine();
+				if (peerOpcao > 0 && peerOpcao <= escolhido.peers.size()) {
+					baixarArquivo(new ArquivoDisponivel(escolhido.nome, escolhido.tamanho, escolhido.peers.get(peerOpcao - 1)));
+				}
+			}
 		}
 	}
 
+
 	private void baixarArquivo(ArquivoDisponivel arq) {
 		this.no.getRede().incrementarClock();
-		List<String> args = Arrays.asList(arq.nome, "0", "0");
+		List<String> args = Arrays.asList(arq.nome, String.valueOf(this.no.getRede().getChunk()), "0");
 		Mensagem dlMsg = new Mensagem(this.no, arq.peer, TipoMensagemEnum.DL, args);
 		Mensagem resposta = redeService.enviarMensagemEsperandoResposta(dlMsg, this.no.getRede().getCaixaDeMensagens());
 		if (resposta != null && resposta.getTipo() == TipoMensagemEnum.FILE) {
@@ -170,6 +208,7 @@ public class Console {
 		}
 	}
 
+
 	public static class ArquivoDisponivel {
 		String nome;
 		long tamanho;
@@ -182,6 +221,7 @@ public class Console {
 		}
 	}
 
+
 	private void listarArquivosLocais() {
 		File diretorio = new File(this.diretorioCompartilhado);
 		File[] arquivos = diretorio.listFiles();
@@ -192,12 +232,12 @@ public class Console {
 		}
 	}
 
+
 	private void listarVizinhos() {
 		System.out.println(LISTA_DE_PEERS);
 		System.out.println(OPCAO_VOLTAR_MENU);
 		this.redeService.listarVizinhos(no.getRede());
 	}
-
 
 	private void alterarChunk() {
 		System.out.printf("Digite o novo tamanho de chunk:\n> ");

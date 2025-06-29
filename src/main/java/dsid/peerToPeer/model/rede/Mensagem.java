@@ -20,6 +20,8 @@ public class Mensagem {
 	
 	private Integer clock;
 
+	private Integer chunk;
+
 	private TipoMensagemEnum tipo;
 
     private List<String> argumentos = new ArrayList<>();
@@ -47,6 +49,7 @@ public class Mensagem {
     public Mensagem(No noOrigem, No noDestino, TipoMensagemEnum peerList, List<String> argumentos) {
     	this.origem = noOrigem;
     	this.clock = noOrigem.getRede().getClock();
+		this.chunk = noOrigem.getRede().getChunk();
     	this.destino = noDestino;
     	this.tipo = peerList;
     	this.argumentos = argumentos;

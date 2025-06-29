@@ -50,8 +50,8 @@ public class Constantes {
 	public static final String HELLO = "HELLO";
 	public static final String GET_PEERS = "GET_PEERS";
 	public static final String PEER_LIST = "PEER_LIST";
-	public static final String ENCAMINHANDO_MENSAGEM = "\n\tEncaminhando mensagem ";
-	public static final String PARA = " para ";
+	public static final String ENCAMINHANDO_MENSAGEM = "\n\tEncaminhando mensagem \"";
+	public static final String PARA = "\" para ";
 	
 	
 	// VALORES INTEIROS (int)
